@@ -7,7 +7,7 @@ export const createUserAPI = (payload) => {
 };
 
 export const loginAPI = (payload) => {
-  return axios.get(`${URL}users/login`, { params: payload });
+  return axios.post(`${URL}users/login`, payload);
 };
 
 export const wishListAPI = () => {
