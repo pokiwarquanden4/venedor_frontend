@@ -54,7 +54,7 @@ function App() {
                 path={route.path}
                 element={
                   route.authorization === undefined ||
-                  (jwtToken && jwt_decode(jwtToken).roleId === route.authorization) ? (
+                  (jwtToken && jwt_decode(jwtToken).roleName === route.authorization) ? (
                     <Layout>
                       {loadingSelect.loading && <Loading></Loading>}
                       {notificationSelect.showing && (

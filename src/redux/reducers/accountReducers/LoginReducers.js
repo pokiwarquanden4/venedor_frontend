@@ -15,7 +15,7 @@ export default function loginReducers(state = LoginConstant, action) {
         loading: false,
         loginPopup: false,
         loginError: false,
-        loginRole: action.payload.obj.roleId,
+        loginRole: action.payload.obj.roleName,
       };
       if (action.payload.obj.WishLists) {
         returnValue.wishList = action.payload.obj.WishLists;
