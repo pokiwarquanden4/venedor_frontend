@@ -1,0 +1,301 @@
+.wrapper{
+    display: flex;
+    justify-content: center;
+    .wrapper_content {
+        width: var(--default_page_width);
+        .header {
+            .header_content {
+                margin: 48px 0 15px;
+                border-left: 4px solid var(--c-theme);
+                color: var(--c-page-title);
+                font-family: var(--font-heading);
+                font-size: 35px;
+                font-weight: 700;
+                letter-spacing: .02em;
+                line-height: 27px;
+            }
+            .header_sub_content{
+                color: #818181;
+            }
+        }
+        .content {
+            margin-top: 20px;
+            display: flex;
+            justify-content: space-between;
+            .lists {
+                border: 1px solid #efefef;
+                flex: 0.9;
+                .lists_header {
+                    height: 56px;
+                    display: flex;
+                    align-items: center;
+                    background-color: rgb(250,250,250);
+                    .img_header{
+                        color: #555555;
+                        text-align: center;
+                        font-weight: bolder;
+                        flex: 0.2;
+                        font-size: 14px;
+                    }
+                    .productName_header{
+                        color: #555555;
+                        text-align: center;
+                        font-weight: bolder;
+                        flex: 0.4;
+                        font-size: 14px;
+                    }
+                    .price_header{
+                        color: #555555;
+                        text-align: center;
+                        font-weight: bolder;
+                        flex: 0.1;
+                        font-size: 14px;
+                    }
+                    .quantity_header{
+                        color: #555555;
+                        text-align: center;
+                        font-weight: bolder;
+                        flex: 0.3;
+                        font-size: 14px;
+                    }
+                }
+                @media (max-width: 790px) {
+                    .lists_header{
+                        display: none;
+                    }
+                }
+                .lists_content {
+                }
+                .lists_footer {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    padding: 0 20px;
+                    border: 1px solid #efefef;
+                    height: 80px;
+                    .lists_footer_button_continue {
+                        width: 200px;
+                        height: 40px;
+                    }
+                    .lists_footer_button_update {
+                        background-color: rgb(13,60,85);
+                        border-color: rgb(13,60,85);
+                        color: #fff;
+                        width: 150px;
+                        height: 40px;
+                    }
+                }
+            }
+            .money_wrapper{
+                flex: 0.3;
+                margin-left: 40px;
+                .money {    
+                    .money_header {
+                        position: relative;
+                        border: 1px solid #efefef;
+                        display: flex;
+                        padding: 16px 20px;
+                        align-items: center;
+                        font-weight: bolder;
+                        height: 50px;
+                        background-color: rgb(250,250,250);
+                        .arrowDownButton_wrapper, .arrowUpButton_wrapper{
+                            position: absolute;
+                            cursor: pointer;
+                            top: 50%;
+                            right: 0;
+                            transform: translate(0, -50%);
+                            padding: 10px;
+                        }
+                        .arrowDownButton, .arrowUpButton{
+                            fill:#555555;
+                            width: 8px;
+                            height: 8px;
+                        }
+                    }
+                    .money_tag {
+                        background-color: rgb(250,250,250);
+                        border: 1px solid #efefef;
+                        box-sizing: none;
+                        padding: 20px;
+                        .total{
+                            display: flex;
+                            margin-bottom: 20px;
+                            justify-content: space-between;
+                            .total_header{
+                                color: #666666;
+                            }
+                            .total_price{
+                                color: #666666;
+                            }
+                        }
+                        .saleOff{
+                            padding-bottom: 20px;
+                            border-bottom: 1px solid #efefef;
+                        }
+                        .grand_total{
+                            margin-top: 20px;
+                            display: flex;
+                            justify-content: space-between;
+                            .grand_total_header{
+                                color: #666666;
+                            }
+                            .grand_total_price{
+                                font-weight: bolder;
+                            }
+                        }
+                        .checkout_button_wrapper {
+                            margin-top: 20px;
+                            .checkout_button{
+                                height: 40px;
+                            }
+                        }
+                    }
+                    .collapse_wrapper {
+                        overflow: hidden;
+                        transition: all ease 0.4s;
+                        max-height: 500px;
+                    }
+                    .money_tag_colapse{
+                        max-height: 0px;
+                    }
+                }
+                .address {    
+                    margin-top: 30px;
+                    .address_header {
+                        position: relative;
+                        border: 1px solid #efefef;
+                        display: flex;
+                        padding: 16px 20px;
+                        align-items: center;
+                        font-weight: bolder;
+                        height: 50px;
+                        background-color: rgb(250,250,250);
+                        .arrowDownButton_wrapper, .arrowUpButton_wrapper{
+                            position: absolute;
+                            cursor: pointer;
+                            top: 50%;
+                            right: 0;
+                            transform: translate(0, -50%);
+                            padding: 10px;
+                        }
+                        .arrowDownButton, .arrowUpButton{
+                            fill:#555555;
+                            width: 8px;
+                            height: 8px;
+                        }
+                    }
+                    .address_tag {
+                        background-color: rgb(250,250,250);
+                        border: 1px solid #efefef;
+                        box-sizing: none;
+                        padding: 20px;
+                        .name
+                        ,.company
+                        ,.address1
+                        ,.address2
+                        ,.city
+                        ,.country
+                        ,.phoneNumber{
+                            display: flex;
+                            margin-bottom: 20px;
+                            justify-content: space-between;
+                            .total_header
+                            ,.name_header
+                            ,.company_header
+                            ,.address1_header
+                            ,.address2_header
+                            ,.city_header
+                            ,.country_header
+                            ,.phoneNumber_header{
+                                color: #666666;
+                            }
+                            .total_value
+                            ,.name_value
+                            ,.company_value
+                            ,.address1_value
+                            ,.address2_value
+                            ,.city_value
+                            ,.country_value
+                            ,.phoneNumber_value{
+                                display: -webkit-box;
+                                -webkit-line-clamp: 1;
+                                -webkit-box-orient: vertical;
+                                overflow: hidden;
+                                word-wrap: break-word;
+                                color: #666666;
+                                width: 70px;
+                            }
+                        }
+                        .checkout_button_wrapper {
+                            margin-top: 20px;
+                            .checkout_button{
+                                height: 40px;
+                                &+.checkout_button{
+                                    margin-top: 20px;
+                                }
+                            }
+                        }
+                    }
+                    .collapse_wrapper {
+                        overflow: hidden;
+                        transition: all ease 0.4s;
+                        max-height: 500px;
+                    }
+                    .address_tag_colapse{
+                        max-height: 0px;
+                    }
+                }
+            }
+            
+        }
+        @media (max-width: 1160px) {
+            .content{
+                display: block;
+                .money_wrapper {
+                    margin-top: 50px;
+                    margin-left: 0;
+                    .address {
+                        .total_value
+                        ,.name_value
+                        ,.company_value
+                        ,.address1_value
+                        ,.address2_value
+                        ,.city_value
+                        ,.country_value
+                        ,.phoneNumber_value{
+                            width: auto !important;
+                            max-width: 60%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.address_wrapper {
+    padding: 50px;
+    .addresses {
+        cursor: pointer;
+        padding: 18px;
+        border: 1px solid #c3c3c3;
+        border-radius: 3px;
+        background-color: #f9f9f9;
+        .addresses_content {
+            font-weight: lighter;
+            color: #161d25;
+            font-size: 14px;
+            & + .addresses_content {
+                margin-top: 5px;
+            }
+        }
+        &+.addresses{
+            margin-top: 15px;
+        }
+        &:hover {
+            opacity: 0.8;
+            border: 1px solid red;
+        }
+    }
+}

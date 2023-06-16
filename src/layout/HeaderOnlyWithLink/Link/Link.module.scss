@@ -1,0 +1,25 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    .contents {
+        width: var(--default_page_width);
+        display: flex;
+        
+        .content{
+            font-size: 14px;
+            color: rgb(131,111,141);
+            text-decoration: none;
+        }
+        
+        .content + .content::before {
+            content: '>';
+            margin-right: 20px;
+            font-weight: bolder;
+            color: rgb(131,111,141);
+        }
+        .content + .content {
+            margin-left: 20px;
+        }
+    }
+}

@@ -1,0 +1,107 @@
+.wrapper {
+    .header {
+        text-align: center;
+        font-size: 28px;
+        font-family: Arial;
+        font-weight: 700;
+        letter-spacing: 0;
+        margin-bottom: 50px;
+    }
+    .contents {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        .content {
+            flex: 0.8;
+            min-width: 75%;
+            .items {
+                display: flex;
+                overflow-x: hidden;
+                .group_items {
+                    display: flex;
+                    justify-content: space-around;
+                    min-width: 100%;
+                }
+            }
+        }
+
+        .icon {
+            width: 40% !important;
+            height: 44% !important;
+        }
+        .next_left, .next_right{
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 30px;
+            border-color: #eeeeee;
+            background-color: #eeeeee;
+            transition: all 0.2s ease-in-out;
+        }
+        .disableButton {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 30px;
+            cursor:auto;
+            background-color: #eeeeee;
+            opacity: 0.3;
+        }
+        
+        .next_left:hover, .next_right:hover{
+            background-color: rgb(194,53,29);
+        }
+        .next_left:hover .icon {
+            fill: rgb(255, 255, 255);
+        }
+        .next_right:hover .icon {
+            fill: rgb(255, 255, 255);
+        }
+    }
+}
+@media (max-width: 900px) {
+    .nextPageButtonRight, .nextPageButtonLeft{
+        z-index: 100;
+        position: absolute;
+    }
+    .nextPageButtonLeft {
+        left: 30px;
+    }
+    .nextPageButtonRight {
+        right: 30px;
+    }
+    .content {
+        min-width: 100% !important;
+    }
+}
+
+.pages {
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
+    align-items: center;
+    .page {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        border: 2px solid rgb(75,75,75) 
+    }
+    .page_chose{
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        background-color: rgb(75,75,75);
+        border: 2px solid rgb(75,75,75)
+    }
+    .page + .page {
+        margin-left: 10px;
+    }
+
+    .page:hover{
+        cursor: pointer;
+        background-color: rgb(75,75,75);
+    }
+}

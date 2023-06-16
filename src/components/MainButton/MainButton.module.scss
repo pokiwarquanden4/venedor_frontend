@@ -1,0 +1,26 @@
+.button{
+    cursor: pointer;
+    background-color: #fff;
+    font-size: 10px;
+    width: 100%;
+    color: rgb(13,60,85);
+    font-weight: bolder;
+    transition: all ease 0.2s;
+}
+.button:hover{
+    background-color: rgb(13,60,85);
+    border-color: rgb(13,60,85);
+    color: #fff;
+}
+.active {
+    background-color: rgb(13,60,85);
+    border-color: rgb(13,60,85);
+    color: #fff;
+}
+.buttonDisable {
+    cursor: default;
+    opacity: 0.7;
+    border: none;
+    background-color: lightgrey;
+    color: gray;
+}

@@ -1,0 +1,75 @@
+.wrapper{
+    display: flex;
+    justify-content: center;
+    .inner_wrapper {
+        width: var(--default_page_width);
+        padding-bottom: 200px;
+        .header{
+            .main_header {
+                margin: 48px 0 15px;
+                padding-left: 10px;
+                border-left: 4px solid black;
+                font-size: 40px;
+                font-weight: bolder;
+            }
+            .sub_header {
+                margin-bottom: 70px;
+                font-size: 16px;
+            }
+        }
+        .content {
+            .notification {
+                position: absolute;
+                bottom: -16px;
+                left: 100px;
+                color: red;
+                font-size: 12px;
+            }
+            .error {
+                border-color: red !important;
+            }
+            .name, .email, .accountName, .password, .youAre {
+                position: relative;
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            .name_header, .email_header, .accountName_header, .password_header, .youAre_header {
+                width: 100px;
+                color: #444;
+                font-size: 18px;
+                font-weight: bolder;
+            }
+            .name_input, .email_input, .accountName_input, .password_input, .youAre_input {
+                font-size: 16px;
+                padding: 15px 30px;
+                height: 50px;
+                width: 400px;
+            }
+        }
+        .footer{
+            margin-left: 100px;
+            .create_button {
+                width: 160px;
+                height: 40px;
+            }
+        }
+    }
+    @media (max-width: 680px) {
+        .inner_wrapper {
+            .content {
+                .name, .email, .accountName, .password, .youAre {
+                    display: block;
+                 }
+                .name_input, .email_input, .accountName_input, .password_input, .youAre_input {
+                    margin-top: 15px;
+                    width: 100%;
+                }
+            }
+            .footer {
+                margin-left: 0;
+            }
+        }
+        
+    }
+}

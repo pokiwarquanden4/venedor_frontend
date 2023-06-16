@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    .wrapper_content {
+        width: var(--default_page_width);
+    }
+    @media (max-width: 450px) {
+        .wrapper_content {
+            width: 100%;
+        }
+      }
+}

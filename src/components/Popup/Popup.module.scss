@@ -1,0 +1,101 @@
+.wrapper{
+    z-index: 100;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    .backGround {
+        width: 100%;
+        height: 100%;
+        background-color: #161d25;
+        opacity: 0.5;
+        animation-name: fade;
+        animation-timing-function: ease-out;
+        animation-fill-mode: forwards;
+        animation-duration: 0.3s;
+    }
+    .content {
+        overflow: auto;
+        animation-name: moving;
+        animation-timing-function: ease-out;
+        animation-fill-mode: forwards;
+        animation-duration: 0.3s;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        .exit_button {
+            color: #444;
+            font-weight: lighter;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            top: 0;
+            right: 0;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+        }
+    }
+    .right {
+        animation-name: movingRight;
+        animation-timing-function: ease-out;
+        animation-fill-mode: forwards;
+        animation-duration: 0.3s;
+        transform: translate(0, 0);
+        top: 0;
+        right: 0;
+        left: auto;
+        width: 375px !important;
+        height: 100% !important;
+    }
+    @media (max-width: 840px) {
+        .content{
+            padding: 10px;
+            width: 90% !important;
+            height: auto !important;
+            max-height: 95% !important;
+        }
+    }
+}
+
+// body {
+//     overflow: hidden;
+// }
+
+.upper {
+    z-index: 1000;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }to{
+        opacity: 0.5;
+    }
+    
+}
+
+@keyframes moving {
+    from {
+        opacity: 0;
+        transform: translate(-20%, -50%);
+    }to{
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
+    
+}
+@keyframes movingRight {
+    from {
+        opacity: 0;
+        transform: translate(100%, 0);
+    }to{
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+    
+}

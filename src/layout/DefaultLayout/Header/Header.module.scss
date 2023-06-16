@@ -1,0 +1,33 @@
+.wrapper{
+    display: flex;
+    justify-content: center;
+    background-color: rgb(13,60,85);
+    .header_info {
+        width: var(--default_page_width);
+        height: 78px;
+        display: flex;
+        justify-content: space-between;
+        .items {
+            display: flex;
+            align-items: center;
+        }
+        .truckIcon, .lockIcon, .shareIcon, .contactIcon{
+            margin-right: 20px;
+            fill: rgb(238,249,254);
+            width: 20px;
+            height: 20px;
+        }
+        .content {
+            font-size: 17px;
+            font-weight: 700;
+            color: rgb(238,249,254);
+        }
+        @media (max-width: 990px) {
+            .content {
+              display: none;
+            }
+          }
+
+    }
+
+}

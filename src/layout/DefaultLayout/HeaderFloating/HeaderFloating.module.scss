@@ -1,0 +1,104 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 40px 0;
+    border-bottom: 1px solid rgb(221,221,221);
+    .logo_wrapper {
+        cursor: pointer;
+    }
+    .header_info{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: var(--default_page_width);
+
+        .info_wrapper {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .responsive {
+            display: none;
+        }
+
+        .searchIcon, .humanIcon, .boxIcon, .heartIcon, .logoutIcon{
+            cursor: pointer;
+            width: 20px;
+        }
+
+        .humanIcon, .heartIcon, .responsive, .logoutIcon {
+            margin-right: 30px;
+        }
+
+        .searchIcon_second {
+            display: none;
+        }
+
+        .searchBar_wrapper {
+            display: flex;
+            align-items: center;
+            position: relative;
+            .searchBar_dropdown {
+                position: absolute;
+                top: 140%;
+                left: 50%;
+                transform: translate(-50%, 0);
+                z-index: 10;
+                width: 100%;
+                min-width: 430px;
+            }
+            .inputBar {
+                padding: 8px;
+                width: 400px;
+                margin-right: 10px;
+                outline: none;
+                border-color: transparent transparent black transparent;
+            }
+            .searchIcon:hover {
+                border: 1px solid black;
+            }
+        }
+        @media (max-width: 1020px) {
+            .searchBar_wrapper .inputBar {
+                width: 200px;
+            }
+    
+        }
+        @media (max-width: 745px) {
+            .responsive {
+                display: block;
+            }
+            .searchBar_wrapper {
+              display: none;
+            }
+    
+        }
+        @media (max-width: 460px) {
+            .searchIcon, .humanIcon, .boxIcon, .heartIcon, .searchIcon_second{
+                cursor: pointer;
+                width: 15px;
+            }
+    
+            .humanIcon, .heartIcon, .searchIcon_second {
+                margin-right: 18px;
+            }
+            .logo {
+                width: 100px;
+            }
+        }
+        @media (max-width: 290px) {
+            .logo {
+               display: none;
+            }
+        }
+    }
+}
+
+.sticky {
+    position: sticky;
+    top: -1px;
+    z-index: 10;
+    background-color: rgb(255,255,255);
+}
+
+

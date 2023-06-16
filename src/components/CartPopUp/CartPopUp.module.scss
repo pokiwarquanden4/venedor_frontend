@@ -1,0 +1,74 @@
+.wrapper {
+    padding: 46px 30px 15px 30px;
+    .header{
+        font-size: 28px;
+        font-weight: bolder;
+        color: #2a2c2f;
+        margin-bottom: 20px;
+    }
+    .message{
+        color: #555;
+        margin-bottom: 10px;
+    }
+    .items_number{
+        color: #555;
+        margin-bottom: 30px;
+    }
+    .cart{
+        overflow-y: scroll;
+        height: 382px;
+        
+    }
+    .price{
+        margin-top: 40px;
+        margin-bottom: 20px;
+        .original{
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            .original_header{
+            
+            }
+            .original_price{
+                font-weight: bolder;
+            }
+        }
+        .discount{
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+            .discount_header{
+
+            }
+            .discount_price{
+                font-weight: bolder;
+            }
+        }
+        .total{
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            .total_header{
+                font-weight: bolder;
+            }
+            .total_price{
+                font-weight: bolder;
+            }
+        }
+    }
+    .button{
+        .view_cart_button {
+            font-size: 15px;
+            margin-bottom: 10px;
+            height: 40px;
+        }
+        .check_out_button {
+            background-color: rgb(13,60,85);
+            border-color: rgb(13,60,85);
+            color: #fff;
+            font-size: 15px;
+            height: 40px;
+        }
+    }
+}
