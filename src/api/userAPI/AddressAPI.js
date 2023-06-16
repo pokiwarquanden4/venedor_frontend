@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getJWTToken } from '../authen/Authen';
 
-const URL = 'http://localhost:8000/';
+const URL = process.env.REACT_APP_URL;
 
 export const createAddressAPI = (payload) => {
   return axios.post(`${URL}users/createAddress`, payload, {

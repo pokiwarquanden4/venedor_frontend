@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getJWTToken } from '../authen/Authen';
-const URL = 'http://localhost:8000/';
+const URL = process.env.REACT_APP_URL;
 
 export const addProductAPI = (payload) => {
   return axios.post(`${URL}sellers/createProduct`, payload, {
