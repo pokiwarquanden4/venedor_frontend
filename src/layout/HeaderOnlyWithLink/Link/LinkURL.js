@@ -1,6 +1,7 @@
 import styles from './Link.module.scss';
 
 function LinkURL({ links, url }) {
+  const URL = process.env.REACT_APP_URL;
   const lists = [];
   for (let i = 0; i < links.length; i++) {
     lists.push({
@@ -15,11 +16,7 @@ function LinkURL({ links, url }) {
         {lists.map((item, index) => {
           return (
             <a
-              href={
-                item.links === '  '
-                  ? 'http://localhost:3000/'
-                  : 'http://localhost:3000' + item.links.trim()
-              }
+              href={item.links === '  ' ? URL : URL.slice(0, -1) + item.links.trim()}
               key={index}
               className={styles.content}
             >
