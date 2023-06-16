@@ -1,7 +1,7 @@
 import styles from './Link.module.scss';
 
 function LinkURL({ links, url }) {
-  const URL = 'https://venedor-sever.onrender.com/';
+  const URL = 'https://venedor-frontend.onrender.com';
   const lists = [];
   for (let i = 0; i < links.length; i++) {
     lists.push({
