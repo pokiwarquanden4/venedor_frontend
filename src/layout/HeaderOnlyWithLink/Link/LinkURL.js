@@ -20,6 +20,7 @@ function LinkURL({ links, url }) {
               key={index}
               className={styles.content}
             >
+              {console.log(item.links === '  ' ? URL : URL.slice(0, -1) + item.links.trim())}
               {item.url}
             </a>
           );
