@@ -1,7 +1,7 @@
+import { Link } from 'react-router-dom';
 import styles from './Link.module.scss';
 
 function LinkURL({ links, url }) {
-  const URL = 'https://venedor-frontend.onrender.com/';
   const lists = [];
   for (let i = 0; i < links.length; i++) {
     lists.push({
@@ -14,15 +14,15 @@ function LinkURL({ links, url }) {
     <div className={styles.wrapper}>
       <div className={styles.contents}>
         {lists.map((item, index) => {
+          console.log(item);
           return (
-            <a
-              href={item.links === '  ' ? URL : URL.slice(0, -1) + item.links.trim()}
+            <Link
+              to={item.links !== ' ' ? item.links.trim() : '/'}
               key={index}
-              className={styles.content}
+              className={styles.content_wrapper}
             >
-              {console.log(item.links === '  ' ? URL : URL.slice(0, -1) + item.links.trim())}
-              {item.url}
-            </a>
+              <div className={styles.content}>{item.url}</div>
+            </Link>
           );
         })}
       </div>

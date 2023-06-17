@@ -5,20 +5,23 @@
     .contents {
         width: var(--default_page_width);
         display: flex;
+        .content_wrapper {
+            display: flex;
+            text-decoration: none;
+        }
         
         .content{
             font-size: 14px;
             color: rgb(131,111,141);
-            text-decoration: none;
         }
         
-        .content + .content::before {
+        .content_wrapper + .content_wrapper::before {
             content: '>';
             margin-right: 20px;
             font-weight: bolder;
             color: rgb(131,111,141);
         }
-        .content + .content {
+        .content_wrapper + .content_wrapper {
             margin-left: 20px;
         }
     }
