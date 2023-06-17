@@ -28,23 +28,28 @@
             .error {
                 border-color: red !important;
             }
-            .name, .email, .accountName, .password, .youAre {
+            .name, .email, .accountName, .password, .youAre, .otp {
                 position: relative;
                 display: flex;
                 align-items: center;
                 margin-bottom: 20px;
             }
-            .name_header, .email_header, .accountName_header, .password_header, .youAre_header {
+            .name_header, .email_header, .accountName_header, .password_header, .youAre_header, .otp_header {
                 width: 100px;
                 color: #444;
                 font-size: 18px;
                 font-weight: bolder;
             }
-            .name_input, .email_input, .accountName_input, .password_input, .youAre_input {
+            .name_input, .email_input, .accountName_input, .password_input, .youAre_input, .otp_input {
                 font-size: 16px;
                 padding: 15px 30px;
                 height: 50px;
                 width: 400px;
+            }
+            .xButton {
+                color: gray;
+                cursor: pointer;
+                margin-left: 10px;
             }
         }
         .footer{
@@ -58,12 +63,17 @@
     @media (max-width: 680px) {
         .inner_wrapper {
             .content {
-                .name, .email, .accountName, .password, .youAre {
+                .name, .email, .accountName, .password, .youAre,.otp {
                     display: block;
                  }
-                .name_input, .email_input, .accountName_input, .password_input, .youAre_input {
+                .name_input, .email_input, .accountName_input, .password_input, .youAre_input,.otp_input {
                     margin-top: 15px;
                     width: 100%;
+                }
+                .xButton {
+                    position: absolute;
+                    top: 4px;
+                    right: 3px;
                 }
             }
             .footer {

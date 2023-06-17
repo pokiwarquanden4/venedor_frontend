@@ -12,6 +12,7 @@ export default function createAccountReducers(state = createAccountConstant, act
       return {
         ...state,
         success: true,
+        createAccountOtp: false,
         loading: false,
       };
     case getType(createAccountActions.createAccountFailure):
@@ -21,6 +22,7 @@ export default function createAccountReducers(state = createAccountConstant, act
         loading: false,
         accountExist: action.payload.name === 'SequelizeUniqueConstraintError' ? true : false,
         gmailExist: action.payload === "Email doesn't exist" ? true : false,
+        wrongOtp: action.payload === 'Otp is not valid' ? true : false,
       };
     case getType(createAccountActions.setAccountSuccessStatus):
       return {
@@ -59,6 +61,34 @@ export default function createAccountReducers(state = createAccountConstant, act
       return {
         ...state,
         wrongPassword: action.payload,
+      };
+    case getType(createAccountActions.sendCreateAccountOTPRequest):
+      return {
+        ...state,
+        createAccountOtp: false,
+        loading: true,
+      };
+    case getType(createAccountActions.sendCreateAccountOTPSuccess):
+      return {
+        ...state,
+        createAccountOtp: true,
+        loading: false,
+      };
+    case getType(createAccountActions.sendCreateAccountOTPFailure):
+      return {
+        ...state,
+        createAccountOtp: false,
+        loading: false,
+      };
+    case getType(createAccountActions.setWrongOTP):
+      return {
+        ...state,
+        wrongOtp: action.payload,
+      };
+    case getType(createAccountActions.setCreateAccountOTP):
+      return {
+        ...state,
+        createAccountOtp: action.payload,
       };
     default:
       return state;

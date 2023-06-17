@@ -21,6 +21,9 @@ function CreateAccount() {
   const [password, setPassword] = useState('');
   const [passwordNotification, setPasswordNotification] = useState();
   const [youAre, setYouAre] = useState('User');
+  const [otp, setOtp] = useState('');
+  const [otpEnable, setOtpEnable] = useState(false);
+  const [otpNotification, setOtpNotification] = useState(false);
 
   useEffect(() => {
     if (createAccount.success) {
@@ -34,11 +37,19 @@ function CreateAccount() {
   }, [createAccount.success]);
 
   useEffect(() => {
+    setOtpEnable(createAccount.createAccountOtp);
+  }, [createAccount.createAccountOtp]);
+
+  useEffect(() => {
     if (loginSelect.login) {
       dispatch(createAccountActions.setAccountSuccessStatus(false));
       navigate('/');
     }
   }, [loginSelect.login]);
+
+  useEffect(() => {
+    setOtpNotification(createAccount.wrongOtp);
+  }, [createAccount.wrongOtp]);
 
   return (
     <div className={styles.wrapper}>
@@ -62,6 +73,7 @@ function CreateAccount() {
           <div className={styles.email}>
             <div className={styles.email_header}>Email</div>
             <input
+              disabled={otpEnable}
               placeholder="Your Email"
               value={email}
               className={`${styles.email_input} ${emailNotification ? styles.error : ''}`}
@@ -86,6 +98,7 @@ function CreateAccount() {
           <div className={styles.accountName}>
             <div className={styles.accountName_header}>Account</div>
             <input
+              disabled={otpEnable}
               placeholder="Your Account Name"
               className={styles.accountName_input}
               value={accountName}
@@ -134,6 +147,33 @@ function CreateAccount() {
               <option value="Seller">Seller</option>
             </select>
           </div>
+          {otpEnable ? (
+            <div className={styles.otp}>
+              <div className={styles.otp_header}>OTP</div>
+              <input
+                value={otp}
+                placeholder="Your Otp*"
+                className={`${styles.otp_input} ${otpNotification ? styles.error : ''}`}
+                onChange={(e) => {
+                  setOtp(e.target.value);
+                }}
+                onFocus={() => {
+                  dispatch(createAccountActions.setWrongOTP(false));
+                }}
+              ></input>
+              {otpNotification && (
+                <div className={styles.notification}>Otp is not valid or expired</div>
+              )}
+              <div
+                className={styles.xButton}
+                onClick={() => {
+                  dispatch(createAccountActions.setCreateAccountOTP(false));
+                }}
+              >
+                X
+              </div>
+            </div>
+          ) : undefined}
         </div>
         <div className={styles.footer}>
           <MainButton
@@ -147,19 +187,29 @@ function CreateAccount() {
                 !passwordNotification &&
                 youAre
               ) {
-                dispatch(
-                  createAccountActions.createAccountRequest({
-                    name: name,
-                    email: email,
-                    account: accountName,
-                    password: password,
-                    roleName: youAre,
-                  })
-                );
+                if (otpEnable) {
+                  dispatch(
+                    createAccountActions.createAccountRequest({
+                      name: name,
+                      email: email,
+                      account: accountName,
+                      password: password,
+                      roleName: youAre,
+                      otp: otp,
+                    })
+                  );
+                } else {
+                  dispatch(
+                    createAccountActions.sendCreateAccountOTPRequest({
+                      email: email,
+                      account: accountName,
+                    })
+                  );
+                }
               }
             }}
             className={styles.create_button}
-            title="CREATE ACCOUNT"
+            title={otpEnable ? 'CREATE ACCOUNT' : 'CONFIRM'}
           ></MainButton>
         </div>
       </div>

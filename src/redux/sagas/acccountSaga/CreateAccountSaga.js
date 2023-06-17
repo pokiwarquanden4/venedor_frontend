@@ -2,7 +2,11 @@
 //Khi call 1 API có thể mất nhiều thời gian do nhiều nguyên nhân khiến người dùng call liên tục, takeLatest sẽ nhận lần call cuối cùng
 //put sẽ chọc vào trong file reducers/post để thực hiện lệnh
 import { takeLatest, call, put } from 'redux-saga/effects';
-import { createUserAPI, editAccountAPI } from '../../../api/userAPI/UserAPI';
+import {
+  createUserAPI,
+  editAccountAPI,
+  sendCreateAccountOTPAPI,
+} from '../../../api/userAPI/UserAPI';
 import { createAccountActions } from '../../actions/account/CreateAccountActions';
 import { loadingActions } from '../../actions/loading/LoadingActions';
 import { notificationActions } from '../../actions/notification/notificationAction';
@@ -37,9 +41,26 @@ function* editAccountSaga(action) {
   }
 }
 
+function* sendCreateAccountOTPSaga(action) {
+  try {
+    yield put(loadingActions.setLoadingLoading(true));
+
+    const Otp = yield call(sendCreateAccountOTPAPI, action.payload);
+    yield put(createAccountActions.sendCreateAccountOTPSuccess(Otp.data));
+
+    yield put(loadingActions.setLoadingLoading(false));
+    yield put(notificationActions.setNotificationContent('Success, Check Your Gmail'));
+  } catch (err) {
+    yield put(createAccountActions.sendCreateAccountOTPFailure(err.response.data));
+    yield put(loadingActions.setLoadingLoading(false));
+    yield put(notificationActions.setNotificationContent('Failed'));
+  }
+}
+
 function* createAccountSagas() {
   yield takeLatest(createAccountActions.createAccountRequest, createAccountSaga);
   yield takeLatest(createAccountActions.editAccountRequest, editAccountSaga);
+  yield takeLatest(createAccountActions.sendCreateAccountOTPRequest, sendCreateAccountOTPSaga);
 }
 
 export default createAccountSagas;

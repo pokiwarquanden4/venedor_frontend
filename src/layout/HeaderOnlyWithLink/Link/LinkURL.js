@@ -14,7 +14,6 @@ function LinkURL({ links, url }) {
     <div className={styles.wrapper}>
       <div className={styles.contents}>
         {lists.map((item, index) => {
-          console.log(item);
           return (
             <Link
               to={item.links !== ' ' ? item.links.trim() : '/'}

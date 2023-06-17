@@ -33,3 +33,7 @@ export const editAccountAPI = (payload) => {
 export const getPasswordAPI = (payload) => {
   return axios.post(`${URL}users/getPassword`, payload);
 };
+
+export const sendCreateAccountOTPAPI = (payload) => {
+  return axios.post(`${URL}users/sendCreateAccountOTP`, payload);
+};

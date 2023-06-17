@@ -4,4 +4,6 @@ export const createAccountConstant = {
   accountExist: false,
   gmailExist: false,
   wrongPassword: false,
+  createAccountOtp: false,
+  wrongOtp: false,
 };

@@ -8,6 +8,12 @@ export const createAccountActions = createActions({
   createAccountSuccess: (payload) => payload,
   createAccountFailure: (payload) => payload,
 
+  sendCreateAccountOTPRequest: (payload) => payload,
+  sendCreateAccountOTPSuccess: (payload) => payload,
+  sendCreateAccountOTPFailure: (payload) => payload,
+  setCreateAccountOTP: (payload) => payload,
+  setWrongOTP: (payload) => payload,
+
   editAccountRequest: (payload) => payload,
   editAccountSuccess: (payload) => payload,
   editAccountFailure: (payload) => payload,
