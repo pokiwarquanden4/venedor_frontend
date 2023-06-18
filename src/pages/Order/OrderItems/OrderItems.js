@@ -10,6 +10,10 @@ function OrderItems({ data, upperData }) {
   const [addressPopup, setAddressPopup] = useState(false);
   const [status, setStatus] = useState(data.status);
 
+  useEffect(() => {
+    setStatus(data.status);
+  }, [data]);
+
   return (
     <Fragment>
       {addressPopup && (
