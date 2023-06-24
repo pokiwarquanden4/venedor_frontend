@@ -16,6 +16,7 @@ import cartReducers from './ProductReducers/cartReducers';
 import purchaseReducers from './purchaseReducers/purchaseReducers';
 import historyReducers from './purchaseReducers/historyReducers';
 import homeReducers from './ProductReducers/homeReducers';
+import messageReducers from './messageReducers/messageReducers';
 
 const rootReducer = combineReducers({
   loginReducers,
@@ -30,12 +31,14 @@ const rootReducer = combineReducers({
   purchaseReducers,
   historyReducers,
   homeReducers,
+  messageReducers,
 });
 
 const persistConfig = {
   key: 'root',
   storage,
   blacklist: [
+    'messageReducers',
     'loadingReducers',
     'createAccountReducers',
     'notificationReducers',

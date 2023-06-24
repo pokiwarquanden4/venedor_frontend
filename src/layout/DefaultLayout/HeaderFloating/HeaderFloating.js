@@ -4,6 +4,7 @@ import {
   HeartIcon,
   HumanIcon,
   LogoutIcon,
+  MessageIcon,
   SearchIcon,
 } from '../../../asset/img/HeaderIcon';
 import styles from './HeaderFloating.module.scss';
@@ -209,6 +210,16 @@ function HeaderFloating({ mainRef }) {
                   }
                 }}
               ></BoxIcon>
+              <MessageIcon
+                className={styles.messageIcon}
+                onClick={() => {
+                  if (!loginStatus) {
+                    dispatch(loginActions.loginPopup(true));
+                  } else {
+                    navigate('/message');
+                  }
+                }}
+              ></MessageIcon>
             </div>
           </div>
         </div>

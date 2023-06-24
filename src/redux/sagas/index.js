@@ -9,6 +9,7 @@ import notificationSaga from './notificationSaga/notificationSaga';
 import purchaseSagas from './purchaseSaga/purchaseSaga';
 import historySagas from './historySaga/historySaga';
 import homeSagas from './ProductSaga/HomeSaga';
+import messageSagas from './messageSaga/messageSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -22,5 +23,6 @@ export default function* rootSaga() {
     purchaseSagas(),
     historySagas(),
     homeSagas(),
+    messageSagas(),
   ]);
 }

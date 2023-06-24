@@ -15,6 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { wishListActions } from '../../redux/actions/product/wishListActions';
 import { productSelector } from '../../redux/selectors/productSelector/productSelector';
 import { cartActions } from '../../redux/actions/product/cartActions';
+import { messageActions } from '../../redux/actions/message/messageActions';
 
 function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
   const navigate = useNavigate();
@@ -254,7 +255,18 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
         </div>
         {fullScreen && (
           <div className={styles.directCall}>
-            <div className={styles.zaloCall}>
+            <div
+              className={styles.zaloCall}
+              onClick={() => {
+                if (loginSelect.loginRole === 'User') {
+                  dispatch(
+                    messageActions.createRoomChatRequest({
+                      sellerId: data.sellerId,
+                    })
+                  );
+                }
+              }}
+            >
               <ZaloIcon className={styles.zaloIcon}></ZaloIcon>
               <div className={styles.zaloCall_description}>Ask about this product</div>
             </div>

@@ -17,6 +17,7 @@ import Category from '../Category/Category';
 import ThankYou from '../ThankYou/ThankYou';
 import EditAccount from '../EditAccount/EditAccount';
 import Order from '../Order/Order';
+import Message from '../Message/Message';
 
 const publicRoutes = [
   { path: routes.home, component: Home, Layout: HeaderOnly },
@@ -67,6 +68,11 @@ const publicRoutes = [
     component: Order,
     Layout: HeaderOnlyWithLink,
     authorization: 'Seller',
+  },
+  {
+    path: routes.message,
+    component: Message,
+    Layout: HeaderOnlyWithLink,
   },
 ];
 

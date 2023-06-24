@@ -121,12 +121,14 @@ function Items({ data, vertical, wishList, edit }) {
                   dispatch(loginActions.loginPopup(true));
                 }
                 if (role) {
-                  dispatch(
-                    cartActions.createCartProductRequest({
-                      id: data.id,
-                      quantity: 1,
-                    })
-                  );
+                  if (data.number > 0) {
+                    dispatch(
+                      cartActions.createCartProductRequest({
+                        id: data.id,
+                        quantity: 1,
+                      })
+                    );
+                  }
                 }
               }}
             >
