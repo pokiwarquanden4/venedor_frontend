@@ -132,7 +132,10 @@ function Message() {
                       className={`${styles.user} ${currentRoom === index ? styles.userFocus : ''}`}
                       key={index}
                       onClick={() => {
-                        socket.emit('exit_room', rooms[currentRoom].id);
+                        if (currentRoom !== undefined) {
+                          socket.emit('exit_room', rooms[currentRoom].id);
+                        }
+
                         setCurrentRoom(index);
                       }}
                     >
