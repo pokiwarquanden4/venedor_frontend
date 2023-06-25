@@ -12,7 +12,7 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 import { LoginSelector } from '../../redux/selectors/accountSelector/LoginSelector';
 
 function Message() {
-  const socket = io.connect(process.env.REACT_APP_URL);
+  const [socket, setSocket] = useState();
   const dispatch = useDispatch();
   const loginSelect = useSelector(LoginSelector);
   const messageSelect = useSelector(messageSelector);
@@ -72,12 +72,18 @@ function Message() {
 
   useEffect(() => {
     if (currentRoom !== undefined) {
+      const newSocket = io.connect(process.env.REACT_APP_URL);
+      setSocket(newSocket);
+
       dispatch(
         messageActions.getMessageByRoomChatRequest({
           id: rooms[currentRoom].id,
         })
       );
-      socket.emit('join_room', rooms[currentRoom].id);
+
+      return () => {
+        newSocket.disconnect();
+      };
     }
   }, [currentRoom]);
   useEffect(() => {
@@ -94,14 +100,19 @@ function Message() {
         updatedAt: new Date(),
       };
       await socket.emit('send_message', data);
+      setMessageList((messageList) => [...messageList, data]);
       setInput('');
     }
   });
 
   useEffect(() => {
-    socket.on('receive_message', (data) => {
-      setMessageList((messageList) => [...messageList, data]);
-    });
+    if (socket) {
+      socket.emit('join_room', rooms[currentRoom].id);
+
+      socket.on('receive_message', (data) => {
+        setMessageList((messageList) => [...messageList, data]);
+      });
+    }
   }, [socket]);
 
   useEffect(() => {
@@ -133,9 +144,9 @@ function Message() {
                       key={index}
                       onClick={() => {
                         if (currentRoom !== undefined) {
+                          console.log('Leave room: ' + rooms[currentRoom].id);
                           socket.emit('exit_room', rooms[currentRoom].id);
                         }
-
                         setCurrentRoom(index);
                       }}
                     >

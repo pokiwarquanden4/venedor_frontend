@@ -264,6 +264,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                       sellerId: data.sellerId,
                     })
                   );
+                  navigate('/message');
                 }
               }}
             >
