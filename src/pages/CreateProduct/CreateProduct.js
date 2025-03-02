@@ -19,6 +19,7 @@ import {
 import { productSelector } from '../../redux/selectors/productSelector/productSelector';
 import routes from '../../config/routes';
 import categoryList from '../../config/category';
+import brandList from '../../config/branches';
 
 function CreateProduct() {
   const productSelect = useSelector(productSelector);
@@ -36,6 +37,7 @@ function CreateProduct() {
   const [saleOff, setSaleOff] = useState();
   const [saleOffFill, setSaleOffFill] = useState();
   const [category, setCategory] = useState();
+  const [brand, setBrand] = useState();
 
   const mainImgRef = useRef();
   const [mainImg, setMainImg] = useState();
@@ -126,6 +128,7 @@ function CreateProduct() {
       formData.append('number', quantity);
       formData.append('saleOff', decodeSaleOff(saleOff));
       formData.append('category', category);
+      formData.append('brand', brand);
       formData.append('img', mainImgRef.current.files[0]);
       for (let i = 0; i < listImgFile.length; i++) {
         formData.append('img', listImgFile[i]);
@@ -310,6 +313,24 @@ function CreateProduct() {
                   return (
                     <option value={item.name} key={index}>
                       {item.name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className={styles.brand}>
+              <div className={styles.brand_header}>Brand</div>
+              <select
+                className={styles.brand_input}
+                onChange={(e) => {
+                  setBrand(e.target.value);
+                }}
+              >
+                <option value="None">None</option>
+                {brandList.map((name, index) => {
+                  return (
+                    <option value={name} key={index}>
+                      {name}
                     </option>
                   );
                 })}

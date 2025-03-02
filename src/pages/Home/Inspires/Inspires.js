@@ -8,7 +8,7 @@ function Inspires() {
           <div className={styles.shadow_background}></div>
           <img
             className={styles.picture}
-            src="https://pos.nvncdn.net/6c3cf7-882/art/artCT/20160324_GDLULvXePLE92jMtrUM6QzhI.jpg"
+            src="https://baogiaothong.mediacdn.vn/upload/1-2022/images/2022-01-20/Khung-canh-tuyet-trang-tuyet-dep-tren-ngon-nui-noi-tieng-nhat-Trung-Quoc-2-1642657690-555-width650height433.jpg"
           ></img>
           <div className={styles.content_wrapper}>
             <div className={styles.content_sub}>Know You The Best</div>

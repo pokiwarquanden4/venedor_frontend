@@ -29,19 +29,19 @@
                     bottom: -15px;
                 }
             }
-            .name, .price, .quantity, .description, .saleOff, .category, .img, .listImg {
+            .name, .price, .quantity, .description, .saleOff, .category, .brand, .img, .listImg {
                 position: relative;
                 display: flex;
                 align-items: center;
                 margin-bottom: 20px;
             }
-            .name_header, .price_header, .quantity_header, .description_header, .saleOff_header, .category_header, .img_header, .listImg_header {
+            .name_header, .price_header, .quantity_header, .description_header, .saleOff_header, .category_header, .brand_header, .img_header, .listImg_header {
                 width: 100px;
                 color: #444;
                 font-size: 18px;
                 font-weight: bolder;
             }
-            .name_input, .price_input, .quantity_input, .description_input, .saleOff_input, .category_input {
+            .name_input, .price_input, .quantity_input, .description_input, .saleOff_input, .brand_input, .category_input {
                 font-size: 16px;
                 padding: 15px 30px;
                 height: 50px;
@@ -100,13 +100,13 @@
         }
         @media (max-width: 610px) {
             .content{
-                .name, .price, .quantity, .description, .saleOff, .category, .img, .listImg {
+                .name, .price, .quantity, .description, .saleOff, .category, .brand, .img, .listImg {
                     display: block;
                 }
-                .name_header, .price_header, .quantity_header, .description_header, .saleOff_header, .category_header, .img_header, .listImg_header {
+                .name_header, .price_header, .quantity_header, .description_header, .saleOff_header, .category_header, .brand_header, .img_header, .listImg_header {
                    margin-bottom: 10px;
                 }
-                .name_input, .price_input, .quantity_input, .description_input, .saleOff_input, .category_input,.img_input, .listImg_input {
+                .name_input, .price_input, .quantity_input, .description_input, .saleOff_input, .category_input, .brand_input, .img_input, .listImg_input {
                     width: 100%;
                 }
             }

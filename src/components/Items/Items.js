@@ -104,7 +104,7 @@ function Items({ data, vertical, wishList, edit }) {
               navigate(`/category/${data.category}/${data.id}`);
             }}
           ></Img>
-          <Img vertical={vertical} className={styles.imgHover} imgUrl={data.listImgURL[1]}></Img>
+          <Img vertical={vertical} className={styles.imgHover} imgUrl={data.listImgURL[0]}></Img>
           <div className={styles.img_button}>
             <div
               className={styles.searchButton}

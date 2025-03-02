@@ -37,7 +37,7 @@ const category = [
   },
   {
     name: 'Fishing',
-    img: 'https://media.wired2fish.com/uploads/2023/01/c96f4547-a680-44bd-bc1b-e29466826136-768x432.webp',
+    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDM1QfOeQVMd8tFVVL6xKaDxyB-scFukmVXQ&s',
   },
   {
     name: 'Running',
