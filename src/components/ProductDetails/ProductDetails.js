@@ -86,9 +86,8 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                 <div key={index} className={styles.pictures_wrapper}>
                   <img
                     src={item}
-                    className={`${styles.pictures} ${
-                      index + 1 === currentPic ? styles.chosen : ''
-                    }`}
+                    className={`${styles.pictures} ${index + 1 === currentPic ? styles.chosen : ''
+                      }`}
                     ref={(element) => {
                       previewRef.current[index] = element;
                     }}
@@ -110,11 +109,11 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
             onClick={() => {
               previewRef.current[
                 currentPicPreview + 7 <=
-                (data.listImgURL ? data.listImgURL.length - 1 : listImg.length - 1)
+                  (data.listImgURL ? data.listImgURL.length - 1 : listImg.length - 1)
                   ? currentPicPreview + 7
                   : data.listImgURL
-                  ? data.listImgURL.length - 1
-                  : listImg.length - 1
+                    ? data.listImgURL.length - 1
+                    : listImg.length - 1
               ].scrollIntoView({
                 behavior: 'smooth',
                 inline: 'start',
@@ -125,8 +124,8 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                   (data.listImgURL ? data.listImgURL.length - 1 : listImg.length - 1)
                   ? currentPicPreview + 7
                   : data.listImgURL
-                  ? data.listImgURL.length - 1
-                  : listImg.length - 1
+                    ? data.listImgURL.length - 1
+                    : listImg.length - 1
               );
             }}
           >
@@ -168,7 +167,6 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
           </div>
           <div className={styles.newPrice}>${data.price - data.price * (data.saleOff / 100)}</div>
         </div>
-        <div className={styles.description}>{data.detailDescription}</div>
         <div className={styles.buyer}>
           <div className={styles.number}>
             <div
@@ -214,25 +212,24 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
             }}
           ></MainButton>
           <div
-            className={`${
-              !(preview || !role)
+            className={`${!(preview || !role)
                 ? heart
                   ? styles.wishListFocus
                   : styles.wishList
                 : styles.disable
-            }`}
+              }`}
             onClick={
               !(preview || !role)
                 ? () => {
-                    if (!loginSelect.login) {
-                      dispatch(loginActions.loginPopup(true));
-                    }
-                    if (heart) {
-                      dispatch(wishListActions.deleteWishListRequest({ id: wishListId }));
-                    } else {
-                      dispatch(wishListActions.createWishListRequest({ productId: data.id }));
-                    }
+                  if (!loginSelect.login) {
+                    dispatch(loginActions.loginPopup(true));
                   }
+                  if (heart) {
+                    dispatch(wishListActions.deleteWishListRequest({ id: wishListId }));
+                  } else {
+                    dispatch(wishListActions.createWishListRequest({ productId: data.id }));
+                  }
+                }
                 : null
             }
           >
@@ -243,10 +240,10 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
             onClick={
               !(preview || !role)
                 ? () => {
-                    if (!loginSelect.login) {
-                      dispatch(loginActions.loginPopup(true));
-                    }
+                  if (!loginSelect.login) {
+                    dispatch(loginActions.loginPopup(true));
                   }
+                }
                 : null
             }
           >

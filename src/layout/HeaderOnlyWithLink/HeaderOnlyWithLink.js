@@ -26,7 +26,7 @@ function HeaderOnlyWithLink({ children }) {
   return (
     <div className={styles.wrapper}>
       <Header></Header>
-      <LinkURL links={links} url={url}></LinkURL>
+      {/* <LinkURL links={links} url={url}></LinkURL> */}
       <div className={styles.body}>{children}</div>
       <Footer></Footer>
     </div>

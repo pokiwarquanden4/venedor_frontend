@@ -67,7 +67,6 @@ function EditProduct() {
       setPrice(encodePrice(data.price));
       setQuantity(data.number);
       setDescription(data.description);
-      setDetailsDescription(data.detailDescription);
       setSaleOff(encodeSaleOff(data.saleOff));
       setCategory(data.category);
       setCurrentImg([data.imgURL]);
@@ -152,7 +151,6 @@ function EditProduct() {
         formData.append('productName', name);
         formData.append('price', decodePrice(price));
         formData.append('description', description);
-        formData.append('detailDescription', detailsDescription);
         formData.append('number', quantity);
         formData.append('saleOff', decodeSaleOff(saleOff));
         formData.append('category', category);
@@ -179,16 +177,6 @@ function EditProduct() {
       handleNavigate();
     }
   }, [productSelect.success]);
-
-  const getReviewData = useCallback(() => {
-    return {
-      description: description,
-      number: quantity,
-      price: decodePrice(price),
-      detailDescription: detailsDescription,
-      saleOff: decodeSaleOff(saleOff),
-    };
-  });
 
   useEffect(() => {
     if (listImgRef.current) {

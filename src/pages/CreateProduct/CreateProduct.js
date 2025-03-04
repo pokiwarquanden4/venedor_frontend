@@ -33,7 +33,6 @@ function CreateProduct() {
   const [quantityFill, setQuantityFill] = useState();
   const [description, setDescription] = useState();
   const [descriptionFill, setDescriptionFill] = useState();
-  const [detailsDescription, setDetailsDescription] = useState();
   const [saleOff, setSaleOff] = useState();
   const [saleOffFill, setSaleOffFill] = useState();
   const [category, setCategory] = useState();
@@ -124,7 +123,6 @@ function CreateProduct() {
       formData.append('productName', name);
       formData.append('price', decodePrice(price));
       formData.append('description', description);
-      formData.append('detailDescription', detailsDescription);
       formData.append('number', quantity);
       formData.append('saleOff', decodeSaleOff(saleOff));
       formData.append('category', category);
@@ -142,7 +140,6 @@ function CreateProduct() {
       description: description,
       number: quantity,
       price: decodePrice(price),
-      detailDescription: detailsDescription,
       saleOff: decodeSaleOff(saleOff),
     };
   });
@@ -265,17 +262,6 @@ function CreateProduct() {
               {descriptionFill ? (
                 <div className={styles.notification}>You need to fill in this blank</div>
               ) : undefined}
-            </div>
-            <div className={styles.description}>
-              <div className={styles.description_header}>Details Description</div>
-              <textarea
-                type="text"
-                placeholder="Details Description"
-                className={styles.description_input}
-                onChange={(e) => {
-                  setDetailsDescription(e.target.value);
-                }}
-              ></textarea>
             </div>
             <div className={styles.saleOff}>
               <div className={styles.saleOff_header}>Sale Off</div>

@@ -104,7 +104,7 @@ function Items({ data, vertical, wishList, edit }) {
               navigate(`/category/${data.category}/${data.id}`);
             }}
           ></Img>
-          <Img vertical={vertical} className={styles.imgHover} imgUrl={data.listImgURL[0]}></Img>
+          <Img vertical={vertical} className={styles.imgHover} imgUrl={data.listImgURL[1]}></Img>
           <div className={styles.img_button}>
             <div
               className={styles.searchButton}
@@ -148,7 +148,7 @@ function Items({ data, vertical, wishList, edit }) {
         </div>
         <div className={styles.item_content}>
           <div className={styles.brand_name}>SKY LINE</div>
-          <div className={styles.item_description}>{data.description}</div>
+          <div className={styles.item_description}>{data.productName}</div>
           <div className={styles.prices}>
             {data.price && <div className={styles.old_price}>${data.price}</div>}
             <div className={styles.new_price}>
