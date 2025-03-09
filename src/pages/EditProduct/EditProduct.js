@@ -70,7 +70,7 @@ function EditProduct() {
       setSaleOff(encodeSaleOff(data.saleOff));
       setCategory(data.category);
       setCurrentImg([data.imgURL]);
-      setCurrentListImg(data.listImgURL.split('___').slice(1));
+      setCurrentListImg(data.listImgURL.split('_').slice(1));
       setMainImg(1);
     }
   }, [data]);

@@ -22,7 +22,7 @@ function Items({ data, vertical, wishList, edit }) {
   if (data) {
     data = {
       ...data,
-      listImgURL: data.listImgURL.split('___').slice(1),
+      listImgURL: data.listImgURL.split('_').slice(1),
     };
   }
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ function Items({ data, vertical, wishList, edit }) {
       }
     }
   }, [loginSelect.wishList]);
-
+  console.log(data.listImgURL)
   return (
     <Fragment>
       {popup && (
@@ -147,7 +147,7 @@ function Items({ data, vertical, wishList, edit }) {
           </div>
         </div>
         <div className={styles.item_content}>
-          <div className={styles.brand_name}>SKY LINE</div>
+          <div className={styles.brand_name}>{data.brandName}</div>
           <div className={styles.item_description}>{data.productName}</div>
           <div className={styles.prices}>
             {data.price && <div className={styles.old_price}>${data.price}</div>}
