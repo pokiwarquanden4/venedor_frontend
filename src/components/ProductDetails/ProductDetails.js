@@ -16,6 +16,10 @@ import { wishListActions } from '../../redux/actions/product/wishListActions';
 import { productSelector } from '../../redux/selectors/productSelector/productSelector';
 import { cartActions } from '../../redux/actions/product/cartActions';
 import { messageActions } from '../../redux/actions/message/messageActions';
+import Popup from '../Popup/Popup';
+import Comment from '../Comment/Comment';
+import { productActions } from '../../redux/actions/product/ProductActions';
+import ReactPaginate from 'react-paginate';
 
 function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
   const navigate = useNavigate();
@@ -31,9 +35,26 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
   const [heart, setHeart] = useState(false);
   const [wishListId, setWishListId] = useState();
   const role = loginSelect.loginRole === 'User';
+  const [isShowDetails, setIsShowDetails] = useState(false)
+  const [pageData, setPageData] = useState({
+    page: 1,
+    limit: 4,
+    productId: data.id
+  })
+  const [commentData, setCommentData] = useState(productSelect.productComments)
 
   useEffect(() => {
-    if (zoomRef.current && imgRef.current) {
+    dispatch(productActions.getCommentRequest({ page: pageData.page, limit: pageData.limit, productId: pageData.productId }));
+  }, [pageData])
+
+  useEffect(() => {
+    setCommentData({
+      ...productSelect.productComments
+    })
+  }, [productSelect.productComments])
+
+  useEffect(() => {
+    if (zoomRef.current && imgRef.current && zoomRef.current.length) {
       zoomRef.current[currentPic - 1].addEventListener('mousemove', (e) => {
         const x = e.clientX - zoomRef.current[currentPic - 1].getBoundingClientRect().left;
         const y = e.clientY - zoomRef.current[currentPic - 1].getBoundingClientRect().top;
@@ -61,227 +82,263 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
     }
   }, [loginSelect.wishList]);
 
+  const handlePageClick = (event) => {
+    const selectedPage = event.selected + 1
+    setPageData((preData) => {
+      return {
+        ...preData,
+        page: selectedPage
+      }
+    })
+  };
+
   return (
-    <div className={`${styles.wrapper} ${fullScreen ? styles.fullScreen : ''}`}>
-      <div className={styles.picture_wrapper}>
-        <div className={styles.picture_list}>
-          <div
-            className={styles.arrow_up}
-            onClick={() => {
-              previewRef.current[
-                currentPicPreview - 7 >= 0 ? currentPicPreview - 7 : 0
-              ].scrollIntoView({
-                behavior: 'smooth',
-                inline: 'start',
-                block: 'nearest',
-              });
-              setCurrentPicPreview(currentPicPreview - 7 >= 0 ? currentPicPreview - 7 : 0);
-            }}
-          >
-            <UpArrowIcon className={styles.icon_up}></UpArrowIcon>
-          </div>
-          <div className={styles.picture_list_content}>
-            {(data.listImgURL || listImg).map((item, index) => {
-              return (
-                <div key={index} className={styles.pictures_wrapper}>
-                  <img
-                    src={item}
-                    className={`${styles.pictures} ${index + 1 === currentPic ? styles.chosen : ''
-                      }`}
-                    ref={(element) => {
-                      previewRef.current[index] = element;
-                    }}
-                    onClick={() => {
-                      imgRef.current[index].scrollIntoView({
-                        behavior: 'smooth',
-                        inline: 'start',
-                        block: 'nearest',
-                      });
-                      setCurrentPic(index + 1);
-                    }}
-                  ></img>
-                </div>
-              );
-            })}
-          </div>
-          <div
-            className={styles.arrow_down}
-            onClick={() => {
-              previewRef.current[
-                currentPicPreview + 7 <=
-                  (data.listImgURL ? data.listImgURL.length - 1 : listImg.length - 1)
-                  ? currentPicPreview + 7
-                  : data.listImgURL
-                    ? data.listImgURL.length - 1
-                    : listImg.length - 1
-              ].scrollIntoView({
-                behavior: 'smooth',
-                inline: 'start',
-                block: 'nearest',
-              });
-              setCurrentPicPreview(
-                currentPicPreview + 7 <=
-                  (data.listImgURL ? data.listImgURL.length - 1 : listImg.length - 1)
-                  ? currentPicPreview + 7
-                  : data.listImgURL
-                    ? data.listImgURL.length - 1
-                    : listImg.length - 1
-              );
-            }}
-          >
-            <DownArrowIcon className={styles.icon_down}></DownArrowIcon>
-          </div>
-        </div>
-        <div className={styles.picture}>
-          <div className={styles.preview_pictures}>
-            {(data.listImgURL || listImg).map((item, index) => {
-              return (
-                <div
-                  className={styles.preview_pictures_wrapper}
-                  ref={(element) => {
-                    zoomRef.current[index] = element;
-                  }}
-                  key={index}
-                >
-                  <img
-                    className={styles.preview_picture}
-                    src={item}
-                    ref={(element) => {
-                      imgRef.current[index] = element;
-                    }}
-                  ></img>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-      <div className={styles.content_wrapper}>
-        <div>
-          <p className={styles.header}>{data.description}</p>
-        </div>
-        <div className={styles.stock}>Availability: {data.number}</div>
-        <div className={styles.price}>
-          <div className={styles.olePrice} style={data.saleOff === 0 ? { display: 'none' } : {}}>
-            ${data.price}
-          </div>
-          <div className={styles.newPrice}>${data.price - data.price * (data.saleOff / 100)}</div>
-        </div>
-        <div className={styles.buyer}>
-          <div className={styles.number}>
+    <div className={styles.container}>
+      <div className={`${styles.wrapper} ${fullScreen ? styles.fullScreen : ''}`}>
+        <div className={styles.picture_wrapper}>
+          <div className={styles.picture_list}>
             <div
-              className={styles.minus}
+              className={styles.arrow_up}
               onClick={() => {
-                if (number - 1 > 0) {
-                  setNumber(number - 1);
-                }
+                previewRef.current[
+                  currentPicPreview - 7 >= 0 ? currentPicPreview - 7 : 0
+                ].scrollIntoView({
+                  behavior: 'smooth',
+                  inline: 'start',
+                  block: 'nearest',
+                });
+                setCurrentPicPreview(currentPicPreview - 7 >= 0 ? currentPicPreview - 7 : 0);
               }}
             >
-              -
+              <UpArrowIcon className={styles.icon_up}></UpArrowIcon>
             </div>
-            <div className={styles.currentNumber}>{number}</div>
-            <div
-              className={styles.plus}
-              onClick={() => {
-                if (number + 1 <= data.number) {
-                  setNumber(number + 1);
-                }
-              }}
-            >
-              +
-            </div>
-          </div>
-          <MainButton
-            title={edit ? 'EDIT ITEM' : 'ADD TO CART'}
-            className={styles.cart}
-            disable={edit ? false : preview || !role}
-            onClick={() => {
-              if (!loginSelect.login) {
-                dispatch(loginActions.loginPopup(true));
-              }
-              if (edit) {
-                navigate(`/accountSeller/${data.id}`);
-              } else {
-                dispatch(
-                  cartActions.createCartProductRequest({
-                    id: data.id,
-                    quantity: number,
-                  })
+            <div className={styles.picture_list_content}>
+              {(data.listImgURL.concat(data.imgURL) || listImg).map((item, index) => {
+                return (
+                  <div key={index} className={styles.pictures_wrapper}>
+                    <img
+                      src={item}
+                      className={`${styles.pictures} ${index + 1 === currentPic ? styles.chosen : ''
+                        }`}
+                      ref={(element) => {
+                        previewRef.current[index] = element;
+                      }}
+                      onClick={() => {
+                        imgRef.current[index].scrollIntoView({
+                          behavior: 'smooth',
+                          inline: 'start',
+                          block: 'nearest',
+                        });
+                        setCurrentPic(index + 1);
+                      }}
+                    ></img>
+                  </div>
                 );
-              }
-            }}
-          ></MainButton>
-          <div
-            className={`${!(preview || !role)
+              })}
+            </div>
+            <div
+              className={styles.arrow_down}
+              onClick={() => {
+                previewRef.current[
+                  currentPicPreview + 7 <=
+                    (data.listImgURL ? data.listImgURL.length - 1 : listImg.length - 1)
+                    ? currentPicPreview + 7
+                    : data.listImgURL
+                      ? data.listImgURL.length - 1
+                      : listImg.length - 1
+                ].scrollIntoView({
+                  behavior: 'smooth',
+                  inline: 'start',
+                  block: 'nearest',
+                });
+                setCurrentPicPreview(
+                  currentPicPreview + 7 <=
+                    (data.listImgURL ? data.listImgURL.length - 1 : listImg.length - 1)
+                    ? currentPicPreview + 7
+                    : data.listImgURL
+                      ? data.listImgURL.length - 1
+                      : listImg.length - 1
+                );
+              }}
+            >
+              <DownArrowIcon className={styles.icon_down}></DownArrowIcon>
+            </div>
+          </div>
+          <div className={styles.picture}>
+            <div className={styles.preview_pictures}>
+              {(data.listImgURL.concat(data.imgURL) || listImg).map((item, index) => {
+                return (
+                  <div
+                    className={styles.preview_pictures_wrapper}
+                    ref={(element) => {
+                      zoomRef.current[index] = element;
+                    }}
+                    key={index}
+                  >
+                    <img
+                      className={styles.preview_picture}
+                      src={item}
+                      ref={(element) => {
+                        imgRef.current[index] = element;
+                      }}
+                    ></img>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div className={styles.content_wrapper}>
+          <div>
+            <p className={styles.header}>{data.productName}</p>
+          </div>
+          <div className={styles.stock}>Availability: {data.number}</div>
+          <div className={styles.price}>
+            <div className={styles.olePrice} style={data.saleOff === 0 ? { display: 'none' } : {}}>
+              ${data.price}
+            </div>
+            <div className={styles.newPrice}>${data.price - data.price * (data.saleOff / 100)}</div>
+          </div>
+          <div className={styles.buyer}>
+            <div className={styles.number}>
+              <div
+                className={styles.minus}
+                onClick={() => {
+                  if (number - 1 > 0) {
+                    setNumber(number - 1);
+                  }
+                }}
+              >
+                -
+              </div>
+              <div className={styles.currentNumber}>{number}</div>
+              <div
+                className={styles.plus}
+                onClick={() => {
+                  if (number + 1 <= data.number) {
+                    setNumber(number + 1);
+                  }
+                }}
+              >
+                +
+              </div>
+            </div>
+            <MainButton
+              title={edit ? 'EDIT ITEM' : 'ADD TO CART'}
+              className={styles.cart}
+              disable={edit ? false : preview || !role}
+              onClick={() => {
+                if (!loginSelect.login) {
+                  dispatch(loginActions.loginPopup(true));
+                }
+                if (edit) {
+                  navigate(`/accountSeller/${data.id}`);
+                } else {
+                  dispatch(
+                    cartActions.createCartProductRequest({
+                      id: data.id,
+                      quantity: number,
+                    })
+                  );
+                }
+              }}
+            ></MainButton>
+            <div
+              className={`${!(preview || !role)
                 ? heart
                   ? styles.wishListFocus
                   : styles.wishList
                 : styles.disable
-              }`}
-            onClick={
-              !(preview || !role)
-                ? () => {
-                  if (!loginSelect.login) {
-                    dispatch(loginActions.loginPopup(true));
+                }`}
+              onClick={
+                !(preview || !role)
+                  ? () => {
+                    if (!loginSelect.login) {
+                      dispatch(loginActions.loginPopup(true));
+                    }
+                    if (heart) {
+                      dispatch(wishListActions.deleteWishListRequest({ id: wishListId }));
+                    } else {
+                      dispatch(wishListActions.createWishListRequest({ productId: data.id }));
+                    }
                   }
-                  if (heart) {
-                    dispatch(wishListActions.deleteWishListRequest({ id: wishListId }));
-                  } else {
-                    dispatch(wishListActions.createWishListRequest({ productId: data.id }));
-                  }
-                }
-                : null
-            }
-          >
-            <HeartIcon className={styles.heart_icon}></HeartIcon>
-          </div>
-          <div
-            className={`${!(preview || !role) ? styles.compare : styles.disable}`}
-            onClick={
-              !(preview || !role)
-                ? () => {
-                  if (!loginSelect.login) {
-                    dispatch(loginActions.loginPopup(true));
-                  }
-                }
-                : null
-            }
-          >
-            <CompareIcon className={styles.compare_icon}></CompareIcon>
-          </div>
-        </div>
-        {fullScreen && (
-          <div className={styles.directCall}>
-            <div
-              className={styles.zaloCall}
-              onClick={() => {
-                if (loginSelect.loginRole === 'User') {
-                  dispatch(
-                    messageActions.createRoomChatRequest({
-                      sellerId: data.sellerId,
-                    })
-                  );
-                  navigate('/message');
-                }
-              }}
+                  : null
+              }
             >
-              <ZaloIcon className={styles.zaloIcon}></ZaloIcon>
-              <div className={styles.zaloCall_description}>Ask about this product</div>
+              <HeartIcon className={styles.heart_icon}></HeartIcon>
+            </div>
+            <div
+              className={`${!(preview || !role) ? styles.compare : styles.disable}`}
+              onClick={
+                !(preview || !role)
+                  ? () => {
+                    if (!loginSelect.login) {
+                      dispatch(loginActions.loginPopup(true));
+                    }
+                  }
+                  : null
+              }
+            >
+              <CompareIcon className={styles.compare_icon}></CompareIcon>
             </div>
           </div>
-        )}
-        {fullScreen && (
-          <div className={styles.guaranteed}>
-            <div className={styles.guaranteed_header}>Guaranteed Safe Checkout</div>
-            <div className={styles.guaranteed_img_wrapper}>
-              <img
-                src="https://cdn.shopify.com/s/files/1/0438/9070/4538/files/payment-info.jpg?v=1614352859"
-                className={styles.guaranteed_img}
-              ></img>
+          {fullScreen && (
+            <div className={styles.directCall}>
+              <div
+                className={styles.zaloCall}
+                onClick={() => {
+                  if (loginSelect.loginRole === 'User') {
+                    dispatch(
+                      messageActions.createRoomChatRequest({
+                        sellerId: data.sellerId,
+                      })
+                    );
+                    navigate('/message');
+                  }
+                }}
+              >
+                <ZaloIcon className={styles.zaloIcon}></ZaloIcon>
+                <div className={styles.zaloCall_description}>Ask about this product</div>
+              </div>
             </div>
-          </div>
+          )}
+          <p className={styles.details} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: data.description }} />
+          {fullScreen && (
+            <div className={styles.guaranteed}>
+              <div className={styles.guaranteed_header}>Guaranteed Safe Checkout</div>
+              <div className={styles.guaranteed_img_wrapper}>
+                <img
+                  src="https://cdn.shopify.com/s/files/1/0438/9070/4538/files/payment-info.jpg?v=1614352859"
+                  className={styles.guaranteed_img}
+                ></img>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {isShowDetails && (
+          <Popup
+            onClick={() => {
+              setIsShowDetails(false)
+            }}
+            highestZIndex={true}
+          >
+            <p style={{ padding: '20px' }} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: data.description }} />
+          </Popup>
         )}
       </div>
+      {commentData.comments.map((comment) => {
+        return <Comment key={comment.id} data={comment}></Comment>
+      })}
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={commentData.totalPages}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+      />
     </div>
   );
 }

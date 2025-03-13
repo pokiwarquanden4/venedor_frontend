@@ -20,6 +20,20 @@ function HomeCategory() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageContent, setPageContent] = useState([]);
   const [filterPopUp, setFilterPopUp] = useState(false);
+  const [pageData, setPageData] = useState({
+    page: 1,
+    limit: 30,
+    categoryId: params.id
+  })
+
+  useEffect(() => {
+    setPageData((preData) => {
+      return {
+        ...preData,
+        categoryId: params.id
+      }
+    })
+  }, [params.id])
 
   useEffect(() => {
     let pageContentTemp = [];
@@ -95,12 +109,17 @@ function HomeCategory() {
   }, [filter, data]);
 
   useEffect(() => {
-    setData(productSearchSelect.categorySearchProduct);
+    if (!productSearchSelect.categorySearchProduct.products) return
+    setData(productSearchSelect.categorySearchProduct.products);
   }, [productSearchSelect.categorySearchProduct]);
 
   useEffect(() => {
-    dispatch(productSearchActions.searchCategoryProductRequest({ category: params.category }));
-  }, [params.category]);
+    dispatch(productSearchActions.searchCategoryProductRequest({
+      categoryId: pageData.categoryId,
+      page: pageData.page,
+      limit: pageData.limit
+    }));
+  }, [pageData]);
 
   return (
     <Fragment>
@@ -171,9 +190,8 @@ function HomeCategory() {
                 {pageContent.map((item, index) => {
                   return (
                     <div
-                      className={`${styles.paging} ${
-                        currentPage === index + 1 ? styles.paging_active : ''
-                      }`}
+                      className={`${styles.paging} ${currentPage === index + 1 ? styles.paging_active : ''
+                        }`}
                       key={index}
                       onClick={() => {
                         setCurrentPage(index + 1);

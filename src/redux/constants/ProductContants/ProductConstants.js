@@ -3,4 +3,6 @@ export const productConstants = {
   isLoading: false,
   getAllProduct: undefined,
   searchProducts: undefined,
+  productComments: {},
+  category: {}
 };

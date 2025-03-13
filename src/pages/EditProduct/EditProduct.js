@@ -356,7 +356,7 @@ function EditProduct() {
                     deleteProduct={() => {
                       setCurrentImg(undefined);
                       setMainImg(undefined);
-                      setCurrentListImgRemove(`___${currentImg}` + currentListImgRemove);
+                      setCurrentListImgRemove(`_${currentImg}` + currentListImgRemove);
                     }}
                     className={styles.imgBackGround}
                   ></BackGroundImg>
@@ -387,7 +387,7 @@ function EditProduct() {
                           setCurrentListImg(
                             currentListImg.filter(function (url, innerIndex) {
                               if (innerIndex === index) {
-                                arr += `___${url}`;
+                                arr += `_${url}`;
                               }
                               return innerIndex !== index;
                             })

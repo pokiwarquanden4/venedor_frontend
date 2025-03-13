@@ -127,10 +127,22 @@
 
         .header {
             font-size: 20px;
-            margin-bottom: 15px;
+            margin-bottom: 25px;
             width: 300px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            word-wrap: break-word;
+        }
+
+        .details {
+            cursor: pointer;
+            font-size: 20px;
+            margin-bottom: 0px;
+            width: 300px;
+            display: -webkit-box;
+            -webkit-line-clamp: 10;
             -webkit-box-orient: vertical;
             overflow: hidden;
             word-wrap: break-word;
@@ -432,6 +444,12 @@
             color: #333333;
             font-size: 25px;
             margin-bottom: 25px;
+        }
+
+        .details {
+            max-height: 200px;
+            overflow-y: auto;
+            cursor: pointer;
         }
 
         .stock {

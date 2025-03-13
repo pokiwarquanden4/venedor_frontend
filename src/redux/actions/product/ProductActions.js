@@ -4,6 +4,10 @@ export const getType = (reduxAction) => {
   return reduxAction().type;
 };
 export const productActions = createActions({
+  getCategoryRequest: (payload) => payload,
+  getCategorySuccess: (payload) => payload,
+  getCategoryFailure: (payload) => payload,
+
   createProductRequest: (payload) => payload,
   createProductSuccess: (payload) => payload,
   createProductFailure: (payload) => payload,
@@ -17,4 +21,8 @@ export const productActions = createActions({
   editProductRequest: (payload) => payload,
   editProductSuccess: (payload) => payload,
   editProductFailure: (payload) => payload,
+
+  getCommentRequest: (payload) => payload,
+  getCommentSuccess: (payload) => payload,
+  getCommentFailure: (payload) => payload,
 });

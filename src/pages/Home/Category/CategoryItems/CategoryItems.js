@@ -1,7 +1,7 @@
 import styles from './CategoryItems.module.scss';
 import { useNavigate } from 'react-router-dom';
 
-function CategoryItems({ data }) {
+function CategoryItems({ data, id }) {
   const navigate = useNavigate();
 
   return (
@@ -11,12 +11,12 @@ function CategoryItems({ data }) {
         if (data.name === 'All') {
           navigate('/category');
         } else {
-          navigate(`/category/${data.name}`);
+          navigate(`/category/${id}`);
         }
       }}
     >
       <div className={styles.content}>
-        <img className={styles.img} src={data.img}></img>
+        <img className={styles.img} src={data.icon}></img>
         <div className={styles.title}>{data.name}</div>
       </div>
     </div>

@@ -10,6 +10,8 @@ import { loadingSelector } from './redux/selectors/loadingSelector/loadingSelect
 import Notification from './components/Notification/Notification';
 import { notificationSelector } from './redux/selectors/notificationSelector/notificationSelector';
 import { notificationActions } from './redux/actions/notification/notificationAction';
+import './App.css'
+import { productActions } from './redux/actions/product/ProductActions';
 
 function App() {
   const cookies = new Cookies();
@@ -19,6 +21,10 @@ function App() {
   const [jwtToken, setJwtToken] = useState(
     cookies.get('jwt_token') || cookies.get('jwt_refresh_token')
   );
+
+  useEffect(() => {
+    dispatch(productActions.getCategoryRequest())
+  }, [])
 
   useEffect(() => {
     setJwtToken(cookies.get('jwt_token') || cookies.get('jwt_refresh_token'));
@@ -54,7 +60,7 @@ function App() {
                 path={route.path}
                 element={
                   route.authorization === undefined ||
-                  (jwtToken && jwt_decode(jwtToken).roleName === route.authorization) ? (
+                    (jwtToken && jwt_decode(jwtToken).roleName === route.authorization) ? (
                     <Layout>
                       {loadingSelect.loading && <Loading></Loading>}
                       {notificationSelect.showing && (

@@ -1,56 +1,108 @@
-const category = [
-  {
-    name: 'All',
-    img: 'https://www.invert.vn/media/uploads/uploads/2022/12/03143813-13-hinh-anh-dep.jpeg',
+const category = {
+  "915": {
+    "name": "Thời trang nam",
+    "icon": "https://salt.tikicdn.com/ts/category/00/5d/97/384ca1a678c4ee93a0886a204f47645d.png"
   },
-  {
-    name: 'Hiking',
-    img: 'https://cdn.shopify.com/s/files/1/0438/9070/4538/collections/collection_6_450x.jpg?v=1596168035',
+  "931": {
+    "name": "Thời trang nữ",
+    "icon": "https://salt.tikicdn.com/ts/category/55/5b/80/48cbaafe144c25d5065786ecace86d38.png"
   },
-  {
-    name: 'Biking',
-    img: 'https://media.istockphoto.com/id/1340571998/vi/anh/ng%C6%B0%E1%BB%9Di-%C4%91%C3%A0n-%C3%B4ng-%C4%91i-xe-%C4%91%E1%BA%A1p-ngo%C3%A0i-tr%E1%BB%9Di-trong-c%C3%B4ng-vi%C3%AAn-v%C3%A0o-m%E1%BB%99t-ng%C3%A0y-n%E1%BA%AFng-v%C3%A0o-l%C3%BAc-ho%C3%A0ng-h%C3%B4n.jpg?s=2048x2048&w=is&k=20&c=sOjKmG8gnfNSp0G22dyl5U2NMuwDVsY--yQMv_zsf6g=',
+  "976": {
+    "name": "Túi thời trang nữ",
+    "icon": "https://salt.tikicdn.com/ts/category/31/a7/94/6524d2ecbec216816d91b6066452e3f2.png"
   },
-  {
-    name: 'Spring',
-    img: 'https://i.guim.co.uk/img/media/d5b563bef60c06a22dc65a18c391f63ff42549e6/0_205_4288_2573/master/4288.jpg?width=1300&quality=45&dpr=2&s=none',
+  "1520": {
+    "name": "Làm Đẹp - Sức Khỏe",
+    "icon": "https://salt.tikicdn.com/ts/category/73/0e/89/bf5095601d17f9971d7a08a1ffe98a42.png"
   },
-  {
-    name: 'Summer',
-    img: 'https://hips.hearstapps.com/hmg-prod/images/beautiful-tropical-sunset-scenery-two-sun-beds-royalty-free-image-1595368231.jpg?crop=1.00xw:0.752xh;0,0.159xh&resize=1200:*',
+  "1686": {
+    "name": "Giày - Dép nam",
+    "icon": "https://salt.tikicdn.com/ts/category/d6/7f/6c/5d53b60efb9448b6a1609c825c29fa40.png"
   },
-  {
-    name: 'Autumn',
-    img: 'https://cdn.pixabay.com/photo/2015/12/01/20/28/road-1072821_1280.jpg',
+  "1703": {
+    "name": "Giày - Dép nữ",
+    "icon": "https://salt.tikicdn.com/ts/category/cf/ed/e1/5a6b58f21fbcad0d201480c987f8defe.png"
   },
-  {
-    name: 'Winter',
-    img: 'https://t3.ftcdn.net/jpg/02/98/03/22/360_F_298032209_YD4pFLDyzMyqBzso5xF5USR05hxqGuXf.jpg',
+  "1789": {
+    "name": "Điện Thoại - Máy Tính Bảng",
+    "icon": "https://salt.tikicdn.com/ts/category/54/c0/ff/fe98a4afa2d3e5142dc8096addc4e40b.png"
   },
-  {
-    name: 'Surfing',
-    img: 'https://media.istockphoto.com/id/186123880/photo/close-up-of-a-surfer-riding-a-large-blue-wave.jpg?s=612x612&w=0&k=20&c=n9EYTgDDeF_RO7TmHG9TlBGrnAXjEML5rB_ql5xFtp0=',
+  "1801": {
+    "name": "Máy Ảnh - Máy Quay Phim",
+    "icon": "https://salt.tikicdn.com/ts/category/2d/7c/45/e4976f3fa4061ab310c11d2a1b759e5b.png"
   },
-  {
-    name: 'Snow',
-    img: 'https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/cfea0b1a-2498-44f0-ab83-774eee25b2d0/dazlg2x-d86f3129-3419-4081-ba41-41432aba8b98.jpg/v1/fill/w_527,h_350,q_70,strp/snowy_by_akshortstack_dazlg2x-350t.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjgxIiwicGF0aCI6IlwvZlwvY2ZlYTBiMWEtMjQ5OC00NGYwLWFiODMtNzc0ZWVlMjViMmQwXC9kYXpsZzJ4LWQ4NmYzMTI5LTM0MTktNDA4MS1iYTQxLTQxNDMyYWJhOGI5OC5qcGciLCJ3aWR0aCI6Ijw9MTAyNCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.xOknNMYUmjuezGviHNOfKz5NFSZvL_eYWvazPe7piF0',
+  "1815": {
+    "name": "Thiết Bị Số - Phụ Kiện Số",
+    "icon": "https://salt.tikicdn.com/ts/category/75/34/29/78e428fdd90408587181005f5cc3de32.png"
   },
-  {
-    name: 'Fishing',
-    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDM1QfOeQVMd8tFVVL6xKaDxyB-scFukmVXQ&s',
+  "1846": {
+    "name": "Laptop - Máy Vi Tính - Linh kiện",
+    "icon": "https://salt.tikicdn.com/ts/category/92/b5/c0/3ffdb7dbfafd5f8330783e1df20747f6.png"
   },
-  {
-    name: 'Running',
-    img: 'https://media.istockphoto.com/id/1324624694/photo/fitness-woman-running-training-for-marathon-on-sunny-coast-trail.jpg?s=612x612&w=0&k=20&c=09StrnZiVdHvfR1G9CeBqcMYxSvFSGFQVuNbOzhBQ-c=',
+  "1882": {
+    "name": "Điện Gia Dụng",
+    "icon": "https://salt.tikicdn.com/ts/category/61/d4/ea/e6ea3ffc1fcde3b6224d2bb691ea16a2.png"
   },
-  {
-    name: 'Football',
-    img: 'https://cdn.britannica.com/51/190751-050-147B93F7/soccer-ball-goal.jpg',
+  "1883": {
+    "name": "Nhà Cửa - Đời Sống",
+    "icon": "https://salt.tikicdn.com/ts/category/f6/22/46/7e2185d2cf1bca72d5aeac385a865b2b.png"
   },
-  {
-    name: 'Baseball',
-    img: 'https://sportshub.cbsistatic.com/i/r/2022/05/27/3b48fdea-96c3-4d43-b82d-3d17ffcc0ea5/thumbnail/1200x675/6cfaaa3ccb606bdf3ebe70ef64633f0f/usatsi-18348887.jpg',
+  "1975": {
+    "name": "Thể Thao - Dã Ngoại",
+    "icon": "https://salt.tikicdn.com/ts/category/0b/5e/3d/00941c9eb338ea62a47d5b1e042843d8.png"
   },
-];
+  "2549": {
+    "name": "Đồ Chơi - Mẹ & Bé",
+    "icon": "https://salt.tikicdn.com/ts/category/13/64/43/226301adcc7660ffcf44a61bb6df99b7.png"
+  },
+  "4221": {
+    "name": "Điện Tử - Điện Lạnh",
+    "icon": "https://salt.tikicdn.com/ts/category/c8/82/d4/64c561c4ced585c74b9c292208e4995a.png"
+  },
+  "4384": {
+    "name": "Bách Hóa Online",
+    "icon": "https://salt.tikicdn.com/ts/category/40/0f/9b/62a58fd19f540c70fce804e2a9bb5b2d.png"
+  },
+  "6000": {
+    "name": "Balo và Vali",
+    "icon": "https://salt.tikicdn.com/ts/category/3e/c0/30/1110651bd36a3e0d9b962cf135c818ee.png"
+  },
+  "8322": {
+    "name": "Nhà Sách Tiki",
+    "icon": "https://salt.tikicdn.com/ts/category/ed/20/60/afa9b3b474bf7ad70f10dd6443211d5f.png"
+  },
+  "8371": {
+    "name": "Đồng hồ và Trang sức",
+    "icon": "https://salt.tikicdn.com/ts/category/8b/d4/a8/5924758b5c36f3b1c43b6843f52d6dd2.png"
+  },
+  "8594": {
+    "name": "Ô Tô - Xe Máy - Xe Đạp",
+    "icon": "https://salt.tikicdn.com/ts/category/69/f5/36/c6cd9e2849854630ed74ff1678db8f19.png"
+  },
+  "11312": {
+    "name": "Voucher - Dịch vụ",
+    "icon": "https://salt.tikicdn.com/ts/category/0a/c9/7b/8e466bdf6d4a5f5e14665ce56e58631d.png"
+  },
+  "15078": {
+    "name": "Chăm sóc nhà cửa",
+    "icon": "https://salt.tikicdn.com/cache/280x280/ts/product/e2/e0/b4/032924958e08c0c9802fca3f157d53a9.jpg"
+  },
+  "17166": {
+    "name": "Cross Border - Hàng Quốc Tế",
+    "icon": "https://salt.tikicdn.com/ts/category/3c/e4/99/eeee1801c838468d94af9997ec2bbe42.png"
+  },
+  "27498": {
+    "name": "Phụ kiện thời trang",
+    "icon": "https://salt.tikicdn.com/ts/category/ca/53/64/49c6189a0e1c1bf7cb91b01ff6d3fe43.png"
+  },
+  "27616": {
+    "name": "Túi thời trang nam",
+    "icon": "https://salt.tikicdn.com/ts/category/9b/31/af/669e6a133118e5439d6c175e27c1f963.png"
+  },
+  "44792": {
+    "name": "NGON",
+    "icon": "https://salt.tikicdn.com/ts/category/1e/8c/08/d8b02f8a0d958c74539316e8cd437cbd.png"
+  }
+};
 
 export default category;

@@ -6,6 +6,8 @@ import {
   addProductAPI,
   editProductAPI,
   getAllProductAPI,
+  getCategoryAPI,
+  getCommentAPI,
   searchCategoryProductAPI,
   searchProductAPI,
   searchProductByIdAPI,
@@ -189,6 +191,24 @@ function* searchCategorySaga(action) {
   }
 }
 
+function* getCommentSaga(action) {
+  try {
+    const products = yield call(getCommentAPI, action.payload);
+    yield put(productActions.getCommentSuccess(products.data));
+  } catch (err) {
+    yield put(productActions.getCommentFailure(err.response.data));
+  }
+}
+
+function* getCategory(action) {
+  try {
+    const products = yield call(getCategoryAPI, action.payload);
+    yield put(productActions.getCategorySuccess(products.data));
+  } catch (err) {
+    yield put(productActions.getCategoryFailure(err.response.data));
+  }
+}
+
 function* productSagas() {
   yield takeLatest(productActions.createProductRequest, addProductSaga);
   yield takeLatest(productActions.getAllProductRequest, getAllProductSaga);
@@ -201,6 +221,8 @@ function* productSagas() {
   yield takeLatest(cartActions.createCartProductRequest, createCartProductSaga);
   yield takeLatest(cartActions.editCartProductRequest, editCartProductSaga);
   yield takeLatest(productSearchActions.searchCategoryProductRequest, searchCategorySaga);
+  yield takeLatest(productActions.getCommentRequest, getCommentSaga);
+  yield takeLatest(productActions.getCategoryRequest, getCategory);
 }
 
 export default productSagas;

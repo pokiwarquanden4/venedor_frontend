@@ -59,3 +59,13 @@ export const getBestSellerProductAPI = (payload) => {
 export const getFeatureProductAPI = (payload) => {
   return axios.get(`${URL}users/getFeatureProduct`);
 };
+
+export const getCommentAPI = (payload) => {
+  return axios.get(`${URL}users/getComment`, {
+    params: payload,
+  });
+};
+
+export const getCategoryAPI = (payload) => {
+  return axios.get(`${URL}users/getCategory`);
+};

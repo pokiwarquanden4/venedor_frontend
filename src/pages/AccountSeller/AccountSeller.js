@@ -93,9 +93,8 @@ function AccountSeller() {
               {pageContent.map((item, index) => {
                 return (
                   <div
-                    className={`${styles.paging} ${
-                      currentPage === index + 1 ? styles.paging_active : ''
-                    }`}
+                    className={`${styles.paging} ${currentPage === index + 1 ? styles.paging_active : ''
+                      }`}
                     key={index}
                     onClick={() => {
                       setCurrentPage(index + 1);

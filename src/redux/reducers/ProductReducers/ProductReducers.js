@@ -20,6 +20,42 @@ export default function ProductReducers(state = productConstants, action) {
         success: false,
         loading: false,
       };
+    case getType(productActions.getCommentRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(productActions.getCommentSuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        productComments: action.payload.obj
+      };
+    case getType(productActions.getCommentFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
+    case getType(productActions.getCategoryRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(productActions.getCategorySuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        category: action.payload.obj
+      };
+    case getType(productActions.getCategoryFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
     case getType(productActions.setProductSuccess):
       return {
         ...state,

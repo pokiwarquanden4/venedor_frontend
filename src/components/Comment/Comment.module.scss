@@ -1,0 +1,145 @@
+.container {
+    // display: flex;
+    // justify-content: center;
+}
+
+.wrapper {
+    padding: 20px;
+    margin-top: 20px;
+    border-top: 1px solid rgb(242, 242, 242);
+    display: flex;
+}
+
+.info {
+    flex: 0.18;
+}
+
+.content {
+    flex: 0.82;
+}
+
+.user_details {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    background-color: rgb(194, 225, 255);
+    color: rgb(39, 39, 42);
+    display: flex;
+    color: #fff;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #3498db;
+    border-radius: 50%;
+}
+
+.user_details_name {
+    padding-left: 10px;
+}
+
+.user_content_info {
+    padding-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.jude_text {
+    color: rgb(128, 128, 137);
+}
+
+.content {
+    margin-left: 20px;
+}
+
+.rate {
+    display: flex;
+}
+
+.start_icon {
+    margin-left: 5px;
+}
+
+.star_comment {
+    margin-left: 15px;
+    font-weight: bolder;
+}
+
+.buyed {
+    margin-top: 7px;
+    color: rgb(0, 171, 86);
+    display: flex;
+    align-items: center;
+}
+
+.text {
+    margin-top: 20px;
+    display: flex;
+}
+
+.text_time {
+    margin-top: 20px;
+    font-size: 15px;
+    display: flex;
+    color: rgb(128, 128, 137);
+}
+
+.comment {
+    margin-bottom: 25px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: flex;
+}
+
+.comment_icon {
+    width: 25px;
+}
+
+.comment_number {
+    margin-left: 5px;
+    font-size: 18px;
+    color: rgb(128, 128, 137);
+}
+
+.comment_showList {
+    cursor: pointer;
+    margin-top: 15px;
+    align-items: center;
+    display: flex;
+}
+
+.comment_showList_avatar {
+    width: 25px;
+}
+
+.comment_showList_content {
+    margin-left: 5px;
+    color: rgb(10, 104, 255);
+    font-weight: 500;
+}
+
+.comment_box {
+    position: relative;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 12px;
+}
+
+.comment_box_input {
+    height: 30px;
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 17px;
+}
+
+.send_icon {
+    right: 0;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    width: 30px;
+}

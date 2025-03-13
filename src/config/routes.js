@@ -7,7 +7,7 @@ const routes = {
   cart: '/cart',
   allProduct: '/category',
   oder: '/order',
-  category: '/category/:category',
+  category: '/category/:id',
   productDetails: '/category/:category/:id',
   createAccount: '/account/register',
   address: '/account/address',
