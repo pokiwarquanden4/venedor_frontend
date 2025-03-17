@@ -15,4 +15,8 @@ export const messageActions = createActions({
   getMessageByRoomChatRequest: (payload) => payload,
   getMessageByRoomChatSuccess: (payload) => payload,
   getMessageByRoomChatFailure: (payload) => payload,
+
+  createChatbotRequest: (payload) => payload,
+  createChatbotSuccess: (payload) => payload,
+  createChatbotFailure: (payload) => payload,
 });

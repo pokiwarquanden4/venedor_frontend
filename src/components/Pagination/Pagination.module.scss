@@ -1,0 +1,59 @@
+.pages {
+    display: flex;
+    max-width: 500px;
+
+    .pageDots {
+        font-weight: bold;
+        height: 30px;
+        display: flex;
+        align-items: flex-end;
+    }
+
+    .paging {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+
+        &:hover {
+            background-color: rgb(13, 60, 85);
+            color: #fff;
+        }
+
+        &+.paging {
+            margin-left: 2px;
+        }
+    }
+
+    .paging_active {
+        background-color: rgb(13, 60, 85);
+        color: #fff;
+    }
+
+    .leftArrow,
+    .rightArrow {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 38px;
+        height: 38px;
+
+        &:hover {
+            background-color: rgb(13, 60, 85);
+
+            .rightArrow_icon,
+            .leftArrow_icon {
+                fill: #fff;
+            }
+        }
+    }
+
+    .rightArrow_icon,
+    .leftArrow_icon {
+        width: 10px;
+        height: 10px;
+    }
+}

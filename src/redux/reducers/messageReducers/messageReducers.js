@@ -50,6 +50,22 @@ export default function messageReducers(state = messageConstants, action) {
         ...state,
         loading: false,
       };
+    case getType(messageActions.createChatbotRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(messageActions.createChatbotSuccess):
+      return {
+        ...state,
+        loading: false,
+        chatbotMessages: action.payload.obj,
+      };
+    case getType(messageActions.createChatbotFailure):
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }

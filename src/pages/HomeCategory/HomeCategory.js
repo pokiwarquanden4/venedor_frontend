@@ -9,16 +9,14 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { productSearchActions } from '../../redux/actions/product/ProductSearchAction';
 import Popup from '../../components/Popup/Popup';
 import CategoryFilterPopUp from '../Category/CategoryFilterPopUp/CategoryFilterPopUp';
+import Pagination from '../../components/Pagination/Pagination';
 
 function HomeCategory() {
   const params = useParams();
   const productSearchSelect = useSelector(productSearchSelector);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const [numberPerPage, setNumberPerPage] = useState('Show: 16');
-  const [filter, setFilter] = useState('Feature');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageContent, setPageContent] = useState([]);
+  const [filter, setFilter] = useState('Feature')
   const [filterPopUp, setFilterPopUp] = useState(false);
   const [pageData, setPageData] = useState({
     page: 1,
@@ -34,25 +32,6 @@ function HomeCategory() {
       }
     })
   }, [params.id])
-
-  useEffect(() => {
-    let pageContentTemp = [];
-    let temp = [];
-    const numberPerPageConvert = parseInt(numberPerPage.match(/\d+/)[0]);
-    for (let i = 0; i < data.length; i++) {
-      if (temp.length < numberPerPageConvert) {
-        temp.push(data[i]);
-      } else {
-        pageContentTemp.push(temp);
-        temp = [];
-        temp.push(data[i]);
-      }
-      if (i === data.length - 1) {
-        pageContentTemp.push(temp);
-      }
-    }
-    setPageContent(pageContentTemp);
-  }, [filter, numberPerPage, data]);
 
   useEffect(() => {
     const filterTemp = filter;
@@ -109,8 +88,8 @@ function HomeCategory() {
   }, [filter, data]);
 
   useEffect(() => {
-    if (!productSearchSelect.categorySearchProduct.products) return
-    setData(productSearchSelect.categorySearchProduct.products);
+    if (!productSearchSelect.categorySearchProduct) return
+    setData(productSearchSelect.categorySearchProduct);
   }, [productSearchSelect.categorySearchProduct]);
 
   useEffect(() => {
@@ -170,61 +149,24 @@ function HomeCategory() {
                 title="Show: 16"
                 content={['Show: 16', 'Show: 24', 'Show: 32']}
                 onClick={(input) => {
-                  setNumberPerPage(input);
+                  const pageNum = Number(input.replace('Show: ', ''))
+                  setPageData((preData) => {
+                    return {
+                      ...preData,
+                      limit: pageNum
+                    }
+                  })
                 }}
               ></Collapse>
             </div>
             <div className={styles.price}></div>
-            {pageContent.length > 1 && (
-              <div className={styles.pages}>
-                {currentPage > 1 && (
-                  <div
-                    className={styles.leftArrow}
-                    onClick={() => {
-                      setCurrentPage(currentPage - 1);
-                    }}
-                  >
-                    <LeftArrowIcon className={styles.rightArrow_icon}></LeftArrowIcon>
-                  </div>
-                )}
-                {pageContent.map((item, index) => {
-                  return (
-                    <div
-                      className={`${styles.paging} ${currentPage === index + 1 ? styles.paging_active : ''
-                        }`}
-                      key={index}
-                      onClick={() => {
-                        setCurrentPage(index + 1);
-                      }}
-                    >
-                      {index + 1}
-                    </div>
-                  );
-                })}
-                {currentPage < pageContent.length && (
-                  <div
-                    className={styles.rightArrow}
-                    onClick={() => {
-                      setCurrentPage(currentPage + 1);
-                    }}
-                  >
-                    <RightArrowIcon className={styles.leftArrow_icon}></RightArrowIcon>
-                  </div>
-                )}
-              </div>
-            )}
+            <Pagination pageData={pageData} setPageData={setPageData} totalPages={data.totalPages}></Pagination>
           </div>
-          {pageContent.map((items, index) => {
-            return (
-              currentPage === index + 1 && (
-                <div className={styles.content} key={index}>
-                  {items.map((item, index) => {
-                    return <Items data={item} vertical={true} key={index}></Items>;
-                  })}
-                </div>
-              )
-            );
-          })}
+          <div className={styles.content}>
+            {data.products && data.products.map((item, index) => {
+              return <Items data={item} vertical={true} key={index}></Items>;
+            })}
+          </div>
         </div>
       </div>
     </Fragment>

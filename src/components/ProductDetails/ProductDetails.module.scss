@@ -629,7 +629,12 @@
         }
 
     }
+}
 
+.pages {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
 }
 
 @media (max-width: 1050px) {

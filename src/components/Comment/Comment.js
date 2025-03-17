@@ -115,10 +115,10 @@ export default function Comment({ data }) {
                     {showComment && data.children.map((children) => {
                         return <ReviewComment key={children.id} data={children} getInitials={getInitials} timeAgo={timeAgo} />
                     })}
-                    <div className={styles.comment_showList} onClick={() => setShowComment(!showComment)}>
+                    {data.children.length ? <div className={styles.comment_showList} onClick={() => setShowComment(!showComment)}>
                         <img className={styles.comment_showList_avatar} src="https://salt.tikicdn.com/ts/upload/9e/e4/d9/115528e11b40fdf3c354f28d05f01ca8.png" alt="" />
                         <div className={styles.comment_showList_content}>{showComment ? 'Đóng câu trả lời' : 'Xem thêm câu trả lời'}</div>
-                    </div>
+                    </div> : undefined}
                 </div>
             </div>
         </div>

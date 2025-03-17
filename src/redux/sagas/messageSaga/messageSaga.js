@@ -9,6 +9,7 @@ import {
   getAllRoomChatAPI,
   getMessageByRoomChatAPI,
   createRoomChatAPI,
+  callChatbotAPI,
 } from '../../../api/message/messageAPI';
 
 function* createRoomChatSaga(action) {
@@ -59,10 +60,22 @@ function* getMessageByRoomChatSaga(action) {
   }
 }
 
+function* createChatbotSaga(action) {
+  try {
+    const message = yield call(callChatbotAPI, action.payload);
+    yield put(messageActions.createChatbotSuccess(message.data));
+
+    jwtCheck(message);
+  } catch (err) {
+    yield put(messageActions.createChatbotFailure(err.response.data));
+  }
+}
+
 function* messageSagas() {
   yield takeLatest(messageActions.getAllRoomChatRequest, getAllRoomChatSaga);
   yield takeLatest(messageActions.getMessageByRoomChatRequest, getMessageByRoomChatSaga);
   yield takeLatest(messageActions.createRoomChatRequest, createRoomChatSaga);
+  yield takeLatest(messageActions.createChatbotRequest, createChatbotSaga);
 }
 
 export default messageSagas;

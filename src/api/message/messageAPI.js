@@ -26,3 +26,7 @@ export const getMessageByRoomChatAPI = (payload) => {
     },
   });
 };
+
+export const callChatbotAPI = (payload) => {
+  return axios.post(`${URL}users/askAI`, payload);
+};

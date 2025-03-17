@@ -20,6 +20,7 @@ import Popup from '../Popup/Popup';
 import Comment from '../Comment/Comment';
 import { productActions } from '../../redux/actions/product/ProductActions';
 import ReactPaginate from 'react-paginate';
+import Pagination from '../Pagination/Pagination';
 
 function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
   const navigate = useNavigate();
@@ -81,16 +82,6 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
       }
     }
   }, [loginSelect.wishList]);
-
-  const handlePageClick = (event) => {
-    const selectedPage = event.selected + 1
-    setPageData((preData) => {
-      return {
-        ...preData,
-        page: selectedPage
-      }
-    })
-  };
 
   return (
     <div className={styles.container}>
@@ -330,15 +321,9 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
       {commentData.comments.map((comment) => {
         return <Comment key={comment.id} data={comment}></Comment>
       })}
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel="next >"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={commentData.totalPages}
-        previousLabel="< previous"
-        renderOnZeroPageCount={null}
-      />
+      <div className={styles.pages}>
+        <Pagination pageData={pageData} setPageData={setPageData} totalPages={commentData.totalPages}></Pagination>
+      </div>
     </div>
   );
 }

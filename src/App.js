@@ -12,6 +12,7 @@ import { notificationSelector } from './redux/selectors/notificationSelector/not
 import { notificationActions } from './redux/actions/notification/notificationAction';
 import './App.css'
 import { productActions } from './redux/actions/product/ProductActions';
+import { messageActions } from './redux/actions/message/messageActions';
 
 function App() {
   const cookies = new Cookies();
