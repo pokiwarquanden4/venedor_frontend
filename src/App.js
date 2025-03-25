@@ -13,6 +13,7 @@ import { notificationActions } from './redux/actions/notification/notificationAc
 import './App.css'
 import { productActions } from './redux/actions/product/ProductActions';
 import { messageActions } from './redux/actions/message/messageActions';
+import Chatbot from './components/Chatbot/chatbot';
 
 function App() {
   const cookies = new Cookies();
@@ -50,6 +51,7 @@ function App() {
   return (
     <Router>
       <div className="App">
+        <Chatbot></Chatbot>
         <Routes>
           {publicRoutes.map((route, index) => {
             const Page = route.component;
