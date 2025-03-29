@@ -18,8 +18,7 @@ import {
 } from '../../config/filterInput';
 import { productSelector } from '../../redux/selectors/productSelector/productSelector';
 import routes from '../../config/routes';
-import categoryList from '../../config/category';
-import brandList from '../../config/branches';
+import Select from "react-select";
 
 function CreateProduct() {
   const productSelect = useSelector(productSelector);
@@ -35,7 +34,8 @@ function CreateProduct() {
   const [descriptionFill, setDescriptionFill] = useState();
   const [saleOff, setSaleOff] = useState();
   const [saleOffFill, setSaleOffFill] = useState();
-  const [category, setCategory] = useState();
+  const [categoryId, setCategoryId] = useState();
+  const [categoryListId, setCategoryListId] = useState([])
   const [brand, setBrand] = useState();
 
   const mainImgRef = useRef();
@@ -125,7 +125,7 @@ function CreateProduct() {
       formData.append('description', description);
       formData.append('number', quantity);
       formData.append('saleOff', decodeSaleOff(saleOff));
-      formData.append('category', category);
+      formData.append('category', categoryId);
       formData.append('brand', brand);
       formData.append('img', mainImgRef.current.files[0]);
       for (let i = 0; i < listImgFile.length; i++) {
@@ -176,6 +176,11 @@ function CreateProduct() {
       handleNavigate();
     }
   }, [productSelect.success]);
+
+  const categoryListOptions = (productSelect.category.categoryDetails[categoryId] || []).map((item) => ({
+    value: item.id,
+    label: item.categoryName,
+  }));
 
   return (
     <div className={styles.wrapper}>
@@ -291,13 +296,14 @@ function CreateProduct() {
               <select
                 className={styles.category_input}
                 onChange={(e) => {
-                  setCategory(e.target.value);
+                  setCategoryId(e.target.value);
                 }}
               >
                 <option value="None">None</option>
-                {categoryList.map((item, index) => {
+                {Object.keys(productSelect.category.category).map((key, index) => {
+                  const item = productSelect.category.category[key]
                   return (
-                    <option value={item.name} key={index}>
+                    <option value={key} key={index}>
                       {item.name}
                     </option>
                   );
@@ -306,21 +312,14 @@ function CreateProduct() {
             </div>
             <div className={styles.brand}>
               <div className={styles.brand_header}>Brand</div>
-              <select
+              <Select
                 className={styles.brand_input}
-                onChange={(e) => {
-                  setBrand(e.target.value);
-                }}
-              >
-                <option value="None">None</option>
-                {brandList.map((name, index) => {
-                  return (
-                    <option value={name} key={index}>
-                      {name}
-                    </option>
-                  );
-                })}
-              </select>
+                isMulti
+                options={[{ value: "None", label: "None" }, ...categoryListOptions]}
+                value={categoryListOptions.filter((option) => categoryListId.includes(option.value))}
+                onChange={(selectedOptions) => setCategoryListId(selectedOptions.map((option) => option.value))}
+                placeholder="Select brands..."
+              />
             </div>
           </div>
           <div className={styles.right_content}>

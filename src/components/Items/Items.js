@@ -68,8 +68,7 @@ function Items({ data, vertical, wishList, edit }) {
     setSelectedSpecific(selected)
     setSpecificData(specificData)
   }, [data.StorageSpecifics])
-  console.log(data)
-  console.log(data.category)
+
   return (
     <Fragment>
       {popup && (

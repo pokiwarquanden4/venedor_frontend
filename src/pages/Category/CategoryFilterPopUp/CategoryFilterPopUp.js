@@ -1,9 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import MainButton from '../../../components/MainButton/MainButton';
-import category from '../../../config/category';
 import styles from './CategoryFilterPopUp.module.scss';
+import { useSelector } from 'react-redux';
+import { productSelector } from '../../../redux/selectors/productSelector/productSelector';
 
 function CategoryFilterPopUp() {
+  const productSelect = useSelector(productSelector);
   const params = useParams();
   const navigate = useNavigate();
   const currentCategory = params.category ? params.category : 'All';
@@ -13,7 +15,7 @@ function CategoryFilterPopUp() {
       <div className={styles.category}>
         <div className={styles.category_header}>Category</div>
         <div className={styles.category_content}>
-          {category.map((item, index) => {
+          {productSelect.category.category.map((item, index) => {
             return (
               <MainButton
                 key={index}

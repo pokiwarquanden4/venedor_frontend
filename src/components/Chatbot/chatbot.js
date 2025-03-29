@@ -1,14 +1,15 @@
-import React, { useMemo, useState } from 'react';
-import { Chatbot as ChatbotComponent, createChatBotMessage, createCustomMessage } from 'react-chatbot-kit';
-import 'react-chatbot-kit/build/main.css'
+import React, { useMemo, useState, useEffect, useRef } from 'react';
+import { Chatbot as ChatbotComponent, createChatBotMessage } from 'react-chatbot-kit';
+import 'react-chatbot-kit/build/main.css';
 import MessageParser from './MessageParser';
 import ActionProvider from './ActionProvider';
-import styles from './chatbot.module.scss'
+import styles from './chatbot.module.scss';
 import { ChatbotIcon } from '../../asset/img/ItemsIcon';
 import ProductOverView from './chatbotProductOverview';
 
 function Chatbot() {
-    const [showChat, setShowChat] = useState(false)
+    const [showChat, setShowChat] = useState(false);
+    const chatRef = useRef(null); // Reference to chatbot wrapper
 
     const config = {
         botName: "Venedor",
@@ -32,13 +33,32 @@ function Chatbot() {
             },
         },
         chatContainer: {
-            width: "1000px",  // Thay đổi chiều rộng
+            width: "1000px", // Thay đổi chiều rộng
             height: "600px", // Thay đổi chiều cao
         }
     };
 
+    // Close chatbot when clicking outside
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (chatRef.current && !chatRef.current.contains(event.target)) {
+                setShowChat(false);
+            }
+        }
+
+        if (showChat) {
+            document.addEventListener("mousedown", handleClickOutside);
+        } else {
+            document.removeEventListener("mousedown", handleClickOutside);
+        }
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [showChat]);
+
     const chatbotMemoized = useMemo(() => (
-        <div className={`${styles.chatbot} ${!showChat ? styles.invisible : undefined}`}>
+        <div ref={chatRef} className={`${styles.chatbot} ${!showChat ? styles.invisible : undefined}`}>
             <ChatbotComponent
                 config={config}
                 messageParser={MessageParser}
@@ -49,8 +69,8 @@ function Chatbot() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.chatbot_icon}>
-                <ChatbotIcon onClick={() => setShowChat(!showChat)}></ChatbotIcon>
+            <div ref={chatRef} className={styles.chatbot_icon}>
+                <ChatbotIcon onClick={() => setShowChat(!showChat)} />
                 {chatbotMemoized}
             </div>
         </div>

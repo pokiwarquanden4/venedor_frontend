@@ -121,6 +121,7 @@
 
     .content_wrapper {
         // flex: 0.5;
+        max-width: 500px;
         width: 100%;
         margin-top: 20px;
         padding-left: 15px;
@@ -641,6 +642,10 @@
 
     .specifics_contents {
         display: flex;
+        flex-wrap: wrap;
+        /* Tự động xuống dòng nếu tràn */
+        gap: 10px;
+        /* Khoảng cách giữa các phần tử (tùy chọn) */
 
         .specifics_content {
             cursor: pointer;
@@ -656,10 +661,6 @@
         .selected {
             background-color: rgb(10, 104, 255);
             color: #fff;
-        }
-
-        .specifics_content+.specifics_content {
-            margin-left: 10px;
         }
     }
 }

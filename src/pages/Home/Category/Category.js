@@ -1,8 +1,9 @@
 import "react-multi-carousel/lib/styles.css";
 import styles from './Category.module.scss';
 import CategoryItems from './CategoryItems/CategoryItems';
-import category from '../../../config/category';
 import Carousel from "react-multi-carousel";
+import { useSelector } from "react-redux";
+import { productSelector } from "../../../redux/selectors/productSelector/productSelector";
 
 const responsive = {
   superLargeDesktop: {
@@ -25,6 +26,7 @@ const responsive = {
 };
 
 function Category() {
+  const productSelect = useSelector(productSelector);
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>Shop by Category</div>
@@ -42,8 +44,8 @@ function Category() {
               dotListClass="custom-dot-list-style"
               itemClass="carousel-item-padding-40-px"
             >
-              {Object.keys(category).map((key) => {
-                const data = category[key]
+              {Object.keys(productSelect.category.category).map((key) => {
+                const data = productSelect.category.category[key]
                 return <CategoryItems key={key} id={key} data={data}></CategoryItems>
               })}
             </Carousel>;
