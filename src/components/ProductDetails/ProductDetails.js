@@ -314,14 +314,15 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
             </div>
           )}
           {
-            specificData.map((item) => {
-              return <div className={styles.specifics}>
+            specificData.map((item, index) => {
+              return <div key={index} className={styles.specifics}>
                 <div className={styles.specifics_header}>{item.specificName}</div>
                 <div className={styles.specifics_contents}>
                   {
                     item.specific.map((s, index) => {
                       const selected = selectedSpecific[item.specificName] === index
                       return <div
+                        key={index}
                         onClick={() => setSelectedSpecific(preVal => {
                           return {
                             ...preVal,
@@ -337,7 +338,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
             })
           }
           {fullScreen ? <p className={styles.details} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: data.description }} /> : undefined}
-          {fullScreen && (
+          {/* {fullScreen && (
             <div className={styles.guaranteed}>
               <div className={styles.guaranteed_header}>Guaranteed Safe Checkout</div>
               <div className={styles.guaranteed_img_wrapper}>
@@ -347,7 +348,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                 ></img>
               </div>
             </div>
-          )}
+          )} */}
         </div>
 
         {fullScreen && isShowDetails ? (

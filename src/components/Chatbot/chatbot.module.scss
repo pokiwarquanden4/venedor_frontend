@@ -1,0 +1,39 @@
+.container {
+    position: fixed;
+    bottom: 3%;
+    right: 1%;
+    z-index: 99999;
+
+    .invisible {
+        display: none;
+    }
+
+    .chatbot_icon {
+        cursor: pointer;
+        position: relative;
+        width: 50px;
+        /* Độ rộng */
+        height: 50px;
+        /* Độ cao */
+        background-color: #007bff;
+        /* Màu nền */
+        border-radius: 50%;
+        /* Bo góc thành hình tròn */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        /* Màu chữ hoặc icon */
+        font-size: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .chatbot {
+        bottom: 100%;
+        right: 100%;
+        position: absolute;
+    }
+
+}

@@ -68,7 +68,8 @@ function Items({ data, vertical, wishList, edit }) {
     setSelectedSpecific(selected)
     setSpecificData(specificData)
   }, [data.StorageSpecifics])
-
+  console.log(data)
+  console.log(data.category)
   return (
     <Fragment>
       {popup && (
@@ -120,7 +121,7 @@ function Items({ data, vertical, wishList, edit }) {
             className={styles.img}
             imgUrl={data.imgURL}
             onClick={() => {
-              navigate(`/category/${data.category}/${data.id}`);
+              navigate(`/category/${data.categoryId}/${data.id}`);
             }}
           ></Img>
           <Img vertical={vertical} className={styles.imgHover} imgUrl={data.listImgURL[0] || data.imgURL}></Img>
@@ -170,7 +171,7 @@ function Items({ data, vertical, wishList, edit }) {
           <div className={styles.brand_name}>{data.brandName}</div>
           <div className={styles.item_description}>{data.productName}</div>
           <div className={styles.prices}>
-            {data.price && <div className={styles.old_price}>{formatVND(data.price)}</div>}
+            {data.price !== data.price - data.price * (data.saleOff / 100) ? <div className={styles.old_price}>{formatVND(data.price)}</div> : undefined}
             <div className={styles.new_price}>
               {formatVND(data.price - data.price * (data.saleOff / 100))}
             </div>

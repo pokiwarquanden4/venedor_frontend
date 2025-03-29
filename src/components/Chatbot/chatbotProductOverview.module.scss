@@ -1,0 +1,73 @@
+.container {
+    border-radius: 3%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    padding: 10px;
+
+    .data {
+        display: flex;
+    }
+
+    .details {
+        padding: 20px 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin-left: 10px;
+    }
+
+    .name {
+        color: black;
+        font-size: 20px;
+    }
+
+    .brandName {
+        margin-top: 20px;
+        max-width: 150px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        font-weight: bold;
+        font-size: 12px;
+        border: 1px solid black;
+        padding: 0 2px;
+    }
+
+    .price {
+        display: flex;
+        align-items: center;
+        color: black;
+        font-size: 20px;
+
+        .oldPrice {
+            text-decoration: line-through;
+            font-size: 14px;
+            font-weight: bolder;
+            margin-right: 10px;
+        }
+
+        .newPrice {
+            font-size: 19px;
+            font-weight: bolder;
+            color: rgb(194, 53, 29);
+        }
+    }
+
+    .button {
+        display: flex;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .viewButton,
+        .buyButton {
+            width: 135px;
+            height: 100%;
+            margin-left: 10px;
+            transition: all ease 0.2s;
+            font-size: 18px;
+        }
+    }
+}
