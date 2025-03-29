@@ -20,7 +20,7 @@ function HomeCategory() {
   const [filterPopUp, setFilterPopUp] = useState(false);
   const [pageData, setPageData] = useState({
     page: 1,
-    limit: 30,
+    limit: 16,
     categoryId: params.id
   })
 
@@ -153,7 +153,8 @@ function HomeCategory() {
                   setPageData((preData) => {
                     return {
                       ...preData,
-                      limit: pageNum
+                      limit: pageNum,
+                      page: 1
                     }
                   })
                 }}

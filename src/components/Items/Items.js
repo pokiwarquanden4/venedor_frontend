@@ -51,7 +51,7 @@ function Items({ data, vertical, wishList, edit }) {
         setWishListId(undefined);
       }
     }
-  }, [loginSelect.wishList]);
+  }, [loginSelect.wishList, data]);
 
   useEffect(() => {
     if (!data.StorageSpecifics) return
