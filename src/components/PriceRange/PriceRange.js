@@ -1,3 +1,4 @@
+import { formatVND } from '../../config/utils';
 import styles from './PriceRange.module.scss';
 import { useEffect, useState } from 'react';
 
@@ -54,7 +55,7 @@ function PriceRange({ min, max, value, step, onChange }) {
         </div>
         <div className={styles.control_wrapper}>
           <div className={styles.control} style={{ left: `${minPos}%` }}>
-            <div className={styles.control_value}>${minValue}</div>
+            <div className={styles.control_value}>{formatVND(minValue)}</div>
           </div>
           <div className={styles.rail}>
             <div
@@ -63,7 +64,7 @@ function PriceRange({ min, max, value, step, onChange }) {
             />
           </div>
           <div className={styles.control} style={{ left: `${maxPos}%` }}>
-            <div className={styles.control_value}>${maxValue}</div>
+            <div className={styles.control_value}>{formatVND(maxValue)}</div>
           </div>
         </div>
       </div>

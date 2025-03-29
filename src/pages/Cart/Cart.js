@@ -13,6 +13,7 @@ import { addressSelector } from '../../redux/selectors/accountSelector/AddressSe
 import Popup from '../../components/Popup/Popup';
 import { purchaseActions } from '../../redux/actions/purchase/purchaseActions';
 import { notificationActions } from '../../redux/actions/notification/notificationAction';
+import { formatVND } from '../../config/utils';
 
 function Cart() {
   const [data, setData] = useState([]);
@@ -36,14 +37,14 @@ function Cart() {
     data.forEach((item) => {
       temp += item.cartQuantity * item.price;
     });
-    setOriginalPrice(temp.toFixed(2));
+    setOriginalPrice(temp);
 
     //discount
     temp = 0;
     data.forEach((item) => {
       temp += item.cartQuantity * item.price * (item.saleOff / 100);
     });
-    setDiscount(temp.toFixed(2));
+    setDiscount(temp);
 
     //Total
     temp = 0;
@@ -54,7 +55,7 @@ function Cart() {
         temp += item.cartQuantity * item.price;
       }
     });
-    setTotal(temp.toFixed(2));
+    setTotal(temp);
   }, [data]);
 
   useEffect(() => {
@@ -186,16 +187,16 @@ function Cart() {
                 >
                   <div className={styles.money_tag}>
                     <div className={styles.total}>
-                      <div className={styles.total_header}>Subtotal</div>
-                      <div className={styles.total_price}>${originalPrice}</div>
+                      <div className={styles.total_header}>Original</div>
+                      <div className={styles.total_price}>{formatVND(originalPrice)}</div>
                     </div>
                     <div className={`${styles.total} ${styles.saleOff}`}>
-                      <div className={styles.total_header}>Subtotal</div>
-                      <div className={styles.total_price}>${discount}</div>
+                      <div className={styles.total_header}>Discounted</div>
+                      <div className={styles.total_price}>{formatVND(discount)}</div>
                     </div>
                     <div className={styles.grand_total}>
                       <div className={styles.grand_total_header}>Grand Total</div>
-                      <div className={styles.grand_total_price}>${total}</div>
+                      <div className={styles.grand_total_price}>{formatVND(total)}</div>
                     </div>
                     <div className={styles.checkout_button_wrapper}>
                       <MainButton
@@ -241,9 +242,8 @@ function Cart() {
                   )}
                 </div>
                 <div
-                  className={`${styles.collapse_wrapper} ${
-                    !dropDownAddress ? styles.address_tag_colapse : ''
-                  }`}
+                  className={`${styles.collapse_wrapper} ${!dropDownAddress ? styles.address_tag_colapse : ''
+                    }`}
                 >
                   <div className={styles.address_tag}>
                     <div className={styles.name}>

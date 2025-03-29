@@ -1,6 +1,7 @@
 import { useDispatch } from 'react-redux';
 import styles from './CartItems.module.scss';
 import { cartActions } from '../../../redux/actions/product/cartActions';
+import { formatVND } from '../../../config/utils';
 
 function CartItems({ data }) {
   const dispatch = useDispatch();
@@ -9,10 +10,10 @@ function CartItems({ data }) {
     <div className={styles.item}>
       <div style={{ backgroundImage: `url(${data.imgURL})` }} className={styles.item_img}></div>
       <div className={styles.itemBlock}>
-        <div className={styles.item_description}>{data.description}</div>
+        <div className={styles.item_description}>{data.productName} - {data.specific}</div>
         <div className={styles.item_wrapper}>
           <div className={styles.item_price}>
-            ${(data.cartQuantity * (data.price - data.price * (data.saleOff / 100))).toFixed(2)}
+            {formatVND(data.cartQuantity * (data.price - data.price * (data.saleOff / 100)))}
           </div>
           <div className={styles.item_quantity}>
             <div className={styles.item_quantity_button}>
@@ -20,7 +21,7 @@ function CartItems({ data }) {
                 className={styles.minus}
                 onClick={() => {
                   if (data.cartQuantity > 1) {
-                    dispatch(cartActions.editCartProductRequest({ quantity: -1, id: data.id }));
+                    dispatch(cartActions.editCartProductRequest({ quantity: -1, id: data.id, specific: data.specific }));
                   }
                 }}
               >
@@ -31,7 +32,7 @@ function CartItems({ data }) {
                 className={styles.plus}
                 onClick={() => {
                   if (data.number > data.cartQuantity) {
-                    dispatch(cartActions.editCartProductRequest({ quantity: 1, id: data.id }));
+                    dispatch(cartActions.editCartProductRequest({ quantity: 1, id: data.id, specific: data.specific }));
                   }
                 }}
               >

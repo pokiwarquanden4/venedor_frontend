@@ -162,17 +162,13 @@ function* createCartProductSaga(action) {
 
 function* editCartProductSaga(action) {
   try {
-    yield put(loadingActions.setLoadingLoading(true));
 
     const products = yield call(editCartProductAPI, action.payload);
     yield put(cartActions.editCartProductSuccess(products.data));
     yield put(cartActions.getCartProductRequest());
 
-    yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(cartActions.editCartProductFailure(err.response.data));
-
-    yield put(loadingActions.setLoadingLoading(false));
   }
 }
 

@@ -7,6 +7,7 @@ import { cartActions } from '../../redux/actions/product/cartActions';
 import CartPopUpItem from './CartPopUpItem/CartPopUpItem';
 import { LoginSelector } from '../../redux/selectors/accountSelector/LoginSelector';
 import { useNavigate } from 'react-router-dom';
+import { formatVND } from '../../config/utils';
 
 function CartPopUp() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ function CartPopUp() {
     data.forEach((item) => {
       temp += item.cartQuantity * item.price;
     });
-    setOriginalPrice(temp.toFixed(2));
+    setOriginalPrice(temp);
 
     //Discount
     temp = 0;
@@ -33,7 +34,7 @@ function CartPopUp() {
         temp += item.cartQuantity * item.price * (item.saleOff / 100);
       }
     });
-    setDiscount(temp.toFixed(2));
+    setDiscount(temp);
 
     //Total
     temp = 0;
@@ -44,7 +45,7 @@ function CartPopUp() {
         temp += item.cartQuantity * item.price;
       }
     });
-    setTotal(temp.toFixed(2));
+    setTotal(temp);
   }, [data]);
 
   useEffect(() => {
@@ -75,15 +76,15 @@ function CartPopUp() {
       <div className={styles.price}>
         <div className={styles.original}>
           <div className={styles.original_header}>Original</div>
-          <div className={styles.original_price}>${originalPrice}</div>
+          <div className={styles.original_price}>{formatVND(originalPrice)}</div>
         </div>
         <div className={styles.discount}>
           <div className={styles.discount_header}>Discounted</div>
-          <div className={styles.discount_price}>${discount}</div>
+          <div className={styles.discount_price}>{formatVND(discount)}</div>
         </div>
         <div className={styles.total}>
           <div className={styles.total_header}>Total</div>
-          <div className={styles.total_price}>${total}</div>
+          <div className={styles.total_price}>{formatVND(total)}</div>
         </div>
       </div>
       <div className={styles.button}>

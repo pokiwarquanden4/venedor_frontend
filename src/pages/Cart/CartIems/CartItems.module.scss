@@ -4,6 +4,7 @@
     height: 240px;
     display: flex;
     align-items: center;
+
     .item_x_button {
         cursor: pointer;
         position: absolute;
@@ -11,51 +12,66 @@
         right: 1%;
         color: #b1b1b1;
         top: 50%;
-        transform: translate(0,-50%);
+        transform: translate(0, -50%);
     }
-    .item_img, .item_description, .item_price, .item_quantity{
+
+    .item_img,
+    .item_description,
+    .item_price,
+    .item_quantity {
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
+        margin-right: 10px;
         display: flex;
         justify-content: center;
     }
-    .item_img{
+
+    .item_img {
         min-width: 120px;
         cursor: pointer;
         flex: 0.2;
         height: 100%;
     }
+
     .itemBlock {
         display: flex;
         flex: 0.8;
-        .item_description{
+
+        .item_description {
             margin-left: 20px;
             flex: 0.5;
         }
+
         .item_wrapper {
             display: flex;
             flex: 0.5;
-            .item_price{
+
+            .item_price {
                 font-size: 20px;
                 font-weight: bolder;
                 flex: 0.25;
             }
-            .item_quantity{
+
+            .item_quantity {
                 position: relative;
                 flex: 0.75;
-                .item_quantity_button{
+
+                .item_quantity_button {
                     min-width: 100px;
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     border: 1px solid #e0e0e0;
-                    .minus, .plus{
+
+                    .minus,
+                    .plus {
                         cursor: pointer;
                         height: 100%;
                         padding: 10px 10px;
                     }
                 }
+
                 .notification {
                     position: absolute;
                     font-size: 12px;
@@ -64,26 +80,34 @@
                 }
             }
         }
-        
+
     }
+
     @media (max-width: 790px) {
-        .itemBlock{
+        .itemBlock {
             margin-left: 30px;
             display: block;
+
             .item_description {
                 margin-left: 0;
             }
-            .item_img, .item_description, .item_price, .item_quantity{
+
+            .item_img,
+            .item_description,
+            .item_price,
+            .item_quantity {
                 background-size: contain;
                 background-position: center;
                 background-repeat: no-repeat;
                 display: flex;
                 justify-content: left !important;
             }
+
             .item_wrapper {
                 margin-top: 20px;
                 display: block;
-                .item_quantity{
+
+                .item_quantity {
                     margin-top: 20px;
                 }
             }

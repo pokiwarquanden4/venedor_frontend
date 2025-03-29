@@ -17,6 +17,7 @@ import Img from '../Img/Img';
 import { wishListActions } from '../../redux/actions/product/wishListActions';
 import { useNavigate } from 'react-router-dom';
 import { cartActions } from '../../redux/actions/product/cartActions';
+import { formatVND } from '../../config/utils';
 
 function Items({ data, vertical, wishList, edit }) {
   if (data) {
@@ -31,6 +32,8 @@ function Items({ data, vertical, wishList, edit }) {
   const [heart, setHeart] = useState(false);
   const [popup, setPopup] = useState(false);
   const [wishListId, setWishListId] = useState();
+  const [specificData, setSpecificData] = useState([])
+  const [selectedSpecific, setSelectedSpecific] = useState({})
   const role = loginSelect.loginRole === 'User';
 
   const handleDelete = useCallback(() => {
@@ -49,6 +52,22 @@ function Items({ data, vertical, wishList, edit }) {
       }
     }
   }, [loginSelect.wishList]);
+
+  useEffect(() => {
+    if (!data.StorageSpecifics) return
+    const selected = {}
+    const specificData = data.StorageSpecifics.map((item) => {
+      selected[item.specificName] = 0
+
+      return {
+        specificName: item.specificName,
+        specific: item.specific.split('_')
+      }
+    })
+
+    setSelectedSpecific(selected)
+    setSpecificData(specificData)
+  }, [data.StorageSpecifics])
 
   return (
     <Fragment>
@@ -126,6 +145,7 @@ function Items({ data, vertical, wishList, edit }) {
                       cartActions.createCartProductRequest({
                         id: data.id,
                         quantity: 1,
+                        specific: Object.keys(selectedSpecific).map(key => specificData.find(d => d.specificName === key)?.specific[selectedSpecific[key]]).join(" - ")
                       })
                     );
                   }
@@ -150,9 +170,9 @@ function Items({ data, vertical, wishList, edit }) {
           <div className={styles.brand_name}>{data.brandName}</div>
           <div className={styles.item_description}>{data.productName}</div>
           <div className={styles.prices}>
-            {data.price && <div className={styles.old_price}>${data.price}</div>}
+            {data.price && <div className={styles.old_price}>{formatVND(data.price)}</div>}
             <div className={styles.new_price}>
-              ${data.price - data.price * (data.saleOff / 100)}
+              {formatVND(data.price - data.price * (data.saleOff / 100))}
             </div>
           </div>
           {data.saleOff ? <div className={styles.saving}>you save {data.saleOff}%</div> : null}
@@ -166,6 +186,7 @@ function Items({ data, vertical, wishList, edit }) {
                 cartActions.createCartProductRequest({
                   id: data.id,
                   quantity: 1,
+                  specific: Object.keys(selectedSpecific).map(key => specificData.find(d => d.specificName === key)?.specific[selectedSpecific[key]]).join(" - ")
                 })
               );
             }}

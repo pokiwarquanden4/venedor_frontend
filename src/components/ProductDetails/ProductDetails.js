@@ -21,6 +21,7 @@ import Comment from '../Comment/Comment';
 import { productActions } from '../../redux/actions/product/ProductActions';
 import ReactPaginate from 'react-paginate';
 import Pagination from '../Pagination/Pagination';
+import { formatVND } from '../../config/utils';
 
 function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
   const navigate = useNavigate();
@@ -42,7 +43,25 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
     limit: 4,
     productId: data.id
   })
+  const [specificData, setSpecificData] = useState([])
+  const [selectedSpecific, setSelectedSpecific] = useState({})
   const [commentData, setCommentData] = useState(productSelect.productComments)
+
+  useEffect(() => {
+    if (!data.StorageSpecifics) return
+    const selected = {}
+    const specificData = data.StorageSpecifics.map((item) => {
+      selected[item.specificName] = 0
+
+      return {
+        specificName: item.specificName,
+        specific: item.specific.split('_')
+      }
+    })
+
+    setSelectedSpecific(selected)
+    setSpecificData(specificData)
+  }, [data.StorageSpecifics])
 
   useEffect(() => {
     dispatch(productActions.getCommentRequest({ page: pageData.page, limit: pageData.limit, productId: pageData.productId }));
@@ -186,9 +205,9 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
           <div className={styles.stock}>Availability: {data.number}</div>
           <div className={styles.price}>
             <div className={styles.olePrice} style={data.saleOff === 0 ? { display: 'none' } : {}}>
-              ${data.price}
+              {formatVND(data.price)}
             </div>
-            <div className={styles.newPrice}>${data.price - data.price * (data.saleOff / 100)}</div>
+            <div className={styles.newPrice}>{formatVND(data.price - data.price * (data.saleOff / 100))}</div>
           </div>
           <div className={styles.buyer}>
             <div className={styles.number}>
@@ -229,6 +248,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                     cartActions.createCartProductRequest({
                       id: data.id,
                       quantity: number,
+                      specific: Object.keys(selectedSpecific).map(key => specificData.find(d => d.specificName === key)?.specific[selectedSpecific[key]]).join(" - ")
                     })
                   );
                 }
@@ -293,7 +313,30 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
               </div>
             </div>
           )}
-          <p className={styles.details} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: data.description }} />
+          {
+            specificData.map((item) => {
+              return <div className={styles.specifics}>
+                <div className={styles.specifics_header}>{item.specificName}</div>
+                <div className={styles.specifics_contents}>
+                  {
+                    item.specific.map((s, index) => {
+                      const selected = selectedSpecific[item.specificName] === index
+                      return <div
+                        onClick={() => setSelectedSpecific(preVal => {
+                          return {
+                            ...preVal,
+                            [item.specificName]: index
+                          }
+                        })}
+                        className={`${styles.specifics_content} ${selected ? styles.selected : ''}`}
+                      >{s}</div>
+                    })
+                  }
+                </div>
+              </div>
+            })
+          }
+          {fullScreen ? <p className={styles.details} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: data.description }} /> : undefined}
           {fullScreen && (
             <div className={styles.guaranteed}>
               <div className={styles.guaranteed_header}>Guaranteed Safe Checkout</div>
@@ -307,7 +350,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
           )}
         </div>
 
-        {isShowDetails && (
+        {fullScreen && isShowDetails ? (
           <Popup
             onClick={() => {
               setIsShowDetails(false)
@@ -316,7 +359,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
           >
             <p style={{ padding: '20px' }} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: data.description }} />
           </Popup>
-        )}
+        ) : undefined}
       </div>
       {commentData.comments.map((comment) => {
         return <Comment key={comment.id} data={comment}></Comment>
