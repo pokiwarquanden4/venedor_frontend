@@ -17,7 +17,7 @@ function Order() {
 
   useEffect(() => {
     dispatch(historyActions.orderRequest());
-  }, []);
+  }, [dispatch]);
 
   function checkHistoriesEmpty(products) {
     for (let i = 0; i < products.length; i++) {

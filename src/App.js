@@ -26,15 +26,15 @@ function App() {
 
   useEffect(() => {
     dispatch(productActions.getCategoryRequest())
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     setJwtToken(cookies.get('jwt_token') || cookies.get('jwt_refresh_token'));
-  }, [cookies.get('jwt_token'), cookies.get('jwt_refresh_token')]);
+  }, [cookies]);
 
   useEffect(() => {
     dispatch(loginActions.loginStatus(jwtToken ? true : false));
-  }, [jwtToken]);
+  }, [dispatch, jwtToken]);
 
   useEffect(() => {
     if (notificationSelect.showing) {
@@ -46,7 +46,7 @@ function App() {
         clearTimeout(myTimeOut);
       };
     }
-  }, [notificationSelect.showing]);
+  }, [dispatch, notificationSelect.showing]);
 
   return (
     <Router>

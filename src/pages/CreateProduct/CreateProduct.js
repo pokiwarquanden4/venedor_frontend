@@ -69,7 +69,7 @@ function CreateProduct() {
         reject(err);
       };
     });
-  });
+  }, []);
 
   const removeFile = useCallback((e, index) => {
     const files = e.files;
@@ -85,7 +85,7 @@ function CreateProduct() {
     filesArray.forEach((file) => updatedFiles.items.add(file));
 
     setListImgFile(updatedFiles.files);
-  });
+  }, []);
 
   const addFile = useCallback((e) => {
     const files = e.files;
@@ -100,7 +100,7 @@ function CreateProduct() {
     filesArray.concat(addFilesArray).forEach((file) => updatedFiles.items.add(file));
 
     setListImgFile(updatedFiles.files);
-  });
+  }, [listImgFile]);
 
   const checkinput = useCallback(() => {
     !name && setNameFill(true);
@@ -128,7 +128,7 @@ function CreateProduct() {
     } else {
       return false;
     }
-  });
+  }, [categoryId, categoryIdFill, categoryListId.length, categoryListIdFill, description, descriptionFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill]);
 
   const handleSubmit = useCallback(() => {
     if (checkinput()) {
@@ -150,7 +150,7 @@ function CreateProduct() {
 
       navigate(routes.accountSeller);
     }
-  });
+  }, [brand, categoryId, categoryListId, checkinput, description, dispatch, listImgFile, name, navigate, price, quantity, saleOff, specific]);
 
   const getReviewData = useCallback(() => {
     return {
@@ -159,7 +159,7 @@ function CreateProduct() {
       price: decodePrice(price),
       saleOff: decodeSaleOff(saleOff),
     };
-  });
+  }, [description, price, quantity, saleOff]);
 
   useEffect(() => {
     if (listImgRef.current) {
@@ -181,7 +181,7 @@ function CreateProduct() {
       //Run
       handle();
     }
-  }, [listImgFile]);
+  }, [convertBase64, listImgFile]);
 
   const categoryListOptions = (productSelect.category.categoryDetails[categoryId] || []).map((item) => ({
     value: item.id,

@@ -98,7 +98,7 @@ function HomeCategory() {
       page: pageData.page,
       limit: pageData.limit
     }));
-  }, [pageData]);
+  }, [dispatch, pageData]);
 
   return (
     <Fragment>

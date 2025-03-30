@@ -15,7 +15,7 @@ const ProductOverView = (props) => {
         <div className={styles.container}>
             <div className={styles.data}>
                 <div className={styles.picture}>
-                    <img src={data.imgURL}></img>
+                    <img alt='' src={data.imgURL}></img>
                 </div>
                 <div className={styles.details}>
                     <div className={styles.name}>

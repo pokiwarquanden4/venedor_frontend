@@ -53,7 +53,7 @@ function Message() {
     }
 
     return formattedDate;
-  });
+  }, []);
 
   const checkTimeGap = useCallback((time1, time2) => {
     var time1Convert = new Date(time1);
@@ -61,11 +61,11 @@ function Message() {
 
     var diffInMinutes = Math.abs((time1Convert.getTime() - time2Convert.getTime()) / (1000 * 60));
     return diffInMinutes >= 10;
-  });
+  }, []);
 
   useEffect(() => {
     dispatch(messageActions.getAllRoomChatRequest());
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     setRooms(messageSelect.listRoom);
   }, [messageSelect.listRoom]);
@@ -85,7 +85,7 @@ function Message() {
         newSocket.disconnect();
       };
     }
-  }, [currentRoom]);
+  }, [currentRoom, dispatch, rooms]);
   useEffect(() => {
     setMessageList(messageSelect.messages);
   }, [messageSelect.messages]);
@@ -103,7 +103,7 @@ function Message() {
       setMessageList((messageList) => [...messageList, data]);
       setInput('');
     }
-  });
+  }, [currentRoom, input, loginSelect.loginRole, rooms, socket]);
 
   useEffect(() => {
     if (socket) {
@@ -113,7 +113,7 @@ function Message() {
         setMessageList((messageList) => [...messageList, data]);
       });
     }
-  }, [socket]);
+  }, [currentRoom, rooms, socket]);
 
   useEffect(() => {
     if (currentRoom !== undefined) {
@@ -125,7 +125,7 @@ function Message() {
         messageRef.current.classList.remove(`${styles.sendMessage_active}`);
       }
     }
-  }, [input]);
+  }, [currentRoom, input]);
 
   return (
     <div className={styles.wrapper}>

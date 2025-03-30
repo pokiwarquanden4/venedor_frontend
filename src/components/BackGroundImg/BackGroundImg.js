@@ -9,7 +9,7 @@ function BackGroundImg({ className, main, imgURL, deleteProduct }) {
   const classes = `${styles.img_container} ${className ? ([styles.className] = className) : ''}`;
   return (
     <div className={classes}>
-      <img className={styles.img} ref={imgRef} src={imgURL}></img>
+      <img alt='' className={styles.img} ref={imgRef} src={imgURL}></img>
       <div className={styles.img_name} ref={imgNameRef}>
         {main ? 'Main picture of your product' : 'Preview picture of your product'}
       </div>

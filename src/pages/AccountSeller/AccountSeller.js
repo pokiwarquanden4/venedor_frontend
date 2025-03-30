@@ -35,7 +35,7 @@ function AccountSeller() {
 
   useEffect(() => {
     dispatch(productActions.getAllProductRequest());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (productSelect.getAllProduct) {

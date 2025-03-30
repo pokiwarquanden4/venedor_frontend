@@ -25,18 +25,18 @@ function Account() {
 
   useEffect(() => {
     dispatch(addressActions.getAddressRequest());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(historyActions.getHistoryRequest());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (historySelect.cancelOder) {
       dispatch(historyActions.getHistoryRequest());
       dispatch(historyActions.setCancelOder(false));
     }
-  }, [historySelect.cancelOder]);
+  }, [dispatch, historySelect.cancelOder]);
 
   useEffect(() => {
     if (historySelect.historyList) {
@@ -58,6 +58,7 @@ function Account() {
                 return (
                   <div className={styles.history_list} key={index}>
                     <img
+                      alt=''
                       className={styles.picture}
                       src={item.imgURL}
                       onClick={() => {
@@ -74,10 +75,10 @@ function Account() {
                         {item.status === 0
                           ? 'Pending'
                           : item.status === 1
-                          ? 'Shipping'
-                          : item.status === 2
-                          ? 'Done'
-                          : 'Cancel'}
+                            ? 'Shipping'
+                            : item.status === 2
+                              ? 'Done'
+                              : 'Cancel'}
                       </div>
                       <div className={styles.purchaseDate}>
                         {new Date(item.updatedAt).toLocaleDateString('en-GB', {

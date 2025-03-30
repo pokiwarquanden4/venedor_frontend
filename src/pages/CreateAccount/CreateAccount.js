@@ -34,7 +34,7 @@ function CreateAccount() {
         })
       );
     }
-  }, [createAccount.success]);
+  }, [accountName, createAccount.success, dispatch, password]);
 
   useEffect(() => {
     setOtpEnable(createAccount.createAccountOtp);
@@ -45,7 +45,7 @@ function CreateAccount() {
       dispatch(createAccountActions.setAccountSuccessStatus(false));
       navigate('/');
     }
-  }, [loginSelect.login]);
+  }, [dispatch, loginSelect.login, navigate]);
 
   useEffect(() => {
     setOtpNotification(createAccount.wrongOtp);

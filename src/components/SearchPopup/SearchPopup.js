@@ -18,7 +18,7 @@ function SearchPopup({ data }) {
                 }}
               >
                 <div key={index} className={styles.img_wrapper}>
-                  <img src={item.imgURL} className={styles.img}></img>
+                  <img alt='' src={item.imgURL} className={styles.img}></img>
                 </div>
                 <div className={styles.description}>
                   <div className={styles.description_content}>{item.productName}</div>

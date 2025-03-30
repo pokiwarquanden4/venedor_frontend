@@ -54,7 +54,7 @@ function CartPopUp() {
 
   useEffect(() => {
     dispatch(cartActions.getCartProductRequest());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={styles.wrapper}>

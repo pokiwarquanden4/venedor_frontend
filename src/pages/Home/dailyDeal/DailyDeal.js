@@ -59,11 +59,11 @@ function DailyDeal() {
     }
 
     setConvertData(results);
-  }, [data]);
+  }, [data, numberPerPage]);
 
   useEffect(() => {
     dispatch(homeActions.dailyDealsProductRequest());
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     setData(homeSelect.dailyDeals);
   }, [homeSelect.dailyDeals]);
@@ -117,9 +117,8 @@ function DailyDeal() {
               setCurrentPage(currentPage + 1);
             }
           }}
-          className={`${
-            currentPage === convertData.length - 1 ? styles.disableButton : styles.next_right
-          } `}
+          className={`${currentPage === convertData.length - 1 ? styles.disableButton : styles.next_right
+            } `}
         >
           <RightArrowIcon className={styles.icon}></RightArrowIcon>
         </div>

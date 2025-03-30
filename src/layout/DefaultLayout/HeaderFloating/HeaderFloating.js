@@ -78,14 +78,14 @@ function HeaderFloating({ mainRef }) {
     return () => {
       clearTimeout(handleSearch);
     };
-  }, [searchValue]);
+  }, [dispatch, searchValue]);
 
   useEffect(() => {
     if (cartSelect.showing) {
       setCart(cartSelect.showing);
       dispatch(cartActions.setCartShowing(false));
     }
-  }, [cartSelect.showing]);
+  }, [cartSelect.showing, dispatch]);
 
   return (
     <Fragment>
@@ -127,6 +127,7 @@ function HeaderFloating({ mainRef }) {
               }}
             >
               <img
+                alt=''
                 src="https://cdn.shopify.com/s/files/1/0438/9070/4538/files/logo.png?v=1614325954"
                 className={styles.logo}
               ></img>

@@ -16,7 +16,7 @@ function CategoryItems({ data, id }) {
       }}
     >
       <div className={styles.content}>
-        <img className={styles.img} src={data.icon}></img>
+        <img alt='' className={styles.img} src={data.icon}></img>
         <div className={styles.title}>{data.name}</div>
       </div>
     </div>

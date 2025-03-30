@@ -64,11 +64,11 @@ function Cart() {
 
   useEffect(() => {
     dispatch(cartActions.getCartProductRequest());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     dispatch(addressActions.getAddressRequest());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     setAddressData(addressSelect.addressList);

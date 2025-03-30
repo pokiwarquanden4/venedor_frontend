@@ -17,6 +17,10 @@ function Search() {
   const [range, setRange] = useState();
   const [priceValue, setPriceValue] = useState();
 
+  const getTruePrice = useCallback((item) => {
+    return Math.ceil(item.price - item.price * (item.saleOff / 100));
+  }, []);
+
   const getHighestPrice = useCallback((data) => {
     let max = 0;
     data.forEach((item) => {
@@ -26,11 +30,7 @@ function Search() {
       }
     });
     return max;
-  });
-
-  const getTruePrice = useCallback((item) => {
-    return Math.ceil(item.price - item.price * (item.saleOff / 100));
-  });
+  }, [getTruePrice]);
 
   useEffect(() => {
     if (productSelect.searchProducts) {
@@ -44,18 +44,18 @@ function Search() {
       setRange(highestMoney);
       setPriceValue({ min: 0, max: highestMoney });
     }
-  }, [data]);
+  }, [data, getHighestPrice]);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.wrapper_content}>
         <div className={styles.search_bar_wrapper}>
           <div className={styles.search_bar_header}>
-            {data.length != 0
+            {data.length !== 0
               ? `${data.length} results for "${searchValue}"`
               : 'Search for products on our site'}
           </div>
-          {data.length != 0 ? (
+          {data.length !== 0 ? (
             <div className={styles.items}>
               {data.map((item, index) => {
                 if (getTruePrice(item) <= priceValue.max && getTruePrice(item) >= priceValue.min) {

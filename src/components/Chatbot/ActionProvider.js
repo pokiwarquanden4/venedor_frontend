@@ -44,7 +44,7 @@ const ActionProvider = ({ createChatBotMessage, setState, children }) => {
                 }));
             })
         }
-    }, [chatbotData.chatbotMessages])
+    }, [cacheMessageFunc, chatbotData.chatbotMessages, createChatBotMessage, setState])
 
     const handleNewUserMessage = (newMessage) => {
         cacheMessageFunc(newMessage, 'user')

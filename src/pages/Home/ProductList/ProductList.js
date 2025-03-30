@@ -15,21 +15,21 @@ function ProductList() {
 
   useEffect(() => {
     dispatch(homeActions.latestProductRequest());
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     setLatestData(homeSelect.latestProducts);
   }, [homeSelect.latestProducts]);
 
   useEffect(() => {
     dispatch(homeActions.bestSellerProductRequest());
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     setBestSellerData(homeSelect.bestSellerProducts);
   }, [homeSelect.bestSellerProducts]);
 
   useEffect(() => {
     dispatch(homeActions.featureProductRequest());
-  }, []);
+  }, [dispatch]);
   useEffect(() => {
     setFeatureData(homeSelect.featureProducts);
   }, [homeSelect.featureProducts]);

@@ -38,7 +38,7 @@ function Items({ data, vertical, wishList, edit }) {
 
   const handleDelete = useCallback(() => {
     dispatch(wishListActions.deleteWishListRequest({ id: wishListId }));
-  });
+  }, [dispatch, wishListId]);
 
   useEffect(() => {
     if (loginSelect.wishList) {

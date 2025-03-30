@@ -14,7 +14,7 @@ function ProductAllDetails() {
 
   useEffect(() => {
     dispatch(productSearchActions.searchProductByIdRequest({ id: params.id }));
-  }, [params.id]);
+  }, [dispatch, params.id]);
 
   useEffect(() => {
     if (productUnsaveSelect.searchProductById) {

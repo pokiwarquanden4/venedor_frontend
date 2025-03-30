@@ -58,7 +58,7 @@ function EditProduct() {
     if (productSelect.getAllProduct) {
       setData(productSelect.getAllProduct.find((obj) => obj.id == params.id));
     }
-  }, [productSelect.getAllProduct]);
+  }, [params.id, productSelect.getAllProduct]);
 
   useEffect(() => {
     if (data) {
@@ -85,7 +85,7 @@ function EditProduct() {
         reject(err);
       };
     });
-  });
+  }, []);
 
   const removeFile = useCallback((e, index) => {
     const files = e.files;
@@ -101,7 +101,7 @@ function EditProduct() {
     filesArray.forEach((file) => updatedFiles.items.add(file));
 
     setListImgFile(updatedFiles.files);
-  });
+  }, []);
 
   const addFile = useCallback((e) => {
     const files = e.files;
@@ -116,7 +116,7 @@ function EditProduct() {
     filesArray.concat(addFilesArray).forEach((file) => updatedFiles.items.add(file));
 
     setListImgFile(updatedFiles.files);
-  });
+  }, [listImgFile]);
 
   const checkInput = useCallback(() => {
     !name && setNameFill(true);
@@ -140,7 +140,7 @@ function EditProduct() {
     } else {
       return false;
     }
-  });
+  }, [currentImg, currentListImg.length, description, descriptionFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill]);
 
   const handleSubmit = useCallback(() => {
     if (checkInput()) {
@@ -165,7 +165,7 @@ function EditProduct() {
       };
       submition();
     }
-  });
+  }, [category, checkInput, currentListImgRemove, data.id, description, dispatch, listImgFile, name, price, quantity, saleOff]);
 
   useEffect(() => {
     if (productSelect.success) {
@@ -175,7 +175,7 @@ function EditProduct() {
       };
       handleNavigate();
     }
-  }, [productSelect.success]);
+  }, [dispatch, navigate, productSelect.success]);
 
   useEffect(() => {
     if (listImgRef.current) {
@@ -197,7 +197,7 @@ function EditProduct() {
       //Run
       handle();
     }
-  }, [listImgFile]);
+  }, [convertBase64, listImgFile]);
 
   useEffect(() => {
     if (productSelect.success) {
@@ -207,7 +207,7 @@ function EditProduct() {
       };
       handleNavigate();
     }
-  }, [productSelect.success]);
+  }, [dispatch, navigate, productSelect.success]);
 
   return (
     <div className={styles.wrapper}>

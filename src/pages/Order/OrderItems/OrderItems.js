@@ -39,7 +39,7 @@ function OrderItems({ data, upperData }) {
       )}
       <tr>
         <td className={styles.content_content}>
-          <img src={upperData.imgURL} style={{ width: '100%' }}></img>
+          <img alt='' src={upperData.imgURL} style={{ width: '100%' }}></img>
         </td>
         <td className={styles.content_content}>{upperData.productName}</td>
         <td className={styles.content_content}>{data.number}</td>

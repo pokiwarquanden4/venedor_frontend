@@ -65,7 +65,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
 
   useEffect(() => {
     dispatch(productActions.getCommentRequest({ page: pageData.page, limit: pageData.limit, productId: pageData.productId }));
-  }, [pageData])
+  }, [dispatch, pageData])
 
   useEffect(() => {
     setCommentData({

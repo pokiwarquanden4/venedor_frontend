@@ -65,7 +65,7 @@ function Chatbot() {
                 actionProvider={ActionProvider}
             />
         </div>
-    ), [showChat]);
+    ), [config, showChat]);
 
     return (
         <div className={styles.container}>

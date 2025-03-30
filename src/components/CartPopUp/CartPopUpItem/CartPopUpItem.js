@@ -16,7 +16,7 @@ function CartPopUpItem({ data }) {
       >
         x
       </div>
-      <img src={data.imgURL} className={styles.item_img}></img>
+      <img alt='' src={data.imgURL} className={styles.item_img}></img>
       <div className={styles.item_content}>
         <div className={styles.item_name}>{data.productName} - {data.specific}</div>
         <div className={styles.item_price}>

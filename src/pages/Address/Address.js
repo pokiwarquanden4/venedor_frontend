@@ -21,22 +21,37 @@ function Address() {
   const [currentAddress, setCurrentAddress] = useState();
   const [currentId, setCurrentId] = useState();
 
+  const handleStopFocus = useCallback(() => {
+    setName('');
+    setCompany('');
+    setAddress1('');
+    setAddress2('');
+    setCity('');
+    setCountry('');
+    setPhoneNumber('');
+
+    if (currentAddress) {
+      addressRef.current[currentAddress].classList.remove(`${styles.focus}`);
+      setCurrentAddress(undefined);
+    }
+  }, [currentAddress]);
+
   useEffect(() => {
     handleStopFocus();
     if (addressSelect.addressList) {
       setData(addressSelect.addressList);
     }
-  }, [addressSelect.addressList]);
+  }, [addressSelect.addressList, handleStopFocus]);
 
   useEffect(() => {
     dispatch(addressActions.getAddressRequest());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (addressSelect.success) {
       dispatch(addressActions.getAddressRequest());
     }
-  }, [addressSelect.success]);
+  }, [addressSelect.success, dispatch]);
 
   const handleSubmit = useCallback(() => {
     if (phoneNumber) {
@@ -52,11 +67,11 @@ function Address() {
         })
       );
     }
-  });
+  }, [address1, address2, city, company, country, dispatch, name, phoneNumber]);
 
   const handleDelete = useCallback((id) => {
     dispatch(addressActions.deleteAddressRequest({ id: id }));
-  });
+  }, [dispatch]);
 
   const handleEdit = useCallback((id) => {
     dispatch(
@@ -71,22 +86,7 @@ function Address() {
         phoneNumber: phoneNumber,
       })
     );
-  });
-
-  const handleStopFocus = useCallback(() => {
-    setName('');
-    setCompany('');
-    setAddress1('');
-    setAddress2('');
-    setCity('');
-    setCountry('');
-    setPhoneNumber('');
-
-    if (currentAddress) {
-      addressRef.current[currentAddress].classList.remove(`${styles.focus}`);
-      setCurrentAddress(undefined);
-    }
-  });
+  }, [address1, address2, city, company, country, dispatch, name, phoneNumber]);
 
   return (
     <div className={styles.wrapper}>

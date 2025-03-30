@@ -17,7 +17,7 @@ function WishList() {
     if (loginSelect.wishList) {
       dispatch(wishListActions.getWishListRequest({ data: loginSelect.wishList }));
     }
-  }, [loginSelect.wishList]);
+  }, [dispatch, loginSelect.wishList]);
 
   useEffect(() => {
     if (wishListSelect.wishList) {

@@ -25,7 +25,7 @@ function Pagination({ pageData, setPageData, totalPages }) {
                     {Array.from({ length: totalPages }, (_, index) => {
                         const tpage = index + 1
                         if (Math.abs(pageData.page - tpage) === 3 && tpage !== 1 && tpage !== totalPages) return <div className={styles.pageDots}>...</div>
-                        if (tpage !== 1 && tpage !== totalPages && Math.abs(pageData.page - tpage) > 2) return
+                        if (tpage !== 1 && tpage !== totalPages && Math.abs(pageData.page - tpage) > 2) return undefined
                         return <div
                             className={`${styles.paging} ${pageData.page === tpage ? styles.paging_active : ''}`}
                             key={index}
