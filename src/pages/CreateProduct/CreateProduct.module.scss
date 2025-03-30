@@ -2,6 +2,49 @@
     display: flex;
     justify-content: center;
 
+    .specific_wrapper {
+        .specific_values {
+            display: flex;
+            align-items: center;
+        }
+
+        .specific_values+.specific_values {
+            margin-top: 10px;
+        }
+
+        .specific_content {
+            margin-bottom: 15px;
+            margin-left: 100px;
+
+            .editButton {
+                cursor: pointer;
+                margin-right: 20px;
+            }
+
+            .specific_content_header {
+                margin-right: 3px;
+                font-size: 20px;
+                font-weight: bold;
+            }
+
+            .specific_content_values {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 10px;
+
+                .specific_content_value {
+                    border: 2px solid lightgray;
+                    padding: 10px;
+                    border-radius: 10px;
+                    min-width: 50px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+
     .inner_wrapper {
         width: var(--default_page_width);
         padding-bottom: 200px;
@@ -41,9 +84,11 @@
             .price,
             .quantity,
             .description,
+            .specific,
             .saleOff,
             .category,
             .brand,
+            .categoryList,
             .img,
             .listImg {
                 position: relative;
@@ -56,9 +101,11 @@
             .price_header,
             .quantity_header,
             .description_header,
+            .specific_header,
             .saleOff_header,
             .category_header,
             .brand_header,
+            .categoryList_header,
             .img_header,
             .listImg_header {
                 width: 100px;
@@ -74,6 +121,7 @@
             .description_input,
             .saleOff_input,
             .brand_input,
+            .categoryList_input,
             .category_input {
                 font-size: 16px;
                 padding: 15px 30px;
@@ -159,10 +207,12 @@
                 .name,
                 .price,
                 .quantity,
+                .specific,
                 .description,
                 .saleOff,
                 .category,
                 .brand,
+                .categoryList,
                 .img,
                 .listImg {
                     display: block;
@@ -171,6 +221,8 @@
                 .name_header,
                 .price_header,
                 .quantity_header,
+                .specific_header,
+                .categoryList_header,
                 .description_header,
                 .saleOff_header,
                 .category_header,
@@ -188,6 +240,7 @@
                 .saleOff_input,
                 .category_input,
                 .brand_input,
+                .categoryList_input,
                 .img_input,
                 .listImg_input {
                     width: 100%;
@@ -203,4 +256,14 @@
             }
         }
     }
+}
+
+.categoryList_input {
+    padding: 0 !important;
+}
+
+.specific_button {
+    height: 30px;
+    font-size: 14px;
+    width: 150px;
 }

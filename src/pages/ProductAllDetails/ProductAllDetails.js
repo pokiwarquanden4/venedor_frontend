@@ -20,7 +20,7 @@ function ProductAllDetails() {
     if (productUnsaveSelect.searchProductById) {
       const convertData = {
         ...productUnsaveSelect.searchProductById,
-        listImgURL: productUnsaveSelect.searchProductById.listImgURL.split('_').slice(1),
+        listImgURL: productUnsaveSelect.searchProductById.listImgURL.split('___'),
       };
       setData(convertData);
     }

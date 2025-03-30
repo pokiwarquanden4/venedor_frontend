@@ -55,7 +55,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
 
       return {
         specificName: item.specificName,
-        specific: item.specific.split('_')
+        specific: item.specific.split('___')
       }
     })
 

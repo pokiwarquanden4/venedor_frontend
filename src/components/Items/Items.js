@@ -23,7 +23,7 @@ function Items({ data, vertical, wishList, edit }) {
   if (data) {
     data = {
       ...data,
-      listImgURL: data.listImgURL.split('_').slice(1),
+      listImgURL: data.listImgURL.split('___'),
     };
   }
   const navigate = useNavigate();
@@ -61,7 +61,7 @@ function Items({ data, vertical, wishList, edit }) {
 
       return {
         specificName: item.specificName,
-        specific: item.specific.split('_')
+        specific: item.specific.split('___')
       }
     })
 

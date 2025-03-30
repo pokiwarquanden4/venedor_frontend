@@ -12,13 +12,14 @@ import { useNavigate } from 'react-router-dom';
 import {
   decodePrice,
   decodeSaleOff,
-  priceFilter,
   quantityFilter,
   saleOffFilter,
 } from '../../config/filterInput';
 import { productSelector } from '../../redux/selectors/productSelector/productSelector';
 import routes from '../../config/routes';
 import Select from "react-select";
+import CreateProductSpecific from './createProductSpecific';
+import { EditButton } from '../../asset/img/HeaderIcon';
 
 function CreateProduct() {
   const productSelect = useSelector(productSelector);
@@ -35,8 +36,16 @@ function CreateProduct() {
   const [saleOff, setSaleOff] = useState();
   const [saleOffFill, setSaleOffFill] = useState();
   const [categoryId, setCategoryId] = useState();
+  const [categoryIdFill, setCategoryIdFill] = useState();
   const [categoryListId, setCategoryListId] = useState([])
+  const [categoryListIdFill, setCategoryListIdFill] = useState()
   const [brand, setBrand] = useState();
+  const [specific, setSpecific] = useState([])
+  const [createSpecific, setCreateSpecific] = useState({
+    specificName: '',
+    specific: []
+  })
+  const [openPopup, setOpenPopup] = useState(false)
 
   const mainImgRef = useRef();
   const [mainImg, setMainImg] = useState();
@@ -95,9 +104,11 @@ function CreateProduct() {
 
   const checkinput = useCallback(() => {
     !name && setNameFill(true);
-    (!price || !priceFilter(price)) && setPriceFill(true);
+    !price && setPriceFill(true);
     (!quantity || !quantityFilter(quantity)) && setQuantityFill(true);
     saleOff && !saleOffFilter(saleOff) && setSaleOffFill(true);
+    !categoryId && setCategoryIdFill(true)
+    !categoryListId.length && setCategoryListIdFill(true)
     !description && setDescriptionFill(true);
     !mainImgRef.current.files[0] && setMainImgFill(true);
     listImgRef.current.files.length === 0 && setListImgFill(true);
@@ -106,6 +117,8 @@ function CreateProduct() {
       !nameFill &&
       !priceFill &&
       !descriptionFill &&
+      !categoryIdFill &&
+      !categoryListIdFill &&
       !quantityFill &&
       !saleOffFill &&
       mainImgRef.current.files[0] &&
@@ -125,13 +138,16 @@ function CreateProduct() {
       formData.append('description', description);
       formData.append('number', quantity);
       formData.append('saleOff', decodeSaleOff(saleOff));
-      formData.append('category', categoryId);
+      formData.append('categoryId', categoryId);
+      formData.append('categoryList', categoryListId);
       formData.append('brand', brand);
       formData.append('img', mainImgRef.current.files[0]);
       for (let i = 0; i < listImgFile.length; i++) {
         formData.append('img', listImgFile[i]);
       }
       dispatch(productActions.createProductRequest(formData));
+
+      navigate(routes.accountSeller);
     }
   });
 
@@ -166,21 +182,37 @@ function CreateProduct() {
     }
   }, [listImgFile]);
 
-  useEffect(() => {
-    if (productSelect.success) {
-      const handleNavigate = async () => {
-        await dispatch(productActions.setProductSuccess(false));
-        navigate(routes.accountSeller);
-      };
-
-      handleNavigate();
-    }
-  }, [productSelect.success]);
-
   const categoryListOptions = (productSelect.category.categoryDetails[categoryId] || []).map((item) => ({
     value: item.id,
     label: item.categoryName,
   }));
+
+  const onSubmitSpecific = (data) => {
+    if (data.index !== undefined) {
+      setSpecific((pre) => {
+        const newSpe = [...pre]
+        newSpe[data.index] = {
+          specificName: data.specificName,
+          specific: data.specific
+        }
+
+        return newSpe
+      })
+    } else {
+      setSpecific((pre) => {
+        const newSpe = [...pre, {
+          specificName: data.specificName,
+          specific: data.specific
+        }]
+
+        return newSpe
+      })
+    }
+  }
+
+  const onDeleteSpecific = (index) => {
+    setSpecific((prev) => prev.filter((_, i) => i !== index));
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -217,11 +249,6 @@ function CreateProduct() {
                 }}
                 onFocus={(e) => {
                   setPriceFill(false);
-                }}
-                onBlur={() => {
-                  if (price) {
-                    !priceFilter(price) && setPriceFill(true);
-                  }
                 }}
               ></input>
               {priceFill ? (
@@ -296,10 +323,11 @@ function CreateProduct() {
               <select
                 className={styles.category_input}
                 onChange={(e) => {
+                  setCategoryIdFill(false)
                   setCategoryId(e.target.value);
                 }}
               >
-                <option value="None">None</option>
+                <option value={undefined}>None</option>
                 {Object.keys(productSelect.category.category).map((key, index) => {
                   const item = productSelect.category.category[key]
                   return (
@@ -309,17 +337,85 @@ function CreateProduct() {
                   );
                 })}
               </select>
+              {categoryIdFill ? (
+                <div className={styles.notification}>
+                  You need to select a category
+                </div>
+              ) : undefined}
+            </div>
+            <div className={styles.categoryList}>
+              <div className={styles.categoryList_header}>Category Details</div>
+              <Select
+                className={styles.categoryList_input}
+                isMulti
+                options={[{ value: undefined, label: "None" }, ...categoryListOptions]}
+                value={categoryListOptions.filter((option) => categoryListId.includes(option.value))}
+                onChange={(selectedOptions) => {
+                  setCategoryListIdFill(false)
+                  setCategoryListId(selectedOptions.map((option) => option.value))
+                }}
+                placeholder="Select categories..."
+              />
+              {categoryListIdFill ? (
+                <div className={styles.notification}>
+                  You need to select categories
+                </div>
+              ) : undefined}
             </div>
             <div className={styles.brand}>
               <div className={styles.brand_header}>Brand</div>
-              <Select
-                className={styles.brand_input}
-                isMulti
-                options={[{ value: "None", label: "None" }, ...categoryListOptions]}
-                value={categoryListOptions.filter((option) => categoryListId.includes(option.value))}
-                onChange={(selectedOptions) => setCategoryListId(selectedOptions.map((option) => option.value))}
-                placeholder="Select brands..."
-              />
+              <input
+                placeholder="Brand name"
+                className={`${styles.brand_input}`}
+                onChange={(e) => {
+                  setBrand(e.target.value);
+                }}
+                onFocus={(e) => {
+                  setNameFill(false);
+                }}
+              ></input>
+            </div>
+            <div className={styles.specific_wrapper}>
+              <div className={styles.specific}>
+                <div className={styles.specific_header}>Specific</div>
+                <MainButton
+                  onClick={() => {
+                    setCreateSpecific({
+                      index: undefined,
+                      specificName: '',
+                      specific: []
+                    })
+                    setOpenPopup(true)
+                  }
+                  }
+                  className={styles.specific_button}
+                  title={'Add Specific'}
+                ></MainButton>
+              </div>
+              <div className={styles.specific_content}>
+                {specific.map((item, index) => {
+                  return <div key={index} className={styles.specific_values}>
+                    <div className={styles.specific_content_header}>{item.specificName}</div>
+                    <EditButton
+                      width='16px'
+                      className={styles.editButton}
+                      onClick={() => {
+                        setCreateSpecific({
+                          index: index,
+                          specificName: item.specificName,
+                          specific: item.specific
+                        })
+                        setOpenPopup(true)
+                      }}
+                    ></EditButton>
+                    <div className={styles.specific_content_values}>
+                      {item.specific.map((value, index) => {
+                        return <div key={index} className={styles.specific_content_value}>{value}</div>
+                      })}
+                    </div>
+                  </div>
+                })}
+              </div>
             </div>
           </div>
           <div className={styles.right_content}>
@@ -416,6 +512,26 @@ function CreateProduct() {
           )}
         </div>
       </div>
+      {
+        openPopup
+          ?
+          <Popup
+            width='500px'
+            onClick={() => {
+              setOpenPopup(false)
+            }}
+            highestZIndex={true}
+          >
+            <CreateProductSpecific
+              onDelete={onDeleteSpecific}
+              onSubmit={onSubmitSpecific}
+              data={createSpecific}
+              setOpenPopup={setOpenPopup}
+            ></CreateProductSpecific>
+          </Popup>
+          :
+          undefined
+      }
     </div>
   );
 }

@@ -14,7 +14,6 @@ import {
   decodeSaleOff,
   encodePrice,
   encodeSaleOff,
-  priceFilter,
   quantityFilter,
   saleOffFilter,
 } from '../../config/filterInput';
@@ -70,7 +69,7 @@ function EditProduct() {
       setSaleOff(encodeSaleOff(data.saleOff));
       setCategory(data.category);
       setCurrentImg([data.imgURL]);
-      setCurrentListImg(data.listImgURL.split('_').slice(1));
+      setCurrentListImg(data.listImgURL.split('___'));
       setMainImg(1);
     }
   }, [data]);
@@ -121,7 +120,7 @@ function EditProduct() {
 
   const checkInput = useCallback(() => {
     !name && setNameFill(true);
-    (!price || !priceFilter(price)) && setPriceFill(true);
+    !price && setPriceFill(true);
     (!quantity || !quantityFilter(quantity)) && setQuantityFill(true);
     saleOff && !saleOffFilter(saleOff) && setSaleOffFill(true);
     !description && setDescriptionFill(true);
@@ -244,11 +243,6 @@ function EditProduct() {
                 }}
                 onFocus={(e) => {
                   setPriceFill(false);
-                }}
-                onBlur={() => {
-                  if (price) {
-                    !priceFilter(price) && setPriceFill(true);
-                  }
                 }}
               ></input>
             </div>

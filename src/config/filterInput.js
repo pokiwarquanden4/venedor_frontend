@@ -7,11 +7,6 @@ export const passwordFilter = (email) => {
   return email.length >= 10 ? true : false;
 };
 
-export const priceFilter = (input) => {
-  const pricePattern = /^\d{1,3}(\.\d{3})*\$$/;
-  return pricePattern.test(input);
-};
-
 export const decodePrice = (input) => {
   return input.replace(/\./g, '').replace('$', '');
 };

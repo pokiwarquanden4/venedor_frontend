@@ -1,0 +1,70 @@
+.container {
+    padding: 20px;
+
+    .header {
+        margin-bottom: 20px;
+
+        .header_title {
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header_input {
+            font-size: 16px;
+            padding: 15px 30px;
+            height: 45px;
+            width: 400px;
+        }
+    }
+
+    .details {
+        .details_title {
+            margin-bottom: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .details_input {
+            font-size: 16px;
+            padding: 15px 30px;
+            height: 45px;
+            width: 400px;
+        }
+
+        .inputWrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .inputWrapper+.inputWrapper {
+            margin-top: 10px;
+        }
+    }
+
+    .deleteButton {
+        display: flex;
+        align-items: center;
+        margin-left: 10px;
+        font-size: 20px;
+        height: 20px;
+    }
+
+    .addButton {
+        margin-top: 10px;
+        height: 30px;
+        width: 70px;
+    }
+
+    .submit {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-around;
+
+        .submitButton {
+            width: 40%;
+            height: 30px;
+            font-size: 16px;
+        }
+    }
+}
