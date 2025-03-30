@@ -141,6 +141,7 @@ function CreateProduct() {
       formData.append('categoryId', categoryId);
       formData.append('categoryList', categoryListId);
       formData.append('brand', brand);
+      formData.append('specifics', JSON.stringify(specific));
       formData.append('img', mainImgRef.current.files[0]);
       for (let i = 0; i < listImgFile.length; i++) {
         formData.append('img', listImgFile[i]);
