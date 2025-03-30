@@ -68,9 +68,16 @@ export default function ProductReducers(state = productConstants, action) {
         loading: true,
       };
     case getType(productActions.getAllProductSuccess):
+      const results = action.payload.obj.map(item => {
+        return {
+          ...item,
+          listImgURL: item.listImgURL.split('___')
+        }
+      })
+
       return {
         ...state,
-        getAllProduct: action.payload.obj,
+        getAllProduct: results,
         loading: false,
       };
     case getType(productActions.getAllProductFailure):

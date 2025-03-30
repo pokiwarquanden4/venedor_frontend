@@ -20,12 +20,6 @@ import { cartActions } from '../../redux/actions/product/cartActions';
 import { formatVND } from '../../config/utils';
 
 function Items({ data, vertical, wishList, edit }) {
-  if (data) {
-    data = {
-      ...data,
-      listImgURL: data.listImgURL.split('___'),
-    };
-  }
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loginSelect = useSelector(LoginSelector);
@@ -42,7 +36,7 @@ function Items({ data, vertical, wishList, edit }) {
 
   useEffect(() => {
     if (loginSelect.wishList) {
-      const value = loginSelect.wishList.find((e) => e.productId == data.id);
+      const value = loginSelect.wishList.find((e) => e.productId === data.id);
       if (value) {
         setHeart(true);
         setWishListId(value.id);

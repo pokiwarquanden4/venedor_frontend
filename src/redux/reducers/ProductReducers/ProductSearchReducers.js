@@ -10,10 +10,16 @@ export default function ProductSearchReducers(state = productSearchConstants, ac
         loading: true,
       };
     case getType(productSearchActions.searchProductSuccess):
+      var results = action.payload.obj.map(item => {
+        return {
+          ...item,
+          listImgURL: item.listImgURL.split('___')
+        }
+      })
       return {
         ...state,
         success: true,
-        searchProducts: action.payload.obj,
+        searchProducts: results,
         loading: false,
       };
     case getType(productSearchActions.searchProductFailure):
@@ -67,10 +73,19 @@ export default function ProductSearchReducers(state = productSearchConstants, ac
         loading: true,
       };
     case getType(productSearchActions.searchCategoryProductSuccess):
+      var results = {
+        totalPages: action.payload.obj.totalPages,
+        products: action.payload.obj.products.map(product => {
+          return {
+            ...product,
+            listImgURL: product.listImgURL.split('___')
+          }
+        })
+      }
       return {
         ...state,
         success: true,
-        categorySearchProduct: action.payload.obj,
+        categorySearchProduct: results,
         loading: false,
       };
     case getType(productSearchActions.searchCategoryProductFailure):

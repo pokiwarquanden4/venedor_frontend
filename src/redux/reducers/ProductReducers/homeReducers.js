@@ -29,10 +29,16 @@ export default function homeReducers(state = homeConstants, action) {
         loading: true,
       };
     case getType(homeActions.latestProductSuccess):
+      var results = action.payload.obj.map(item => {
+        return {
+          ...item,
+          listImgURL: item.listImgURL.split('___')
+        }
+      })
       return {
         ...state,
         success: true,
-        latestProducts: action.payload.obj,
+        latestProducts: results,
         loading: false,
       };
     case getType(homeActions.latestProductFailure):
@@ -48,10 +54,16 @@ export default function homeReducers(state = homeConstants, action) {
         loading: true,
       };
     case getType(homeActions.bestSellerProductSuccess):
+      var results = action.payload.obj.map(item => {
+        return {
+          ...item,
+          listImgURL: item.listImgURL.split('___')
+        }
+      })
       return {
         ...state,
         success: true,
-        bestSellerProducts: action.payload.obj,
+        bestSellerProducts: results,
         loading: false,
       };
     case getType(homeActions.bestSellerProductFailure):
@@ -67,10 +79,16 @@ export default function homeReducers(state = homeConstants, action) {
         loading: true,
       };
     case getType(homeActions.featureProductSuccess):
+      var results = action.payload.obj.map(item => {
+        return {
+          ...item,
+          listImgURL: item.listImgURL.split('___')
+        }
+      })
       return {
         ...state,
         success: true,
-        featureProducts: action.payload.obj,
+        featureProducts: results,
         loading: false,
       };
     case getType(homeActions.featureProductFailure):

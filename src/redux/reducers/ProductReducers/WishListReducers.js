@@ -9,10 +9,16 @@ export default function wishListReducers(state = wishListConstants, action) {
         loading: true,
       };
     case getType(wishListActions.getWishListSuccess):
+      var results = action.payload.obj.map(item => {
+        return {
+          ...item,
+          listImgURL: item.listImgURL.split('___')
+        }
+      })
       return {
         ...state,
         loading: false,
-        wishList: action.payload.obj,
+        wishList: results,
       };
     case getType(wishListActions.getWishListFailure):
       return {

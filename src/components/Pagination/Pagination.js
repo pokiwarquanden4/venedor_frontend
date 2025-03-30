@@ -4,7 +4,7 @@ import styles from './Pagination.module.scss';
 
 function Pagination({ pageData, setPageData, totalPages }) {
     return (
-        <Fragment>
+        <div>
             {totalPages && totalPages > 1 && (
                 <div className={styles.pages}>
                     {pageData.page > 1 && (
@@ -58,7 +58,7 @@ function Pagination({ pageData, setPageData, totalPages }) {
                     )}
                 </div>
             )}
-        </Fragment>
+        </div>
     );
 }
 

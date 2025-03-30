@@ -19,7 +19,6 @@ import { messageActions } from '../../redux/actions/message/messageActions';
 import Popup from '../Popup/Popup';
 import Comment from '../Comment/Comment';
 import { productActions } from '../../redux/actions/product/ProductActions';
-import ReactPaginate from 'react-paginate';
 import Pagination from '../Pagination/Pagination';
 import { formatVND } from '../../config/utils';
 
@@ -46,6 +45,15 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
   const [specificData, setSpecificData] = useState([])
   const [selectedSpecific, setSelectedSpecific] = useState({})
   const [commentData, setCommentData] = useState(productSelect.productComments)
+
+  useEffect(() => {
+    setPageData(pre => {
+      return {
+        ...pre,
+        productId: data.id
+      }
+    })
+  }, [data])
 
   useEffect(() => {
     if (!data.StorageSpecifics) return
@@ -100,7 +108,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
         setWishListId(undefined);
       }
     }
-  }, [loginSelect.wishList]);
+  }, [data.id, loginSelect.wishList]);
 
   return (
     <div className={styles.container}>
@@ -127,6 +135,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                 return (
                   <div key={index} className={styles.pictures_wrapper}>
                     <img
+                      alt=''
                       src={item}
                       className={`${styles.pictures} ${index + 1 === currentPic ? styles.chosen : ''
                         }`}
@@ -186,6 +195,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                     key={index}
                   >
                     <img
+                      alt=''
                       className={styles.preview_picture}
                       src={item}
                       ref={(element) => {
