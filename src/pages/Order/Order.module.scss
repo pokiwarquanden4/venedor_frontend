@@ -1,10 +1,12 @@
-.wrapper{
+.wrapper {
     display: flex;
     justify-content: center;
+
     .inner_wrapper {
         width: var(--default_page_width);
         padding-bottom: 200px;
-        .header{
+
+        .header {
             .main_header {
                 margin: 48px 0 15px;
                 padding-left: 10px;
@@ -12,28 +14,52 @@
                 font-size: 40px;
                 font-weight: bolder;
             }
+
             .sub_header {
                 margin-bottom: 70px;
                 font-size: 16px;
             }
         }
+
         .content {
-            .table{
+            .table {
                 .tbody {
                     display: flex;
                 }
             }
+
             .content_table_header {
                 font-size: 20px;
                 background-color: #fafafa;
                 height: 100px;
+
                 .content_header {
                     margin: 0 10px;
                     width: 12.5%;
                 }
-               
+
             }
-            
+
         }
     }
+}
+
+.header_wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.category_input {
+    font-size: 16px;
+    padding: 15px 30px;
+    height: 50px;
+    width: 400px;
+}
+
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
 }

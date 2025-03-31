@@ -10,15 +10,18 @@ import Popup from '../../components/Popup/Popup';
 import ProductDetails from '../../components/ProductDetails/ProductDetails';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  decodePrice,
   decodeSaleOff,
-  encodePrice,
   encodeSaleOff,
   quantityFilter,
   saleOffFilter,
 } from '../../config/filterInput';
 import { productSelector } from '../../redux/selectors/productSelector/productSelector';
 import routes from '../../config/routes';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import Select from "react-select";
+import { EditButton } from '../../asset/img/HeaderIcon';
+import CreateProductSpecific from '../CreateProduct/createProductSpecific';
 
 function EditProduct() {
   const params = useParams();
@@ -34,10 +37,20 @@ function EditProduct() {
   const [quantityFill, setQuantityFill] = useState();
   const [description, setDescription] = useState('');
   const [descriptionFill, setDescriptionFill] = useState();
-  const [detailsDescription, setDetailsDescription] = useState('');
   const [saleOff, setSaleOff] = useState('');
   const [saleOffFill, setSaleOffFill] = useState();
-  const [category, setCategory] = useState();
+  const [categoryId, setCategoryId] = useState();
+  const [categoryIdFill, setCategoryIdFill] = useState();
+  const [categoryListId, setCategoryListId] = useState([])
+  const [categoryListIdFill, setCategoryListIdFill] = useState()
+  const [brand, setBrand] = useState();
+  const [specific, setSpecific] = useState([])
+  const [createSpecific, setCreateSpecific] = useState({
+    id: undefined,
+    specificName: '',
+    specific: []
+  })
+  const [openPopup, setOpenPopup] = useState(false)
 
   const mainImgRef = useRef();
   const [mainImg, setMainImg] = useState();
@@ -51,8 +64,43 @@ function EditProduct() {
   const [currentImg, setCurrentImg] = useState();
   const [currentListImg, setCurrentListImg] = useState([]);
   const [currentListImgRemove, setCurrentListImgRemove] = useState('');
-
   const [preview, setPreview] = useState(false);
+
+  const checkinput = useCallback(() => {
+    !name && setNameFill(true);
+    !price && setPriceFill(true);
+    (!quantity || !quantityFilter(quantity)) && setQuantityFill(true);
+    saleOff && !saleOffFilter(saleOff) && setSaleOffFill(true);
+    !categoryId && setCategoryIdFill(true)
+    !categoryListId.length && setCategoryListIdFill(true)
+    !description && setDescriptionFill(true);
+    !mainImgRef.current.files[0] && !currentImg && setMainImgFill(true);
+    listImgRef.current.files.length === 0 && currentListImg.length === 0 && setListImgFill(true);
+
+    if (
+      !nameFill &&
+      !priceFill &&
+      !descriptionFill &&
+      !quantityFill &&
+      !saleOffFill &&
+      !(!mainImgRef.current.files[0] && !currentImg) &&
+      !(listImgRef.current.files.length === 0 && currentListImg.length === 0)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }, [categoryId, categoryListId.length, currentImg, currentListImg.length, description, descriptionFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill]);
+
+  const getReviewData = useCallback(() => {
+    return {
+      description: description,
+      number: quantity,
+      price: price,
+      saleOff: decodeSaleOff(saleOff),
+    };
+  }, [description, price, quantity, saleOff]);
+
 
   useEffect(() => {
     if (productSelect.getAllProduct) {
@@ -63,14 +111,24 @@ function EditProduct() {
   useEffect(() => {
     if (data) {
       setName(data.productName);
-      setPrice(encodePrice(data.price));
+      setPrice(data.price);
       setQuantity(data.number);
       setDescription(data.description);
       setSaleOff(encodeSaleOff(data.saleOff));
-      setCategory(data.category);
+      setCategoryId(data.categoryId);
       setCurrentImg([data.imgURL]);
-      setCurrentListImg(data.listImgURL.split('___'));
+      setCurrentListImg(data.listImgURL);
+      setCategoryId(data.categoryId)
+      setCategoryListId(data.categoryList.split('/').map(i => Number(i)))
+      setBrand(data.brandName)
       setMainImg(1);
+      setSpecific(data.StorageSpecifics.map(item => {
+        return {
+          id: item.id,
+          specificName: item.specificName,
+          specific: item.specific.split('___')
+        }
+      }))
     }
   }, [data]);
 
@@ -118,64 +176,35 @@ function EditProduct() {
     setListImgFile(updatedFiles.files);
   }, [listImgFile]);
 
-  const checkInput = useCallback(() => {
-    !name && setNameFill(true);
-    !price && setPriceFill(true);
-    (!quantity || !quantityFilter(quantity)) && setQuantityFill(true);
-    saleOff && !saleOffFilter(saleOff) && setSaleOffFill(true);
-    !description && setDescriptionFill(true);
-    !mainImgRef.current.files[0] && !currentImg && setMainImgFill(true);
-    listImgRef.current.files.length === 0 && currentListImg.length === 0 && setListImgFill(true);
-
-    if (
-      !nameFill &&
-      !priceFill &&
-      !descriptionFill &&
-      !quantityFill &&
-      !saleOffFill &&
-      !(!mainImgRef.current.files[0] && !currentImg) &&
-      !(listImgRef.current.files.length === 0 && currentListImg.length === 0)
-    ) {
-      return true;
-    } else {
-      return false;
-    }
-  }, [currentImg, currentListImg.length, description, descriptionFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill]);
 
   const handleSubmit = useCallback(() => {
-    if (checkInput()) {
-      const submition = () => {
+    if (checkinput()) {
+      const submition = async () => {
         const formData = new FormData();
         formData.append('id', data.id);
         formData.append('productName', name);
-        formData.append('price', decodePrice(price));
+        formData.append('price', price);
         formData.append('description', description);
         formData.append('number', quantity);
         formData.append('saleOff', decodeSaleOff(saleOff));
-        formData.append('category', category);
+        formData.append('categoryId', categoryId);
+        formData.append('categoryList', categoryListId);
+        formData.append('brandName', brand);
+        formData.append('specifics', JSON.stringify(specific));
         formData.append('main', mainImgRef.current.files[0] ? true : false);
-        formData.append('remove', currentListImgRemove);
+        formData.append('remove', currentListImgRemove.slice(3));
         mainImgRef.current.files[0] && formData.append('img', mainImgRef.current.files[0]);
         if (listImgFile && listImgFile.length > 0) {
           for (let i = 0; i < listImgFile.length; i++) {
             formData.append('img', listImgFile[i]);
           }
         }
-        dispatch(productActions.editProductRequest(formData));
+        await dispatch(productActions.editProductRequest(formData));
+        navigate(routes.accountSeller);
       };
       submition();
     }
-  }, [category, checkInput, currentListImgRemove, data.id, description, dispatch, listImgFile, name, price, quantity, saleOff]);
-
-  useEffect(() => {
-    if (productSelect.success) {
-      const handleNavigate = async () => {
-        await dispatch(productActions.setProductSuccess(false));
-        navigate(routes.accountSeller);
-      };
-      handleNavigate();
-    }
-  }, [dispatch, navigate, productSelect.success]);
+  }, [brand, categoryId, categoryListId, checkinput, currentListImgRemove, data, description, dispatch, listImgFile, name, navigate, price, quantity, saleOff, specific]);
 
   useEffect(() => {
     if (listImgRef.current) {
@@ -199,22 +228,46 @@ function EditProduct() {
     }
   }, [convertBase64, listImgFile]);
 
-  useEffect(() => {
-    if (productSelect.success) {
-      const handleNavigate = async () => {
-        await dispatch(productActions.setProductSuccess(false));
-        navigate(routes.accountSeller);
-      };
-      handleNavigate();
+  const categoryListOptions = (productSelect.category.categoryDetails[categoryId] || []).map((item) => ({
+    value: item.id,
+    label: item.categoryName,
+  }));
+
+  const onSubmitSpecific = (data) => {
+    if (data.index !== undefined) {
+      setSpecific((pre) => {
+        const newSpe = [...pre]
+        newSpe[data.index] = {
+          id: data.id,
+          specificName: data.specificName,
+          specific: data.specific
+        }
+
+        return newSpe
+      })
+    } else {
+      setSpecific((pre) => {
+        const newSpe = [...pre, {
+          id: data.id,
+          specificName: data.specificName,
+          specific: data.specific
+        }]
+
+        return newSpe
+      })
     }
-  }, [dispatch, navigate, productSelect.success]);
+  }
+
+  const onDeleteSpecific = (index) => {
+    setSpecific((prev) => prev.filter((_, i) => i !== index));
+  };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.inner_wrapper}>
         <div className={styles.header}>
           <div className={styles.main_header}>Edit Product</div>
-          <div className={styles.sub_header}>Edit your store</div>
+          <div className={styles.sub_header}>Create your own business</div>
         </div>
         <div className={styles.content}>
           <div className={styles.left_content}>
@@ -231,6 +284,9 @@ function EditProduct() {
                   setNameFill(false);
                 }}
               ></input>
+              {nameFill ? (
+                <div className={styles.notification}>You need to fill in this blank</div>
+              ) : undefined}
             </div>
             <div className={styles.price}>
               <div className={styles.price_header}>Price</div>
@@ -245,12 +301,17 @@ function EditProduct() {
                   setPriceFill(false);
                 }}
               ></input>
+              {priceFill ? (
+                <div className={styles.notification}>
+                  You need to fill in this blank (Ex: 1.000$, 10.000.000$)
+                </div>
+              ) : undefined}
             </div>
             <div className={styles.quantity}>
               <div className={styles.quantity_header}>Quantity</div>
               <input
-                value={quantity}
                 placeholder="Quantity"
+                value={quantity}
                 className={`${styles.quantity_input} ${quantityFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setQuantity(e.target.value);
@@ -264,33 +325,20 @@ function EditProduct() {
                   }
                 }}
               ></input>
+              {quantityFill ? (
+                <div className={styles.notification}>You need to fill in this with a number</div>
+              ) : undefined}
             </div>
             <div className={styles.description}>
               <div className={styles.description_header}>Description</div>
-              <textarea
-                type="text"
-                placeholder="Description"
+              <ReactQuill
+                theme="snow"
                 value={description}
-                className={`${styles.description_input} ${descriptionFill ? styles.noInput : ''}`}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-                onFocus={(e) => {
-                  setDescriptionFill(false);
-                }}
-              ></textarea>
-            </div>
-            <div className={styles.description}>
-              <div className={styles.description_header}>Details Description</div>
-              <textarea
-                value={detailsDescription}
-                type="text"
-                placeholder="Details Description"
-                className={styles.description_input}
-                onChange={(e) => {
-                  setDetailsDescription(e.target.value);
-                }}
-              ></textarea>
+                onChange={setDescription}
+                onFocus={() => setDescriptionFill(false)}
+                style={{ width: "400px", maxHeight: "500px", overflowY: "auto" }}
+              />
+              {descriptionFill ? <div className={styles.notification}>You need to fill in this blank</div> : undefined}
             </div>
             <div className={styles.saleOff}>
               <div className={styles.saleOff_header}>Sale Off</div>
@@ -310,20 +358,114 @@ function EditProduct() {
                   }
                 }}
               ></input>
+              {saleOffFill ? (
+                <div className={styles.notification}>
+                  You need to fill in this blank (1% to 100%)
+                </div>
+              ) : undefined}
             </div>
             <div className={styles.category}>
               <div className={styles.category_header}>Category</div>
               <select
                 className={styles.category_input}
-                value={category}
+                value={categoryId}
                 onChange={(e) => {
-                  setCategory(e.target.value);
+                  setCategoryIdFill(false)
+                  setCategoryId(e.target.value);
                 }}
               >
-                <option value="None">None</option>
-                <option value="Hiking">Hiking</option>
-                <option value="Biking">Biking</option>
+                <option value={undefined}>None</option>
+                {Object.keys(productSelect.category.category).map((key, index) => {
+                  const item = productSelect.category.category[key]
+                  return (
+                    <option value={key} key={index}>
+                      {item.name}
+                    </option>
+                  );
+                })}
               </select>
+              {categoryIdFill ? (
+                <div className={styles.notification}>
+                  You need to select a category
+                </div>
+              ) : undefined}
+            </div>
+            <div className={styles.categoryList}>
+              <div className={styles.categoryList_header}>Category Details</div>
+              <Select
+                className={styles.categoryList_input}
+                isMulti
+                options={[{ value: undefined, label: "None" }, ...categoryListOptions]}
+                value={categoryListOptions.filter((option) => categoryListId.includes(option.value))}
+                onChange={(selectedOptions) => {
+                  setCategoryListIdFill(false)
+                  setCategoryListId(selectedOptions.map((option) => option.value))
+                }}
+                placeholder="Select categories..."
+              />
+              {categoryListIdFill ? (
+                <div className={styles.notification}>
+                  You need to select categories
+                </div>
+              ) : undefined}
+            </div>
+            <div className={styles.brand}>
+              <div className={styles.brand_header}>Brand</div>
+              <input
+                value={brand}
+                placeholder="Brand name"
+                className={`${styles.brand_input}`}
+                onChange={(e) => {
+                  setBrand(e.target.value);
+                }}
+                onFocus={(e) => {
+                  setNameFill(false);
+                }}
+              ></input>
+            </div>
+            <div className={styles.specific_wrapper}>
+              <div className={styles.specific}>
+                <div className={styles.specific_header}>Specific</div>
+                <MainButton
+                  onClick={() => {
+                    setCreateSpecific({
+                      index: undefined,
+                      id: undefined,
+                      specificName: '',
+                      specific: []
+                    })
+                    setOpenPopup(true)
+                  }
+                  }
+                  className={styles.specific_button}
+                  title={'Add Specific'}
+                ></MainButton>
+              </div>
+              <div className={styles.specific_content}>
+                {specific.map((item, index) => {
+                  return <div key={index} className={styles.specific_values}>
+                    <div className={styles.specific_content_header}>{item.specificName}</div>
+                    <EditButton
+                      width='16px'
+                      className={styles.editButton}
+                      onClick={() => {
+                        setCreateSpecific({
+                          index: index,
+                          id: item.id,
+                          specificName: item.specificName,
+                          specific: item.specific
+                        })
+                        setOpenPopup(true)
+                      }}
+                    ></EditButton>
+                    <div className={styles.specific_content_values}>
+                      {item.specific.map((value, index) => {
+                        return <div key={index} className={styles.specific_content_value}>{value}</div>
+                      })}
+                    </div>
+                  </div>
+                })}
+              </div>
             </div>
           </div>
           <div className={styles.right_content}>
@@ -350,7 +492,7 @@ function EditProduct() {
                     deleteProduct={() => {
                       setCurrentImg(undefined);
                       setMainImg(undefined);
-                      setCurrentListImgRemove(`_${currentImg}` + currentListImgRemove);
+                      setCurrentListImgRemove(`___${currentImg}` + currentListImgRemove);
                     }}
                     className={styles.imgBackGround}
                   ></BackGroundImg>
@@ -381,7 +523,7 @@ function EditProduct() {
                           setCurrentListImg(
                             currentListImg.filter(function (url, innerIndex) {
                               if (innerIndex === index) {
-                                arr += `_${url}`;
+                                arr += `___${url}`;
                               }
                               return innerIndex !== index;
                             })
@@ -422,13 +564,58 @@ function EditProduct() {
           </div>
         </div>
         <div className={styles.footer}>
-          <MainButton title={'Save'} className={styles.button} onClick={handleSubmit}></MainButton>
-
+          {preview && (
+            <Popup
+              onClick={() => {
+                setPreview(false);
+              }}
+            >
+              <ProductDetails
+                data={getReviewData()}
+                listImg={listImg}
+                mainImg={mainImg}
+              ></ProductDetails>
+            </Popup>
+          )}
+          <MainButton
+            title={'Save'}
+            className={styles.button}
+            onClick={handleSubmit}
+          ></MainButton>
+          <MainButton
+            title={'Preview'}
+            onClick={() => {
+              if (checkinput()) {
+                setPreview(true);
+              }
+            }}
+            className={styles.button}
+          ></MainButton>
           {(nameFill || priceFill || descriptionFill || quantityFill) && (
             <div className={styles.errorMessage}>Please correct all the input</div>
           )}
         </div>
       </div>
+      {
+        openPopup
+          ?
+          <Popup
+            width='500px'
+            onClick={() => {
+              setOpenPopup(false)
+            }}
+            highestZIndex={true}
+          >
+            <CreateProductSpecific
+              onDelete={onDeleteSpecific}
+              onSubmit={onSubmitSpecific}
+              data={createSpecific}
+              setOpenPopup={setOpenPopup}
+            ></CreateProductSpecific>
+          </Popup>
+          :
+          undefined
+      }
     </div>
   );
 }

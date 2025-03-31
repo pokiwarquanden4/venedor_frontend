@@ -11,10 +11,6 @@ export const decodePrice = (input) => {
   return input.replace(/\./g, '').replace('$', '');
 };
 
-export const encodePrice = (input) => {
-  return (input.toLocaleString('en-US') + '$').replace(/,/g, '.');
-};
-
 export const quantityFilter = (input) => {
   const numberPattern = /^\d+$/;
   return numberPattern.test(input) && parseInt(input) > 0;

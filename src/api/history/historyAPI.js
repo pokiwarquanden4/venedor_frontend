@@ -12,6 +12,7 @@ export const historyAPI = (payload) => {
 
 export const oderAPI = (payload) => {
   return axios.get(`${URL}sellers/oder`, {
+    params: payload,
     headers: {
       Authorization: getJWTToken(),
     },

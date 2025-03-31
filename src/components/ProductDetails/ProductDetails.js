@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import {
   CompareIcon,
   DownArrowIcon,
@@ -372,12 +372,21 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
           </Popup>
         ) : undefined}
       </div>
-      {commentData.comments.map((comment) => {
-        return <Comment key={comment.id} data={comment}></Comment>
-      })}
-      <div className={styles.pages}>
-        <Pagination pageData={pageData} setPageData={setPageData} totalPages={commentData.totalPages}></Pagination>
-      </div>
+      {
+        fullScreen
+          ?
+          <Fragment>
+            {commentData.comments.map((comment) => {
+              return <Comment key={comment.id} data={comment}></Comment>
+            })}
+            <div className={styles.pages}>
+              <Pagination pageData={pageData} setPageData={setPageData} totalPages={commentData.totalPages}></Pagination>
+            </div>
+          </Fragment>
+          :
+          undefined
+      }
+
     </div>
   );
 }

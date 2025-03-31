@@ -20,6 +20,8 @@ import routes from '../../config/routes';
 import Select from "react-select";
 import CreateProductSpecific from './createProductSpecific';
 import { EditButton } from '../../asset/img/HeaderIcon';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 function CreateProduct() {
   const productSelect = useSelector(productSelector);
@@ -130,7 +132,7 @@ function CreateProduct() {
     }
   }, [categoryId, categoryIdFill, categoryListId.length, categoryListIdFill, description, descriptionFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill]);
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     if (checkinput()) {
       const formData = new FormData();
       formData.append('productName', name);
@@ -140,13 +142,13 @@ function CreateProduct() {
       formData.append('saleOff', decodeSaleOff(saleOff));
       formData.append('categoryId', categoryId);
       formData.append('categoryList', categoryListId);
-      formData.append('brand', brand);
+      formData.append('brandName', brand);
       formData.append('specifics', JSON.stringify(specific));
       formData.append('img', mainImgRef.current.files[0]);
       for (let i = 0; i < listImgFile.length; i++) {
         formData.append('img', listImgFile[i]);
       }
-      dispatch(productActions.createProductRequest(formData));
+      await dispatch(productActions.createProductRequest(formData));
 
       navigate(routes.accountSeller);
     }
@@ -281,20 +283,14 @@ function CreateProduct() {
             </div>
             <div className={styles.description}>
               <div className={styles.description_header}>Description</div>
-              <textarea
-                type="text"
-                placeholder="Description"
-                className={`${styles.description_input} ${descriptionFill ? styles.noInput : ''}`}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                }}
-                onFocus={(e) => {
-                  setDescriptionFill(false);
-                }}
-              ></textarea>
-              {descriptionFill ? (
-                <div className={styles.notification}>You need to fill in this blank</div>
-              ) : undefined}
+              <ReactQuill
+                theme="snow"
+                value={description}
+                onChange={setDescription}
+                onFocus={() => setDescriptionFill(false)}
+                style={{ width: "400px", maxHeight: "500px", overflowY: "auto" }}
+              />
+              {descriptionFill ? <div className={styles.notification}>You need to fill in this blank</div> : undefined}
             </div>
             <div className={styles.saleOff}>
               <div className={styles.saleOff_header}>Sale Off</div>

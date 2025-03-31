@@ -9,6 +9,7 @@ function CreateProductSpecific({ data, onSubmit, setOpenPopup, onDelete }) {
     const submitSpecific = () => {
         if (specificHeader && specific.length) {
             onSubmit({
+                id: data.id,
                 index: data.index,
                 specificName: specificHeader,
                 specific: specific

@@ -2,6 +2,9 @@ export const historyConstants = {
   success: false,
   isLoading: false,
   historyList: [],
-  orderList: [],
+  orderList: {
+    storages: [],
+    histories: []
+  },
   cancelOder: false,
 };
