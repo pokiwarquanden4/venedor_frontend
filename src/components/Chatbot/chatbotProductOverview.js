@@ -5,23 +5,24 @@ import MainButton from '../MainButton/MainButton';
 import { useNavigate } from 'react-router-dom';
 
 const ProductOverView = (props) => {
-    const data = props.payload
+    const product = props.payload.product
+    const onBuy = props.payload.onBuy
     const navigate = useNavigate()
 
-    const oldPrice = data.price
-    const newPrice = data.price - data.price * (data.saleOff / 100)
+    const oldPrice = product.price
+    const newPrice = product.price - product.price * (product.saleOff / 100)
 
     return (
         <div className={styles.container}>
             <div className={styles.data}>
                 <div className={styles.picture}>
-                    <img alt='' src={data.imgURL}></img>
+                    <img alt='' src={product.imgURL}></img>
                 </div>
                 <div className={styles.details}>
                     <div className={styles.name}>
-                        {data.productName}
+                        {product.productName}
                         <div className={styles.brandName}>
-                            {data.brandName}
+                            {product.brandName}
                         </div>
                     </div>
                     <div className={styles.price}>
@@ -45,12 +46,13 @@ const ProductOverView = (props) => {
                     className={styles.viewButton}
                     title={"View"}
                     onClick={() => {
-                        navigate(`/category/${data.categoryId}/${data.id}`);
+                        navigate(`/category/${product.categoryId}/${product.id}`);
                     }}
                 ></MainButton>
                 <MainButton
                     className={styles.buyButton}
                     title={"Buy"}
+                    onClick={() => onBuy(product.StorageSpecifics)}
                 ></MainButton>
             </div>
         </div>

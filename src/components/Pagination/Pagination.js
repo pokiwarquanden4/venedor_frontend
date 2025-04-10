@@ -5,9 +5,9 @@ import styles from './Pagination.module.scss';
 function Pagination({ pageData, setPageData, totalPages }) {
     return (
         <div>
-            {totalPages && totalPages > 1 && (
+            {totalPages && totalPages > 1 ? (
                 <div className={styles.pages}>
-                    {pageData.page > 1 && (
+                    {pageData.page > 1 ? (
                         <div
                             className={styles.leftArrow}
                             onClick={() => {
@@ -21,7 +21,7 @@ function Pagination({ pageData, setPageData, totalPages }) {
                         >
                             <LeftArrowIcon className={styles.rightArrow_icon}></LeftArrowIcon>
                         </div>
-                    )}
+                    ) : undefined}
                     {Array.from({ length: totalPages }, (_, index) => {
                         const tpage = index + 1
                         if (Math.abs(pageData.page - tpage) === 3 && tpage !== 1 && tpage !== totalPages) return <div className={styles.pageDots}>...</div>
@@ -41,7 +41,7 @@ function Pagination({ pageData, setPageData, totalPages }) {
                     }
                     )}
 
-                    {pageData.page < totalPages && (
+                    {pageData.page < totalPages ? (
                         <div
                             className={styles.rightArrow}
                             onClick={() => {
@@ -55,9 +55,9 @@ function Pagination({ pageData, setPageData, totalPages }) {
                         >
                             <RightArrowIcon className={styles.leftArrow_icon}></RightArrowIcon>
                         </div>
-                    )}
+                    ) : undefined}
                 </div>
-            )}
+            ) : undefined}
         </div>
     );
 }

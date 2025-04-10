@@ -24,9 +24,9 @@ const responsive = {
     items: 1
   }
 };
-
 function Category() {
   const productSelect = useSelector(productSelector);
+  console.log(productSelect.category)
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>Shop by Category</div>
