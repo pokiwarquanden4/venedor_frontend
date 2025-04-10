@@ -153,7 +153,7 @@ function Cart() {
                   className={styles.lists_footer_button_continue}
                   title="CONTINUE SHOPPING"
                   onClick={() => {
-                    navigate('/category');
+                    navigate('/category/0');
                   }}
                 ></MainButton>
               </div>

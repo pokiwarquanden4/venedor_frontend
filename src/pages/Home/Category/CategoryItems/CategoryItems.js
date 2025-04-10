@@ -8,11 +8,7 @@ function CategoryItems({ data, id }) {
     <div
       className={styles.wrapper}
       onClick={() => {
-        if (data.name === 'All') {
-          navigate('/category');
-        } else {
-          navigate(`/category/${id}`);
-        }
+        navigate(`/category/${id}`);
       }}
     >
       <div className={styles.content}>

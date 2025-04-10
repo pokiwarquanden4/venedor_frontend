@@ -15,23 +15,21 @@ function CategoryFilterPopUp() {
       <div className={styles.category}>
         <div className={styles.category_header}>Category</div>
         <div className={styles.category_content}>
-          {productSelect.category.category.map((item, index) => {
+          {productSelect.category.category ? Object.keys(productSelect.category.category).map((id, index) => {
+            const item = productSelect.category.category[id]
+
             return (
               <MainButton
                 key={index}
                 className={styles.content}
                 title={item.name}
                 onClick={() => {
-                  if (item.name === 'All') {
-                    navigate('/category');
-                  } else {
-                    navigate(`/category/${item.name}`);
-                  }
+                  navigate(`/category/${id}`);
                 }}
                 active={currentCategory.toLowerCase() === item.name.toLowerCase()}
               ></MainButton>
             );
-          })}
+          }) : undefined}
         </div>
       </div>
     </div>

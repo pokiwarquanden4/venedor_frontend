@@ -373,7 +373,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
         ) : undefined}
       </div>
       {
-        fullScreen
+        fullScreen && commentData && commentData.comments
           ?
           <Fragment>
             {commentData.comments.map((comment) => {

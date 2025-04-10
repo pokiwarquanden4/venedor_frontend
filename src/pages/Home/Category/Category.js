@@ -26,29 +26,36 @@ const responsive = {
 };
 function Category() {
   const productSelect = useSelector(productSelector);
-  console.log(productSelect.category)
+
   return (
     <div className={styles.wrapper}>
       <div className={styles.header}>Shop by Category</div>
       <div className={styles.contents}>
         <div className={styles.content}>
           <div className={styles.items}>
-            <Carousel
-              swipeable={true}
-              draggable={true}
-              // showDots={true}
-              responsive={responsive}
-              infinite={true}
-              containerClass="carousel-container"
-              removeArrowOnDeviceType={["tablet", "mobile"]}
-              dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-40-px"
-            >
-              {Object.keys(productSelect.category.category).map((key) => {
-                const data = productSelect.category.category[key]
-                return <CategoryItems key={key} id={key} data={data}></CategoryItems>
-              })}
-            </Carousel>;
+            {
+              productSelect.category.category
+                ?
+                <Carousel
+                  swipeable={true}
+                  draggable={true}
+                  // showDots={true}
+                  responsive={responsive}
+                  infinite={true}
+                  containerClass="carousel-container"
+                  removeArrowOnDeviceType={["tablet", "mobile"]}
+                  dotListClass="custom-dot-list-style"
+                  itemClass="carousel-item-padding-40-px"
+                >
+                  {Object.keys(productSelect.category.category).map((key) => {
+                    const data = productSelect.category.category[key]
+                    return <CategoryItems key={key} id={key} data={data}></CategoryItems>
+                  })}
+                </Carousel>
+                :
+                undefined
+            }
+
           </div>
         </div>
       </div>
