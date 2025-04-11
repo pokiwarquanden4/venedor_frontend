@@ -22,7 +22,7 @@ import { productActions } from '../../redux/actions/product/ProductActions';
 import Pagination from '../Pagination/Pagination';
 import { formatVND } from '../../config/utils';
 
-function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
+function ProductDetails({ data, fullScreen, edit, preview }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loginSelect = useSelector(LoginSelector);
@@ -42,23 +42,55 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
     limit: 4,
     productId: data.id
   })
+  const [productData, setProductData] = useState(data)
   const [specificData, setSpecificData] = useState([])
+  const [specificDatapics, setSpecificDatapics] = useState([])
   const [selectedSpecific, setSelectedSpecific] = useState({})
   const [commentData, setCommentData] = useState(productSelect.productComments)
+
+  useEffect(() => {
+    const newData = {
+      ...data
+    }
+
+    const [option1, option2] = Object.keys(selectedSpecific).map(key => {
+      const value = selectedSpecific[key]
+      return specificData.find(spe => spe.specificName === key).specific[value]
+    })
+
+    let newImgList = []
+    specificDatapics.forEach(item => {
+      if (
+        (item.option1 === option1 && item.option2 === option2)
+        ||
+        (item.option2 === option1 && item.option1 === option2)
+        ||
+        (item.option1 === option1 && !item.option2)
+      ) {
+        newImgList = item.listImgURL.split('___')
+      }
+    })
+
+    if (newImgList.length) {
+      newData.listImgURL = newImgList
+    }
+
+    setProductData(newData)
+  }, [data, selectedSpecific, specificData, specificDatapics])
 
   useEffect(() => {
     setPageData(pre => {
       return {
         ...pre,
-        productId: data.id
+        productId: productData.id
       }
     })
-  }, [data])
+  }, [productData])
 
   useEffect(() => {
-    if (!data.StorageSpecifics) return
+    if (!productData.StorageSpecifics) return
     const selected = {}
-    const specificData = data.StorageSpecifics.map((item) => {
+    const specificData = productData.StorageSpecifics.map((item) => {
       selected[item.specificName] = 0
 
       return {
@@ -69,7 +101,13 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
 
     setSelectedSpecific(selected)
     setSpecificData(specificData)
-  }, [data.StorageSpecifics])
+  }, [productData.StorageSpecifics])
+
+  useEffect(() => {
+    if (!productData.StorageSpecificPics) return
+
+    setSpecificDatapics(productData.StorageSpecificPics)
+  }, [productData.StorageSpecificPics])
 
   useEffect(() => {
     dispatch(productActions.getCommentRequest({ page: pageData.page, limit: pageData.limit, productId: pageData.productId }));
@@ -99,7 +137,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
 
   useEffect(() => {
     if (loginSelect.wishList) {
-      const value = loginSelect.wishList.find((e) => e.productId == data.id);
+      const value = loginSelect.wishList.find((e) => e.productId == productData.id);
       if (value) {
         setHeart(true);
         setWishListId(value.id);
@@ -108,7 +146,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
         setWishListId(undefined);
       }
     }
-  }, [data.id, loginSelect.wishList]);
+  }, [productData.id, loginSelect.wishList]);
 
   return (
     <div className={styles.container}>
@@ -131,7 +169,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
               <UpArrowIcon className={styles.icon_up}></UpArrowIcon>
             </div>
             <div className={styles.picture_list_content}>
-              {(data.listImgURL.concat(data.imgURL) || listImg).map((item, index) => {
+              {productData.listImgURL.map((item, index) => {
                 return (
                   <div key={index} className={styles.pictures_wrapper}>
                     <img
@@ -160,11 +198,9 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
               onClick={() => {
                 previewRef.current[
                   currentPicPreview + 7 <=
-                    (data.listImgURL ? data.listImgURL.length - 1 : listImg.length - 1)
+                    (productData.listImgURL.length - 1)
                     ? currentPicPreview + 7
-                    : data.listImgURL
-                      ? data.listImgURL.length - 1
-                      : listImg.length - 1
+                    : productData.listImgURL.length - 1
                 ].scrollIntoView({
                   behavior: 'smooth',
                   inline: 'start',
@@ -172,11 +208,9 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                 });
                 setCurrentPicPreview(
                   currentPicPreview + 7 <=
-                    (data.listImgURL ? data.listImgURL.length - 1 : listImg.length - 1)
+                    (productData.listImgURL.length - 1)
                     ? currentPicPreview + 7
-                    : data.listImgURL
-                      ? data.listImgURL.length - 1
-                      : listImg.length - 1
+                    : productData.listImgURL.length - 1
                 );
               }}
             >
@@ -185,7 +219,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
           </div>
           <div className={styles.picture}>
             <div className={styles.preview_pictures}>
-              {(data.listImgURL.concat(data.imgURL) || listImg).map((item, index) => {
+              {productData.listImgURL.map((item, index) => {
                 return (
                   <div
                     className={styles.preview_pictures_wrapper}
@@ -210,14 +244,14 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
         </div>
         <div className={styles.content_wrapper}>
           <div>
-            <p className={styles.header}>{data.productName}</p>
+            <p className={styles.header}>{productData.productName}</p>
           </div>
-          <div className={styles.stock}>Availability: {data.number}</div>
+          <div className={styles.stock}>Availability: {productData.number}</div>
           <div className={styles.price}>
-            <div className={styles.olePrice} style={data.saleOff === 0 ? { display: 'none' } : {}}>
-              {formatVND(data.price)}
+            <div className={styles.olePrice} style={productData.saleOff === 0 ? { display: 'none' } : {}}>
+              {formatVND(productData.price)}
             </div>
-            <div className={styles.newPrice}>{formatVND(data.price - data.price * (data.saleOff / 100))}</div>
+            <div className={styles.newPrice}>{formatVND(productData.price - productData.price * (productData.saleOff / 100))}</div>
           </div>
           <div className={styles.buyer}>
             <div className={styles.number}>
@@ -235,7 +269,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
               <div
                 className={styles.plus}
                 onClick={() => {
-                  if (number + 1 <= data.number) {
+                  if (number + 1 <= productData.number) {
                     setNumber(number + 1);
                   }
                 }}
@@ -252,11 +286,11 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                   dispatch(loginActions.loginPopup(true));
                 }
                 if (edit) {
-                  navigate(`/accountSeller/${data.id}`);
+                  navigate(`/accountSeller/${productData.id}`);
                 } else {
                   dispatch(
                     cartActions.createCartProductRequest({
-                      id: data.id,
+                      id: productData.id,
                       quantity: number,
                       specific: Object.keys(selectedSpecific).map(key => specificData.find(d => d.specificName === key)?.specific[selectedSpecific[key]]).join(" - ")
                     })
@@ -280,7 +314,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                     if (heart) {
                       dispatch(wishListActions.deleteWishListRequest({ id: wishListId }));
                     } else {
-                      dispatch(wishListActions.createWishListRequest({ productId: data.id }));
+                      dispatch(wishListActions.createWishListRequest({ productId: productData.id }));
                     }
                   }
                   : null
@@ -311,7 +345,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                   if (loginSelect.loginRole === 'User') {
                     dispatch(
                       messageActions.createRoomChatRequest({
-                        sellerId: data.sellerId,
+                        sellerId: productData.sellerId,
                       })
                     );
                     navigate('/message');
@@ -340,14 +374,17 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
                           }
                         })}
                         className={`${styles.specifics_content} ${selected ? styles.selected : ''}`}
-                      >{s}</div>
+                      >
+                        <div className={styles.specifics_content_text}>{s}</div>
+                        <div className={styles.specifics_content_pic}></div>
+                      </div>
                     })
                   }
                 </div>
               </div>
             })
           }
-          {fullScreen ? <p className={styles.details} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: data.description }} /> : undefined}
+          {fullScreen ? <p className={styles.details} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: productData.description }} /> : undefined}
           {/* {fullScreen && (
             <div className={styles.guaranteed}>
               <div className={styles.guaranteed_header}>Guaranteed Safe Checkout</div>
@@ -368,7 +405,7 @@ function ProductDetails({ data, fullScreen, listImg, edit, preview }) {
             }}
             highestZIndex={true}
           >
-            <p style={{ padding: '20px' }} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: data.description }} />
+            <p style={{ padding: '20px' }} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: productData.description }} />
           </Popup>
         ) : undefined}
       </div>

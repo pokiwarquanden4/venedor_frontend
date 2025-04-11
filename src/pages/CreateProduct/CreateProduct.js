@@ -156,12 +156,13 @@ function CreateProduct() {
 
   const getReviewData = useCallback(() => {
     return {
+      listImgURL: listImg,
       description: description,
       number: quantity,
       price: decodePrice(price),
       saleOff: decodeSaleOff(saleOff),
     };
-  }, [description, price, quantity, saleOff]);
+  }, [description, listImg, price, quantity, saleOff]);
 
   useEffect(() => {
     if (listImgRef.current) {
@@ -485,8 +486,6 @@ function CreateProduct() {
             >
               <ProductDetails
                 data={getReviewData()}
-                listImg={listImg}
-                mainImg={mainImg}
               ></ProductDetails>
             </Popup>
           )}

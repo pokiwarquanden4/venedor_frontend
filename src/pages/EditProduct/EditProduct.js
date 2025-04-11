@@ -94,12 +94,13 @@ function EditProduct() {
 
   const getReviewData = useCallback(() => {
     return {
+      listImgURL: listImg,
       description: description,
       number: quantity,
       price: price,
       saleOff: decodeSaleOff(saleOff),
     };
-  }, [description, price, quantity, saleOff]);
+  }, [description, listImg, price, quantity, saleOff]);
 
 
   useEffect(() => {
@@ -572,8 +573,6 @@ function EditProduct() {
             >
               <ProductDetails
                 data={getReviewData()}
-                listImg={listImg}
-                mainImg={mainImg}
               ></ProductDetails>
             </Popup>
           )}
