@@ -84,12 +84,6 @@ const ActionProvider = ({ createChatBotMessage, setState, children }) => {
     useEffect(() => {
         if (!chatbotData.chatbotMessages) return
 
-        const botMessage = createChatBotMessage(chatbotData.chatbotMessages.message);
-        setState((prev) => ({
-            ...prev,
-            messages: [...prev.messages, botMessage],
-        }));
-
         if (chatbotData.chatbotMessages.products) {
             chatbotData.chatbotMessages.products.forEach((product, index) => {
                 const botMessage = createChatBotMessage(`Sản phẩm số ${index + 1}`, {
@@ -106,6 +100,12 @@ const ActionProvider = ({ createChatBotMessage, setState, children }) => {
                 }));
             })
         }
+
+        const botMessage = createChatBotMessage(chatbotData.chatbotMessages.message);
+        setState((prev) => ({
+            ...prev,
+            messages: [...prev.messages, botMessage],
+        }));
     }, [chatbotData.chatbotMessages, createChatBotMessage, onBuy, setState])
 
     const handleNewUserMessage = (newMessage) => {
