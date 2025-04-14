@@ -61,29 +61,30 @@ export default function ProductReducers(state = productConstants, action) {
         ...state,
         success: false,
       };
-    case getType(productActions.getAllProductRequest):
+    case getType(productActions.getSellerProductRequest):
       return {
         ...state,
-        getAllProduct: false,
+        sellerProductData: undefined,
         loading: true,
       };
-    case getType(productActions.getAllProductSuccess):
-      const results = action.payload.obj.map(item => {
+    case getType(productActions.getSellerProductSuccess):
+      const results = action.payload.obj
+      results.storages = results.storages.map(product => {
         return {
-          ...item,
-          listImgURL: item.listImgURL.split('___')
+          ...product,
+          listImgURL: product.listImgURL.split('___')
         }
       })
 
       return {
         ...state,
-        getAllProduct: results,
+        sellerProductData: results,
         loading: false,
       };
-    case getType(productActions.getAllProductFailure):
+    case getType(productActions.getSellerProductFailure):
       return {
         ...state,
-        getAllProduct: false,
+        sellerProductData: undefined,
         loading: false,
       };
     case getType(productActions.editProductRequest):

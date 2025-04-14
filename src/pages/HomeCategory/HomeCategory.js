@@ -32,7 +32,7 @@ function HomeCategory() {
       }
     })
   }, [params.id])
-  console.log(data.products)
+
   useEffect(() => {
     const filterTemp = filter;
     const tempData = data.products;

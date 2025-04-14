@@ -104,10 +104,10 @@ function EditProduct() {
 
 
   useEffect(() => {
-    if (productSelect.getAllProduct) {
-      setData(productSelect.getAllProduct.find((obj) => obj.id == params.id));
+    if (productSelect.sellerProductData) {
+      setData(productSelect.sellerProductData.find((obj) => obj.id == params.id));
     }
-  }, [params.id, productSelect.getAllProduct]);
+  }, [params.id, productSelect.sellerProductData]);
 
   useEffect(() => {
     if (data) {

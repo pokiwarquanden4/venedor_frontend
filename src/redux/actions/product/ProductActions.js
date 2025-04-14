@@ -14,9 +14,9 @@ export const productActions = createActions({
 
   setProductSuccess: (payload) => payload,
 
-  getAllProductRequest: (payload) => payload,
-  getAllProductSuccess: (payload) => payload,
-  getAllProductFailure: (payload) => payload,
+  getSellerProductRequest: (payload) => payload,
+  getSellerProductSuccess: (payload) => payload,
+  getSellerProductFailure: (payload) => payload,
 
   editProductRequest: (payload) => payload,
   editProductSuccess: (payload) => payload,

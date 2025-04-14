@@ -8,40 +8,32 @@ import { LeftArrowIcon, RightArrowIcon } from '../../asset/img/ItemsIcon';
 import { useDispatch, useSelector } from 'react-redux';
 import { productActions } from '../../redux/actions/product/ProductActions';
 import { productSelector } from '../../redux/selectors/productSelector/productSelector';
+import Pagination from '../../components/Pagination/Pagination';
 function AccountSeller() {
   const dispatch = useDispatch();
   const productSelect = useSelector(productSelector);
-  const [data, setData] = useState();
-  const [numberPerPage, setNumberPerPage] = useState(20);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [data, setData] = useState({
+    storages: [],
+    totalPages: 0
+  });
   const navigate = useNavigate();
-  const pageContent = [];
-
-  let temp = [];
-  if (data) {
-    for (let i = 0; i < data.length; i++) {
-      if (temp.length < numberPerPage) {
-        temp.push(data[i]);
-      } else {
-        pageContent.push(temp);
-        temp = [];
-        temp.push(data[i]);
-      }
-      if (i === data.length - 1) {
-        pageContent.push(temp);
-      }
-    }
-  }
+  const [pageData, setPageData] = useState({
+    page: 1,
+    limit: 15,
+  })
 
   useEffect(() => {
-    dispatch(productActions.getAllProductRequest());
-  }, [dispatch]);
+    dispatch(productActions.getSellerProductRequest({
+      page: pageData.page,
+      limit: pageData.limit
+    }));
+  }, [dispatch, pageData.limit, pageData.page]);
 
   useEffect(() => {
-    if (productSelect.getAllProduct) {
-      setData(productSelect.getAllProduct);
+    if (productSelect.sellerProductData) {
+      setData(productSelect.sellerProductData);
     }
-  }, [productSelect.getAllProduct]);
+  }, [productSelect.sellerProductData]);
 
   return (
     <div className={styles.wrapper}>
@@ -60,62 +52,21 @@ function AccountSeller() {
           <div className={styles.order_history}>
             <div className={styles.order_history_header}>Your Store</div>
 
-            {data && data.length ? (
-              pageContent.map((items, index) => {
-                return (
-                  currentPage === index + 1 && (
-                    <div className={styles.order_history_list} key={index}>
-                      {items.map((item, index) => {
-                        return <Items data={item} vertical={true} edit={true} key={index}></Items>;
-                      })}
-                    </div>
-                  )
-                );
-              })
+            {data.storages && data.storages.length ? (
+              <div className={styles.order_history_list}>
+                {
+                  data.storages.map((item, index) => {
+                    return <Items data={item} vertical={true} edit={true} key={index}></Items>;;
+                  })
+                }
+              </div>
             ) : (
               <div className={styles.order_history_content}>You haven't sold any things yet.</div>
             )}
           </div>
         </div>
         <div className={styles.footer}>
-          {pageContent.length > 1 && (
-            <div className={styles.pages}>
-              {currentPage > 1 && (
-                <div
-                  className={styles.leftArrow}
-                  onClick={() => {
-                    setCurrentPage(currentPage - 1);
-                  }}
-                >
-                  <LeftArrowIcon className={styles.rightArrow_icon}></LeftArrowIcon>
-                </div>
-              )}
-              {pageContent.map((item, index) => {
-                return (
-                  <div
-                    className={`${styles.paging} ${currentPage === index + 1 ? styles.paging_active : ''
-                      }`}
-                    key={index}
-                    onClick={() => {
-                      setCurrentPage(index + 1);
-                    }}
-                  >
-                    {index + 1}
-                  </div>
-                );
-              })}
-              {currentPage < pageContent.length && (
-                <div
-                  className={styles.rightArrow}
-                  onClick={() => {
-                    setCurrentPage(currentPage + 1);
-                  }}
-                >
-                  <RightArrowIcon className={styles.leftArrow_icon}></RightArrowIcon>
-                </div>
-              )}
-            </div>
-          )}
+          <Pagination pageData={pageData} setPageData={setPageData} totalPages={data.totalPages}></Pagination>
         </div>
       </div>
     </div>

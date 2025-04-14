@@ -1,7 +1,7 @@
 export const productConstants = {
   success: false,
   isLoading: false,
-  getAllProduct: undefined,
+  sellerProductData: undefined,
   searchProducts: undefined,
   productComments: undefined,
   category: {}

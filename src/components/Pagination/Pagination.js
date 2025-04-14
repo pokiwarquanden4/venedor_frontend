@@ -1,5 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
-import { FilterIcon, LeftArrowIcon, RightArrowIcon } from '../../asset/img/ItemsIcon';
+import { LeftArrowIcon, RightArrowIcon } from '../../asset/img/ItemsIcon';
 import styles from './Pagination.module.scss';
 
 function Pagination({ pageData, setPageData, totalPages }) {

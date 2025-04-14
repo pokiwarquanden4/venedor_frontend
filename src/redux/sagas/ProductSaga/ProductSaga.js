@@ -5,7 +5,7 @@ import { takeLatest, call, put } from 'redux-saga/effects';
 import {
   addProductAPI,
   editProductAPI,
-  getAllProductAPI,
+  getSellerProductAPI,
   getCategoryAPI,
   getCommentAPI,
   searchCategoryProductAPI,
@@ -42,17 +42,18 @@ function* addProductSaga(action) {
   }
 }
 
-function* getAllProductSaga(action) {
+function* getSellerProductSaga(action) {
   try {
     yield put(loadingActions.setLoadingLoading(true));
 
-    const products = yield call(getAllProductAPI, action.payload);
-    yield put(productActions.getAllProductSuccess(products.data));
+    const products = yield call(getSellerProductAPI, action.payload);
+
+    yield put(productActions.getSellerProductSuccess(products.data));
 
     jwtCheck(products);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
-    yield put(productActions.getAllProductFailure(err.response.data));
+    yield put(productActions.getSellerProductFailure(err.response.data));
 
     yield put(loadingActions.setLoadingLoading(false));
   }
@@ -207,7 +208,7 @@ function* getCategory(action) {
 
 function* productSagas() {
   yield takeLatest(productActions.createProductRequest, addProductSaga);
-  yield takeLatest(productActions.getAllProductRequest, getAllProductSaga);
+  yield takeLatest(productActions.getSellerProductRequest, getSellerProductSaga);
   yield takeLatest(productActions.editProductRequest, editProductSaga);
   yield takeLatest(productSearchActions.quickSearchProductRequest, quickSearchProductSaga);
   yield takeLatest(productSearchActions.searchProductRequest, searchProductSaga);

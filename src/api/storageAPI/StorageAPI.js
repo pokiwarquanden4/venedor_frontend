@@ -16,8 +16,9 @@ export const editProductAPI = (payload) => {
   });
 };
 
-export const getAllProductAPI = () => {
-  return axios.get(`${URL}sellers/getAllProducts`, {
+export const getSellerProductAPI = (payload) => {
+  return axios.get(`${URL}sellers/getSellerProducts`, {
+    params: payload,
     headers: createHeaders({ Authorization: getJWTToken() }),
   });
 };
