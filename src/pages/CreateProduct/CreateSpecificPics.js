@@ -41,7 +41,7 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
             index: value.index,
             img: listImg,
             price: price,
-            quantity: quantity,
+            number: quantity,
             saleOff: saleOff
         })
         setOpenPopup(false)

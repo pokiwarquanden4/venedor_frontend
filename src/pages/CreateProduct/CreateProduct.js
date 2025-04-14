@@ -25,6 +25,7 @@ import 'react-quill/dist/quill.snow.css';
 import { uploadFirebaseImage } from '../../fireBase/imageUpload';
 import { notificationActions } from '../../redux/actions/notification/notificationAction';
 import CreateSpecificPics from './CreateSpecificPics';
+import { number } from 'prop-types';
 
 function CreateProduct() {
   const productSelect = useSelector(productSelector);
@@ -132,7 +133,7 @@ function CreateProduct() {
             combination: item.combination,
             img: imgURL,
             price: item.price,
-            quantity: item.quantity,
+            number: item.number,
             saleOff: item.saleOff,
           }
         })
@@ -199,7 +200,7 @@ function CreateProduct() {
         combination: item,
         img: [],
         price: 0,
-        quantity: 0,
+        number: 0,
         saleOff: 0,
         valid: false,
       }
@@ -249,7 +250,7 @@ function CreateProduct() {
       const newSpe = [...pre]
       newSpe[data.index].img = data.img
       newSpe[data.index].price = data.price
-      newSpe[data.index].qiantity = data.qiantity
+      newSpe[data.index].number = data.number
       newSpe[data.index].saleOff = data.saleOff
       newSpe[data.index].valid = true
 
