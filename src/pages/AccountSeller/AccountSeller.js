@@ -12,7 +12,7 @@ function AccountSeller() {
   const dispatch = useDispatch();
   const productSelect = useSelector(productSelector);
   const [data, setData] = useState();
-  const [numberPerPage, setNumberPerPage] = useState(5);
+  const [numberPerPage, setNumberPerPage] = useState(20);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const pageContent = [];

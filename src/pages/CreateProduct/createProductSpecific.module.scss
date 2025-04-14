@@ -1,6 +1,53 @@
 .container {
     padding: 20px;
 
+    .listImg_header {
+        margin-bottom: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 20px;
+    }
+
+    .price,
+    .quantity,
+    .saleOff {
+        position: relative;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .price_header,
+    .quantity_header,
+    .saleOff_header {
+        margin-bottom: 10px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .price_input,
+    .quantity_input,
+    .saleOff_input {
+        font-size: 16px;
+        padding: 15px 30px;
+        height: 50px;
+        width: 400px;
+    }
+
+    .img_input,
+    .listImg_input {
+        height: 50px;
+        width: 400px;
+    }
+
+    .listImg_input {
+        flex-direction: column;
+        height: auto;
+
+        .imgBackGround {
+            margin-bottom: 10px;
+        }
+    }
+
     .header {
         margin-bottom: 20px;
 

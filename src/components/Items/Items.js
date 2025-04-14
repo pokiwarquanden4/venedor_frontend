@@ -24,7 +24,6 @@ function Items({ data, vertical, wishList, edit }) {
   const dispatch = useDispatch();
   const loginSelect = useSelector(LoginSelector);
   const [heart, setHeart] = useState(false);
-  const [popup, setPopup] = useState(false);
   const [wishListId, setWishListId] = useState();
   const [specificData, setSpecificData] = useState([])
   const [selectedSpecific, setSelectedSpecific] = useState({})
@@ -65,20 +64,6 @@ function Items({ data, vertical, wishList, edit }) {
 
   return (
     <Fragment>
-      {popup && (
-        <Popup
-          onClick={() => {
-            setPopup(false);
-          }}
-        >
-          <ProductDetails
-            heart={heart}
-            edit={edit}
-            wishListId={wishListId}
-            data={data}
-          ></ProductDetails>
-        </Popup>
-      )}
       <div className={`${styles.item} ${vertical ? styles.vertical : styles.horizontal}`}>
         <div className={styles.item_img}>
           {vertical && loginSelect.loginRole === 'User' && (
@@ -122,7 +107,7 @@ function Items({ data, vertical, wishList, edit }) {
             <div
               className={styles.searchButton}
               onClick={() => {
-                setPopup(true);
+                navigate(`/category/${data.categoryId}/${data.id}`);
               }}
             >
               <SearchIcon className={styles.icon}></SearchIcon>

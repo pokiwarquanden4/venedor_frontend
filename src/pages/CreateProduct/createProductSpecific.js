@@ -1,8 +1,11 @@
 import { Fragment, useEffect, useRef, useState } from 'react';
 import styles from './createProductSpecific.module.scss'
 import MainButton from '../../components/MainButton/MainButton';
+import { notificationActions } from '../../redux/actions/notification/notificationAction';
+import { useDispatch } from 'react-redux';
 
 function CreateProductSpecific({ data, onSubmit, setOpenPopup, onDelete }) {
+    const dispatch = useDispatch()
     const [specificHeader, setSpecificHeader] = useState(data.specificName)
     const [specific, setSpecific] = useState(data.specific)
 
@@ -16,7 +19,7 @@ function CreateProductSpecific({ data, onSubmit, setOpenPopup, onDelete }) {
             })
             setOpenPopup(false)
         } else {
-
+            dispatch(notificationActions.setNotificationContent('Please fill all the field'));
         }
     }
 

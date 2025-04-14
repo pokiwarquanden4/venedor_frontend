@@ -22,6 +22,9 @@ import CreateProductSpecific from './createProductSpecific';
 import { EditButton } from '../../asset/img/HeaderIcon';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
+import { uploadFirebaseImage } from '../../fireBase/imageUpload';
+import { notificationActions } from '../../redux/actions/notification/notificationAction';
+import CreateSpecificPics from './CreateSpecificPics';
 
 function CreateProduct() {
   const productSelect = useSelector(productSelector);
@@ -42,67 +45,28 @@ function CreateProduct() {
   const [categoryListId, setCategoryListId] = useState([])
   const [categoryListIdFill, setCategoryListIdFill] = useState()
   const [brand, setBrand] = useState();
+
   const [specific, setSpecific] = useState([])
   const [createSpecific, setCreateSpecific] = useState({
     specificName: '',
     specific: []
   })
-  const [openPopup, setOpenPopup] = useState(false)
 
-  const mainImgRef = useRef();
+  const [specificPics, setSpecificPics] = useState([])
+  const [createSpecificPics, setCreateSpecificPics] = useState(undefined)
+
+  const [popUpSpecific, setPopUpSpecific] = useState(false)
+  const [popUpSpecificPics, setPopUpSpecificPics] = useState(false)
+
   const [mainImg, setMainImg] = useState();
   const [mainImgFill, setMainImgFill] = useState();
 
-  const listImgRef = useRef();
   const [listImg, setListImg] = useState([]);
-  const [listImgFile, setListImgFile] = useState(new DataTransfer().files);
   const [listImgFill, setListImgFill] = useState();
 
   const [preview, setPreview] = useState(false);
+  const [combination, setCombination] = useState([])
 
-  const convertBase64 = useCallback((file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (err) => {
-        reject(err);
-      };
-    });
-  }, []);
-
-  const removeFile = useCallback((e, index) => {
-    const files = e.files;
-
-    // Convert the FileList to an array
-    const filesArray = Array.from(files);
-
-    // Remove the file at the specified index
-    filesArray.splice(index, 1);
-
-    // Convert the updated array back to a FileList
-    const updatedFiles = new DataTransfer();
-    filesArray.forEach((file) => updatedFiles.items.add(file));
-
-    setListImgFile(updatedFiles.files);
-  }, []);
-
-  const addFile = useCallback((e) => {
-    const files = e.files;
-    const addFiles = listImgFile;
-
-    // Convert the FileList to an array
-    const filesArray = Array.from(files);
-    const addFilesArray = Array.from(addFiles);
-
-    // Convert the updated array back to a FileList
-    const updatedFiles = new DataTransfer();
-    filesArray.concat(addFilesArray).forEach((file) => updatedFiles.items.add(file));
-
-    setListImgFile(updatedFiles.files);
-  }, [listImgFile]);
 
   const checkinput = useCallback(() => {
     !name && setNameFill(true);
@@ -112,8 +76,14 @@ function CreateProduct() {
     !categoryId && setCategoryIdFill(true)
     !categoryListId.length && setCategoryListIdFill(true)
     !description && setDescriptionFill(true);
-    !mainImgRef.current.files[0] && setMainImgFill(true);
-    listImgRef.current.files.length === 0 && setListImgFill(true);
+    !mainImg && setMainImgFill(true);
+    !listImg.length && setListImgFill(true);
+    if (
+      combination.length !== specificPics.filter(data => data.valid).length
+    ) {
+      dispatch(notificationActions.setNotificationContent('Please check specific'));
+      return false
+    }
 
     if (
       !nameFill &&
@@ -123,36 +93,95 @@ function CreateProduct() {
       !categoryListIdFill &&
       !quantityFill &&
       !saleOffFill &&
-      mainImgRef.current.files[0] &&
-      listImgRef.current.files !== 0
+      !mainImgFill &&
+      !listImgFill !== 0
     ) {
       return true;
     } else {
       return false;
     }
-  }, [categoryId, categoryIdFill, categoryListId.length, categoryListIdFill, description, descriptionFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill]);
+  }, [categoryId, categoryIdFill, categoryListId.length, categoryListIdFill, combination.length, description, descriptionFill, dispatch, listImg.length, listImgFill, mainImg, mainImgFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill, specificPics]);
 
   const handleSubmit = useCallback(async () => {
     if (checkinput()) {
-      const formData = new FormData();
-      formData.append('productName', name);
-      formData.append('price', decodePrice(price));
-      formData.append('description', description);
-      formData.append('number', quantity);
-      formData.append('saleOff', decodeSaleOff(saleOff));
-      formData.append('categoryId', categoryId);
-      formData.append('categoryList', categoryListId);
-      formData.append('brandName', brand);
-      formData.append('specifics', JSON.stringify(specific));
-      formData.append('img', mainImgRef.current.files[0]);
-      for (let i = 0; i < listImgFile.length; i++) {
-        formData.append('img', listImgFile[i]);
+      //upload img
+      const mainImgUrl = await uploadFirebaseImage({
+        location: 'main'
+      }, mainImg);
+
+      const listImgUrl = []
+      for (let i = 0; i < listImg.length; i++) {
+        const url = await uploadFirebaseImage({
+          location: 'listImg'
+        }, listImg[i]);
+
+        listImgUrl.push(url)
       }
-      await dispatch(productActions.createProductRequest(formData));
+
+      const productData = {
+        productName: name,
+        price: decodePrice(price),
+        description: description,
+        number: quantity,
+        saleOff: decodeSaleOff(saleOff),
+        categoryId: categoryId,
+        categoryList: categoryListId,
+        brandName: brand,
+        specifics: specific,
+        specificPics: specificPics,
+        mainImgUrl: mainImgUrl,
+        listImgUrl: listImgUrl
+      };
+
+      await dispatch(productActions.createProductRequest(productData));
 
       navigate(routes.accountSeller);
     }
-  }, [brand, categoryId, categoryListId, checkinput, description, dispatch, listImgFile, name, navigate, price, quantity, saleOff, specific]);
+  }, [brand, categoryId, categoryListId, checkinput, description, dispatch, listImg, mainImg, name, navigate, price, quantity, saleOff, specific, specificPics]);
+
+  const generateCombinations = (specific) => {
+    if (!specific.length) return []
+    const lists = specific.map(item => item.specific);
+    const names = specific.map(item => item.specificName);
+
+    const cartesian = (arr) => {
+      return arr.reduce((acc, curr) => {
+        const res = [];
+        acc.forEach(a => {
+          curr.forEach(b => {
+            res.push([...a, b]);
+          });
+        });
+        return res;
+      }, [[]]);
+    };
+
+    const rawCombinations = cartesian(lists);
+
+    // Chuyển mảng thành đối tượng { Color: 'Red', Size: 'S', ... }
+    return rawCombinations.map(combination => {
+      const result = {};
+      combination.forEach((value, index) => {
+        result[names[index]] = value;
+      });
+      return result;
+    });
+  };
+
+  useEffect(() => {
+    const combinations = generateCombinations(specific)
+    setCombination(combinations)
+    setSpecificPics(combinations.map(item => {
+      return {
+        combination: item,
+        img: [],
+        price: 0,
+        quantity: 0,
+        saleOff: 0,
+        valid: false,
+      }
+    }));
+  }, [specific])
 
   const getReviewData = useCallback(() => {
     return {
@@ -163,28 +192,6 @@ function CreateProduct() {
       saleOff: decodeSaleOff(saleOff),
     };
   }, [description, listImg, price, quantity, saleOff]);
-
-  useEffect(() => {
-    if (listImgRef.current) {
-      listImgRef.current.files = listImgFile;
-      const handle = async () => {
-        const files = listImgFile;
-        if (listImgFile) {
-          const values = [];
-          for (let i = 0; i < files.length; i++) {
-            const base64 = await convertBase64(files[i]);
-            values.push(base64);
-          }
-          setListImg(values);
-        } else {
-          setListImg([]);
-        }
-      };
-
-      //Run
-      handle();
-    }
-  }, [convertBase64, listImgFile]);
 
   const categoryListOptions = (productSelect.category.categoryDetails[categoryId] || []).map((item) => ({
     value: item.id,
@@ -214,8 +221,35 @@ function CreateProduct() {
     }
   }
 
+  const onSubmitSpecificPics = (data) => {
+    setSpecificPics((pre) => {
+      const newSpe = [...pre]
+      newSpe[data.index].img = data.img
+      newSpe[data.index].price = data.price
+      newSpe[data.index].qiantity = data.qiantity
+      newSpe[data.index].saleOff = data.saleOff
+      newSpe[data.index].valid = true
+
+      return newSpe
+    })
+  }
+
   const onDeleteSpecific = (index) => {
     setSpecific((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Hàm để thêm ảnh vào listImg
+  const handleImageChange = (e) => {
+    const files = e.target.files;
+    const newImages = Array.from(files).map((file) => URL.createObjectURL(file));
+
+    setListImg((prevImages) => [...prevImages, ...newImages]);
+    setListImgFill(false)
+  };
+
+  // Hàm để xóa ảnh khỏi listImg
+  const removeFile = (index) => {
+    setListImg((prevImages) => prevImages.filter((_, idx) => idx !== index));
   };
 
   return (
@@ -378,12 +412,16 @@ function CreateProduct() {
                 <div className={styles.specific_header}>Specific</div>
                 <MainButton
                   onClick={() => {
+                    if (specific.length === 2) {
+                      dispatch(notificationActions.setNotificationContent('Only 2 specific allowed'));
+                      return
+                    }
                     setCreateSpecific({
                       index: undefined,
                       specificName: '',
                       specific: []
                     })
-                    setOpenPopup(true)
+                    setPopUpSpecific(true)
                   }
                   }
                   className={styles.specific_button}
@@ -403,12 +441,37 @@ function CreateProduct() {
                           specificName: item.specificName,
                           specific: item.specific
                         })
-                        setOpenPopup(true)
+                        setPopUpSpecific(true)
                       }}
                     ></EditButton>
                     <div className={styles.specific_content_values}>
                       {item.specific.map((value, index) => {
                         return <div key={index} className={styles.specific_content_value}>{value}</div>
+                      })}
+                    </div>
+                  </div>
+                })}
+              </div>
+              <div className={styles.specific_groups}>
+                {combination.map((item, index) => {
+                  const data = Object.values(item)
+
+                  return <div key={index} className={styles.specific_values}>
+                    <div className={styles.specific_content_header}>Pictures {index + 1}</div>
+                    <EditButton
+                      width='16px'
+                      className={styles.editButton}
+                      onClick={() => {
+                        setCreateSpecificPics({
+                          index: index,
+                          data: specificPics[index]
+                        })
+                        setPopUpSpecificPics(true)
+                      }}
+                    ></EditButton>
+                    <div className={styles.specific_content_values}>
+                      {data.map((name, index) => {
+                        return <div key={index} className={styles.specific_content_value}>{name}</div>
                       })}
                     </div>
                   </div>
@@ -425,12 +488,10 @@ function CreateProduct() {
                   accept=".jpg, .jpeg, .png"
                   onChange={async (e) => {
                     const file = e.target.files[0];
-                    const base64 = await convertBase64(file);
-                    setMainImg(base64);
+                    setMainImg(file);
                     setMainImgFill(false);
                   }}
                   className={`${mainImgFill ? styles.noInput : ''}`}
-                  ref={mainImgRef}
                   style={mainImg && { display: 'none' }}
                 ></input>
                 {mainImg && (
@@ -438,7 +499,6 @@ function CreateProduct() {
                     imgURL={mainImg}
                     deleteProduct={() => {
                       setMainImg(undefined);
-                      mainImgRef.current.value = '';
                     }}
                     main={true}
                     className={styles.imgBackGround}
@@ -455,7 +515,7 @@ function CreateProduct() {
                       <BackGroundImg
                         key={index}
                         deleteProduct={() => {
-                          removeFile(listImgRef.current, index);
+                          removeFile(index)
                         }}
                         imgURL={img}
                         className={styles.imgBackGround}
@@ -465,13 +525,9 @@ function CreateProduct() {
                 <input
                   type="file"
                   multiple
-                  ref={listImgRef}
                   accept=".jpg, .jpeg, .png"
                   className={`${listImgFill ? styles.noInput : ''}`}
-                  onChange={() => {
-                    setListImgFill(false);
-                    addFile(listImgRef.current);
-                  }}
+                  onChange={handleImageChange}
                 ></input>
               </div>
             </div>
@@ -509,12 +565,12 @@ function CreateProduct() {
         </div>
       </div>
       {
-        openPopup
+        popUpSpecific
           ?
           <Popup
             width='500px'
             onClick={() => {
-              setOpenPopup(false)
+              setPopUpSpecific(false)
             }}
             highestZIndex={true}
           >
@@ -522,8 +578,27 @@ function CreateProduct() {
               onDelete={onDeleteSpecific}
               onSubmit={onSubmitSpecific}
               data={createSpecific}
-              setOpenPopup={setOpenPopup}
+              setOpenPopup={setPopUpSpecific}
             ></CreateProductSpecific>
+          </Popup>
+          :
+          undefined
+      }
+      {
+        popUpSpecificPics
+          ?
+          <Popup
+            width='500px'
+            onClick={() => {
+              setPopUpSpecificPics(false)
+            }}
+            highestZIndex={true}
+          >
+            <CreateSpecificPics
+              onSubmit={onSubmitSpecificPics}
+              value={createSpecificPics}
+              setOpenPopup={setPopUpSpecificPics}
+            ></CreateSpecificPics>
           </Popup>
           :
           undefined
