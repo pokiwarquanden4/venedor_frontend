@@ -32,59 +32,56 @@ function HomeCategory() {
       }
     })
   }, [params.id])
-
+  console.log(data.products)
   useEffect(() => {
     const filterTemp = filter;
-    const tempData = data;
+    const tempData = data.products;
+    if (!tempData) return
     switch (filterTemp) {
       case 'Feature':
+        tempData.sort(() => Math.random() - 0.5);
         break;
+
       case 'Best Selling':
-        tempData.sort((a, b) => {
-          return a.sold > b.sold;
-        });
+        tempData.sort((a, b) => b.sold - a.sold);
         break;
+
       case 'Alphabetically,A-Z':
-        tempData.sort((a, b) => {
-          return a.description.localeCompare(b.description);
-        });
+        tempData.sort((a, b) => a.description.localeCompare(b.description));
         break;
+
       case 'Alphabetically,Z-A':
-        tempData.sort((a, b) => {
-          return b.description.localeCompare(a.description);
-        });
+        tempData.sort((a, b) => b.description.localeCompare(a.description));
         break;
-      case 'Price, low to high':
-        tempData.sort((a, b) => {
-          const truePriceA = a.price - a.price * (a.saleOff / 100); // Calculate true price for object a
-          const truePriceB = b.price - b.price * (b.saleOff / 100); // Calculate true price for object b
-          return truePriceA - truePriceB; // Compare the true prices
-        });
-        break;
+
       case 'Price, high to low':
         tempData.sort((a, b) => {
-          const truePriceA = a.price - a.price * (a.saleOff / 100); // Calculate true price for object a
-          const truePriceB = b.price - b.price * (b.saleOff / 100); // Calculate true price for object b
-          return truePriceB - truePriceA; // Compare the true prices
+          const truePriceA = a.price - a.price * (a.saleOff / 100);
+          const truePriceB = b.price - b.price * (b.saleOff / 100);
+          return truePriceB - truePriceA;
         });
         break;
+
+      case 'Price, low to high':
+        tempData.sort((a, b) => {
+          const truePriceA = a.price - a.price * (a.saleOff / 100);
+          const truePriceB = b.price - b.price * (b.saleOff / 100);
+          return truePriceA - truePriceB;
+        });
+        break;
+
       case 'Date, old to new':
-        tempData.sort((a, b) => {
-          const dateA = new Date(a.updatedAt); // Convert updatedAt string to a Date object for object a
-          const dateB = new Date(b.updatedAt); // Convert updatedAt string to a Date object for object b
-          return dateA - dateB; // Compare the dates
-        });
+        tempData.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
         break;
+
       case 'Date, new to old':
-        tempData.sort((a, b) => {
-          const dateA = new Date(a.updatedAt); // Convert updatedAt string to a Date object for object a
-          const dateB = new Date(b.updatedAt); // Convert updatedAt string to a Date object for object b
-          return dateB - dateA; // Compare the dates
-        });
+        tempData.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
         break;
+
       default:
         break;
     }
+
   }, [filter, data]);
 
   useEffect(() => {
