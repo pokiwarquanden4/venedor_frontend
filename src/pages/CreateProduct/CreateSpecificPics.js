@@ -22,7 +22,12 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
 
     const handleImageChange = (e) => {
         const files = e.target.files;
-        const newImages = Array.from(files).map((file) => URL.createObjectURL(file));
+        const newImages = Array.from(files).map((file) => {
+            return {
+                file: file,
+                url: URL.createObjectURL(file)
+            }
+        });
 
         setListImg((prevImages) => [...prevImages, ...newImages]);
     };
@@ -137,7 +142,7 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
                                 deleteProduct={() => {
                                     removeFile(index)
                                 }}
-                                imgURL={img}
+                                imgURL={img.url}
                                 className={styles.imgBackGround}
                             ></BackGroundImg>
                         );

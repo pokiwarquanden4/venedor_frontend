@@ -106,17 +106,39 @@ function CreateProduct() {
     if (checkinput()) {
       //upload img
       const mainImgUrl = await uploadFirebaseImage({
-        location: 'main'
-      }, mainImg);
+        location: 'mainImg'
+      }, mainImg.file);
 
       const listImgUrl = []
       for (let i = 0; i < listImg.length; i++) {
         const url = await uploadFirebaseImage({
           location: 'listImg'
-        }, listImg[i]);
+        }, listImg[i].file);
 
         listImgUrl.push(url)
       }
+
+      const specificPicsData = await Promise.all(
+        specificPics.map(async (item) => {
+          const imgURL = []
+          const data = item.img.map(d => d.file)
+
+          for (let i = 0; i < data.length; i++) {
+            const url = await uploadFirebaseImage({ location: 'listImg' }, data[i])
+            imgURL.push(url)
+          }
+
+          return {
+            combination: item.combination,
+            img: imgURL,
+            price: item.price,
+            quantity: item.quantity,
+            saleOff: item.saleOff,
+          }
+        })
+      )
+
+
 
       const productData = {
         productName: name,
@@ -128,10 +150,11 @@ function CreateProduct() {
         categoryList: categoryListId,
         brandName: brand,
         specifics: specific,
-        specificPics: specificPics,
+        specificPics: specificPicsData,
         mainImgUrl: mainImgUrl,
         listImgUrl: listImgUrl
       };
+      console.log(productData)
 
       await dispatch(productActions.createProductRequest(productData));
 
@@ -241,7 +264,12 @@ function CreateProduct() {
   // Hàm để thêm ảnh vào listImg
   const handleImageChange = (e) => {
     const files = e.target.files;
-    const newImages = Array.from(files).map((file) => URL.createObjectURL(file));
+    const newImages = Array.from(files).map((file) => {
+      return {
+        file: file,
+        url: URL.createObjectURL(file)
+      }
+    });
 
     setListImg((prevImages) => [...prevImages, ...newImages]);
     setListImgFill(false)
@@ -488,7 +516,10 @@ function CreateProduct() {
                   accept=".jpg, .jpeg, .png"
                   onChange={async (e) => {
                     const file = e.target.files[0];
-                    setMainImg(file);
+                    setMainImg({
+                      url: URL.createObjectURL(file),
+                      file: file
+                    });
                     setMainImgFill(false);
                   }}
                   className={`${mainImgFill ? styles.noInput : ''}`}
@@ -496,7 +527,7 @@ function CreateProduct() {
                 ></input>
                 {mainImg && (
                   <BackGroundImg
-                    imgURL={mainImg}
+                    imgURL={mainImg.url}
                     deleteProduct={() => {
                       setMainImg(undefined);
                     }}
@@ -517,7 +548,7 @@ function CreateProduct() {
                         deleteProduct={() => {
                           removeFile(index)
                         }}
-                        imgURL={img}
+                        imgURL={img.url}
                         className={styles.imgBackGround}
                       ></BackGroundImg>
                     );
