@@ -25,7 +25,7 @@ import 'react-quill/dist/quill.snow.css';
 import { uploadFirebaseImage } from '../../fireBase/imageUpload';
 import { notificationActions } from '../../redux/actions/notification/notificationAction';
 import CreateSpecificPics from './CreateSpecificPics';
-import { number } from 'prop-types';
+import { loadingActions } from '../../redux/actions/loading/LoadingActions';
 
 function CreateProduct() {
   const productSelect = useSelector(productSelector);
@@ -106,6 +106,7 @@ function CreateProduct() {
   const handleSubmit = useCallback(async () => {
     if (checkinput()) {
       //upload img
+      dispatch(loadingActions.setLoadingLoading(true))
       const mainImgUrl = await uploadFirebaseImage({
         location: 'mainImg'
       }, mainImg.file);
@@ -138,8 +139,6 @@ function CreateProduct() {
           }
         })
       )
-
-
 
       const productData = {
         productName: name,
