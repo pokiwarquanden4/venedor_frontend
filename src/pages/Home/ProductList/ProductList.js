@@ -14,22 +14,28 @@ function ProductList() {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    dispatch(homeActions.latestProductRequest());
-  }, [dispatch]);
+    if (currentPage === 1 && !latestData.length) {
+      dispatch(homeActions.latestProductRequest());
+    }
+  }, [currentPage, dispatch, latestData.length]);
   useEffect(() => {
     setLatestData(homeSelect.latestProducts);
   }, [homeSelect.latestProducts]);
 
   useEffect(() => {
-    dispatch(homeActions.bestSellerProductRequest());
-  }, [dispatch]);
+    if (currentPage === 2 && !bestSellerData.length) {
+      dispatch(homeActions.bestSellerProductRequest());
+    }
+  }, [bestSellerData.length, currentPage, dispatch]);
   useEffect(() => {
     setBestSellerData(homeSelect.bestSellerProducts);
   }, [homeSelect.bestSellerProducts]);
 
   useEffect(() => {
-    dispatch(homeActions.featureProductRequest());
-  }, [dispatch]);
+    if (currentPage === 3 && !featureData.length) {
+      dispatch(homeActions.featureProductRequest());
+    }
+  }, [currentPage, dispatch, featureData.length]);
   useEffect(() => {
     setFeatureData(homeSelect.featureProducts);
   }, [homeSelect.featureProducts]);
