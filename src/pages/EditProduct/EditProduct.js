@@ -10,61 +10,71 @@ import Popup from '../../components/Popup/Popup';
 import ProductDetails from '../../components/ProductDetails/ProductDetails';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
+  decodePrice,
   decodeSaleOff,
-  encodeSaleOff,
   quantityFilter,
   saleOffFilter,
 } from '../../config/filterInput';
 import { productSelector } from '../../redux/selectors/productSelector/productSelector';
 import routes from '../../config/routes';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
 import Select from "react-select";
 import { EditButton } from '../../asset/img/HeaderIcon';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { uploadFirebaseImage } from '../../fireBase/imageUpload';
+import { notificationActions } from '../../redux/actions/notification/notificationAction';
+import { loadingActions } from '../../redux/actions/loading/LoadingActions';
 import CreateProductSpecific from '../CreateProduct/createProductSpecific';
+import CreateSpecificPics from '../CreateProduct/CreateSpecificPics';
 
 function EditProduct() {
   const params = useParams();
   const productSelect = useSelector(productSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [data, setData] = useState();
-  const [name, setName] = useState('');
+  const [data, setData] = useState()
+  const [name, setName] = useState();
   const [nameFill, setNameFill] = useState();
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState();
   const [priceFill, setPriceFill] = useState();
-  const [quantity, setQuantity] = useState('');
+  const [quantity, setQuantity] = useState();
   const [quantityFill, setQuantityFill] = useState();
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState();
   const [descriptionFill, setDescriptionFill] = useState();
-  const [saleOff, setSaleOff] = useState('');
+  const [saleOff, setSaleOff] = useState();
   const [saleOffFill, setSaleOffFill] = useState();
   const [categoryId, setCategoryId] = useState();
   const [categoryIdFill, setCategoryIdFill] = useState();
   const [categoryListId, setCategoryListId] = useState([])
   const [categoryListIdFill, setCategoryListIdFill] = useState()
   const [brand, setBrand] = useState();
+
   const [specific, setSpecific] = useState([])
   const [createSpecific, setCreateSpecific] = useState({
-    id: undefined,
     specificName: '',
     specific: []
   })
-  const [openPopup, setOpenPopup] = useState(false)
 
-  const mainImgRef = useRef();
+  const [specificPics, setSpecificPics] = useState([])
+  const [createSpecificPics, setCreateSpecificPics] = useState(undefined)
+
+  const [popUpSpecific, setPopUpSpecific] = useState(false)
+  const [popUpSpecificPics, setPopUpSpecificPics] = useState(false)
+
   const [mainImg, setMainImg] = useState();
   const [mainImgFill, setMainImgFill] = useState();
 
-  const listImgRef = useRef();
   const [listImg, setListImg] = useState([]);
-  const [listImgFile, setListImgFile] = useState(new DataTransfer().files);
   const [listImgFill, setListImgFill] = useState();
 
-  const [currentImg, setCurrentImg] = useState();
-  const [currentListImg, setCurrentListImg] = useState([]);
-  const [currentListImgRemove, setCurrentListImgRemove] = useState('');
   const [preview, setPreview] = useState(false);
+  const [combination, setCombination] = useState([])
+  console.log(data)
+  useEffect(() => {
+    if (productSelect.sellerProductData) {
+      setData(productSelect.sellerProductData.find((obj) => obj.id == params.id));
+    }
+  }, [params.id, productSelect.sellerProductData]);
 
   const checkinput = useCallback(() => {
     !name && setNameFill(true);
@@ -74,160 +84,143 @@ function EditProduct() {
     !categoryId && setCategoryIdFill(true)
     !categoryListId.length && setCategoryListIdFill(true)
     !description && setDescriptionFill(true);
-    !mainImgRef.current.files[0] && !currentImg && setMainImgFill(true);
-    listImgRef.current.files.length === 0 && currentListImg.length === 0 && setListImgFill(true);
+    !mainImg && setMainImgFill(true);
+    !listImg.length && setListImgFill(true);
+    if (
+      combination.length !== specificPics.filter(data => data.valid).length
+    ) {
+      dispatch(notificationActions.setNotificationContent('Please check specific'));
+      return false
+    }
 
     if (
       !nameFill &&
       !priceFill &&
       !descriptionFill &&
+      !categoryIdFill &&
+      !categoryListIdFill &&
       !quantityFill &&
       !saleOffFill &&
-      !(!mainImgRef.current.files[0] && !currentImg) &&
-      !(listImgRef.current.files.length === 0 && currentListImg.length === 0)
+      !mainImgFill &&
+      !listImgFill !== 0
     ) {
       return true;
     } else {
       return false;
     }
-  }, [categoryId, categoryListId.length, currentImg, currentListImg.length, description, descriptionFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill]);
+  }, [categoryId, categoryIdFill, categoryListId.length, categoryListIdFill, combination.length, description, descriptionFill, dispatch, listImg.length, listImgFill, mainImg, mainImgFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill, specificPics]);
+
+  const handleSubmit = useCallback(async () => {
+    if (checkinput()) {
+      //upload img
+      dispatch(loadingActions.setLoadingLoading(true))
+      const mainImgUrl = await uploadFirebaseImage({
+        location: 'mainImg'
+      }, mainImg.file);
+
+      const listImgUrl = []
+      for (let i = 0; i < listImg.length; i++) {
+        const url = await uploadFirebaseImage({
+          location: 'listImg'
+        }, listImg[i].file);
+
+        listImgUrl.push(url)
+      }
+
+      const specificPicsData = await Promise.all(
+        specificPics.map(async (item) => {
+          const imgURL = []
+          const data = item.img.map(d => d.file)
+
+          for (let i = 0; i < data.length; i++) {
+            const url = await uploadFirebaseImage({ location: 'listImg' }, data[i])
+            imgURL.push(url)
+          }
+
+          return {
+            combination: item.combination,
+            img: imgURL,
+            price: item.price,
+            number: item.number,
+            saleOff: item.saleOff,
+          }
+        })
+      )
+
+      const productData = {
+        productName: name,
+        price: decodePrice(price),
+        description: description,
+        number: quantity,
+        saleOff: decodeSaleOff(saleOff),
+        categoryId: categoryId,
+        categoryList: categoryListId,
+        brandName: brand,
+        specifics: specific,
+        specificPics: specificPicsData,
+        mainImgUrl: mainImgUrl,
+        listImgUrl: listImgUrl
+      };
+
+      await dispatch(productActions.createProductRequest(productData));
+
+      navigate(routes.accountSeller);
+    }
+  }, [brand, categoryId, categoryListId, checkinput, description, dispatch, listImg, mainImg, name, navigate, price, quantity, saleOff, specific, specificPics]);
+
+  const generateCombinations = (specific) => {
+    if (!specific.length) return []
+    const lists = specific.map(item => item.specific);
+    const names = specific.map(item => item.specificName);
+
+    const cartesian = (arr) => {
+      return arr.reduce((acc, curr) => {
+        const res = [];
+        acc.forEach(a => {
+          curr.forEach(b => {
+            res.push([...a, b]);
+          });
+        });
+        return res;
+      }, [[]]);
+    };
+
+    const rawCombinations = cartesian(lists);
+
+    // Chuyển mảng thành đối tượng { Color: 'Red', Size: 'S', ... }
+    return rawCombinations.map(combination => {
+      const result = {};
+      combination.forEach((value, index) => {
+        result[names[index]] = value;
+      });
+      return result;
+    });
+  };
+
+  useEffect(() => {
+    const combinations = generateCombinations(specific)
+    setCombination(combinations)
+    setSpecificPics(combinations.map(item => {
+      return {
+        combination: item,
+        img: [],
+        price: 0,
+        number: 0,
+        saleOff: 0,
+        valid: false,
+      }
+    }));
+  }, [specific])
 
   const getReviewData = useCallback(() => {
     return {
       listImgURL: listImg,
       description: description,
       number: quantity,
-      price: price,
+      price: decodePrice(price),
       saleOff: decodeSaleOff(saleOff),
     };
   }, [description, listImg, price, quantity, saleOff]);
-
-
-  useEffect(() => {
-    if (productSelect.sellerProductData) {
-      setData(productSelect.sellerProductData.find((obj) => obj.id == params.id));
-    }
-  }, [params.id, productSelect.sellerProductData]);
-
-  useEffect(() => {
-    if (data) {
-      setName(data.productName);
-      setPrice(data.price);
-      setQuantity(data.number);
-      setDescription(data.description);
-      setSaleOff(encodeSaleOff(data.saleOff));
-      setCategoryId(data.categoryId);
-      setCurrentImg([data.imgURL]);
-      setCurrentListImg(data.listImgURL);
-      setCategoryId(data.categoryId)
-      setCategoryListId(data.categoryList.split('/').map(i => Number(i)))
-      setBrand(data.brandName)
-      setMainImg(1);
-      setSpecific(data.StorageSpecifics.map(item => {
-        return {
-          id: item.id,
-          specificName: item.specificName,
-          specific: item.specific.split('___')
-        }
-      }))
-    }
-  }, [data]);
-
-  const convertBase64 = useCallback((file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (err) => {
-        reject(err);
-      };
-    });
-  }, []);
-
-  const removeFile = useCallback((e, index) => {
-    const files = e.files;
-
-    // Convert the FileList to an array
-    const filesArray = Array.from(files);
-
-    // Remove the file at the specified index
-    filesArray.splice(index, 1);
-
-    // Convert the updated array back to a FileList
-    const updatedFiles = new DataTransfer();
-    filesArray.forEach((file) => updatedFiles.items.add(file));
-
-    setListImgFile(updatedFiles.files);
-  }, []);
-
-  const addFile = useCallback((e) => {
-    const files = e.files;
-    const addFiles = listImgFile;
-
-    // Convert the FileList to an array
-    const filesArray = Array.from(files);
-    const addFilesArray = Array.from(addFiles);
-
-    // Convert the updated array back to a FileList
-    const updatedFiles = new DataTransfer();
-    filesArray.concat(addFilesArray).forEach((file) => updatedFiles.items.add(file));
-
-    setListImgFile(updatedFiles.files);
-  }, [listImgFile]);
-
-
-  const handleSubmit = useCallback(() => {
-    if (checkinput()) {
-      const submition = async () => {
-        const formData = new FormData();
-        formData.append('id', data.id);
-        formData.append('productName', name);
-        formData.append('price', price);
-        formData.append('description', description);
-        formData.append('number', quantity);
-        formData.append('saleOff', decodeSaleOff(saleOff));
-        formData.append('categoryId', categoryId);
-        formData.append('categoryList', categoryListId);
-        formData.append('brandName', brand);
-        formData.append('specifics', JSON.stringify(specific));
-        formData.append('main', mainImgRef.current.files[0] ? true : false);
-        formData.append('remove', currentListImgRemove.slice(3));
-        mainImgRef.current.files[0] && formData.append('img', mainImgRef.current.files[0]);
-        if (listImgFile && listImgFile.length > 0) {
-          for (let i = 0; i < listImgFile.length; i++) {
-            formData.append('img', listImgFile[i]);
-          }
-        }
-        await dispatch(productActions.editProductRequest(formData));
-        navigate(routes.accountSeller);
-      };
-      submition();
-    }
-  }, [brand, categoryId, categoryListId, checkinput, currentListImgRemove, data, description, dispatch, listImgFile, name, navigate, price, quantity, saleOff, specific]);
-
-  useEffect(() => {
-    if (listImgRef.current) {
-      listImgRef.current.files = listImgFile;
-      const handle = async () => {
-        const files = listImgFile;
-        if (listImgFile) {
-          const values = [];
-          for (let i = 0; i < files.length; i++) {
-            const base64 = await convertBase64(files[i]);
-            values.push(base64);
-          }
-          setListImg(values);
-        } else {
-          setListImg([]);
-        }
-      };
-
-      //Run
-      handle();
-    }
-  }, [convertBase64, listImgFile]);
 
   const categoryListOptions = (productSelect.category.categoryDetails[categoryId] || []).map((item) => ({
     value: item.id,
@@ -239,7 +232,6 @@ function EditProduct() {
       setSpecific((pre) => {
         const newSpe = [...pre]
         newSpe[data.index] = {
-          id: data.id,
           specificName: data.specificName,
           specific: data.specific
         }
@@ -249,7 +241,6 @@ function EditProduct() {
     } else {
       setSpecific((pre) => {
         const newSpe = [...pre, {
-          id: data.id,
           specificName: data.specificName,
           specific: data.specific
         }]
@@ -259,15 +250,47 @@ function EditProduct() {
     }
   }
 
+  const onSubmitSpecificPics = (data) => {
+    setSpecificPics((pre) => {
+      const newSpe = [...pre]
+      newSpe[data.index].img = data.img
+      newSpe[data.index].price = data.price
+      newSpe[data.index].number = data.number
+      newSpe[data.index].saleOff = data.saleOff
+      newSpe[data.index].valid = true
+
+      return newSpe
+    })
+  }
+
   const onDeleteSpecific = (index) => {
     setSpecific((prev) => prev.filter((_, i) => i !== index));
+  };
+
+  // Hàm để thêm ảnh vào listImg
+  const handleImageChange = (e) => {
+    const files = e.target.files;
+    const newImages = Array.from(files).map((file) => {
+      return {
+        file: file,
+        url: URL.createObjectURL(file)
+      }
+    });
+
+    setListImg((prevImages) => [...prevImages, ...newImages]);
+    setListImgFill(false)
+  };
+
+  // Hàm để xóa ảnh khỏi listImg
+  const removeFile = (index) => {
+    setListImg((prevImages) => prevImages.filter((_, idx) => idx !== index));
   };
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.inner_wrapper}>
         <div className={styles.header}>
-          <div className={styles.main_header}>Edit Product</div>
+          <div className={styles.main_header}>Create Product</div>
           <div className={styles.sub_header}>Create your own business</div>
         </div>
         <div className={styles.content}>
@@ -276,7 +299,6 @@ function EditProduct() {
               <div className={styles.name_header}>Name</div>
               <input
                 placeholder="Product Name"
-                value={name}
                 className={`${styles.name_input} ${nameFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setName(e.target.value);
@@ -293,7 +315,6 @@ function EditProduct() {
               <div className={styles.price_header}>Price</div>
               <input
                 placeholder="Price"
-                value={price}
                 className={`${styles.price_input} ${priceFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setPrice(e.target.value);
@@ -312,7 +333,6 @@ function EditProduct() {
               <div className={styles.quantity_header}>Quantity</div>
               <input
                 placeholder="Quantity"
-                value={quantity}
                 className={`${styles.quantity_input} ${quantityFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setQuantity(e.target.value);
@@ -345,7 +365,6 @@ function EditProduct() {
               <div className={styles.saleOff_header}>Sale Off</div>
               <input
                 placeholder="Sale Off"
-                value={saleOff}
                 className={`${styles.saleOff_input} ${saleOffFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setSaleOff(e.target.value);
@@ -369,7 +388,6 @@ function EditProduct() {
               <div className={styles.category_header}>Category</div>
               <select
                 className={styles.category_input}
-                value={categoryId}
                 onChange={(e) => {
                   setCategoryIdFill(false)
                   setCategoryId(e.target.value);
@@ -413,7 +431,6 @@ function EditProduct() {
             <div className={styles.brand}>
               <div className={styles.brand_header}>Brand</div>
               <input
-                value={brand}
                 placeholder="Brand name"
                 className={`${styles.brand_input}`}
                 onChange={(e) => {
@@ -429,13 +446,16 @@ function EditProduct() {
                 <div className={styles.specific_header}>Specific</div>
                 <MainButton
                   onClick={() => {
+                    if (specific.length === 2) {
+                      dispatch(notificationActions.setNotificationContent('Only 2 specific allowed'));
+                      return
+                    }
                     setCreateSpecific({
                       index: undefined,
-                      id: undefined,
                       specificName: '',
                       specific: []
                     })
-                    setOpenPopup(true)
+                    setPopUpSpecific(true)
                   }
                   }
                   className={styles.specific_button}
@@ -452,16 +472,40 @@ function EditProduct() {
                       onClick={() => {
                         setCreateSpecific({
                           index: index,
-                          id: item.id,
                           specificName: item.specificName,
                           specific: item.specific
                         })
-                        setOpenPopup(true)
+                        setPopUpSpecific(true)
                       }}
                     ></EditButton>
                     <div className={styles.specific_content_values}>
                       {item.specific.map((value, index) => {
                         return <div key={index} className={styles.specific_content_value}>{value}</div>
+                      })}
+                    </div>
+                  </div>
+                })}
+              </div>
+              <div className={styles.specific_groups}>
+                {combination.map((item, index) => {
+                  const data = Object.values(item)
+
+                  return <div key={index} className={styles.specific_values}>
+                    <div className={styles.specific_content_header}>Pictures {index + 1}</div>
+                    <EditButton
+                      width='16px'
+                      className={styles.editButton}
+                      onClick={() => {
+                        setCreateSpecificPics({
+                          index: index,
+                          data: specificPics[index]
+                        })
+                        setPopUpSpecificPics(true)
+                      }}
+                    ></EditButton>
+                    <div className={styles.specific_content_values}>
+                      {data.map((name, index) => {
+                        return <div key={index} className={styles.specific_content_value}>{name}</div>
                       })}
                     </div>
                   </div>
@@ -478,32 +522,20 @@ function EditProduct() {
                   accept=".jpg, .jpeg, .png"
                   onChange={async (e) => {
                     const file = e.target.files[0];
-                    const base64 = await convertBase64(file);
-                    setMainImg(base64);
+                    setMainImg({
+                      url: URL.createObjectURL(file),
+                      file: file
+                    });
                     setMainImgFill(false);
                   }}
                   className={`${mainImgFill ? styles.noInput : ''}`}
-                  ref={mainImgRef}
                   style={mainImg && { display: 'none' }}
                 ></input>
-                {currentImg && (
+                {mainImg && (
                   <BackGroundImg
-                    main={true}
-                    imgURL={currentImg}
-                    deleteProduct={() => {
-                      setCurrentImg(undefined);
-                      setMainImg(undefined);
-                      setCurrentListImgRemove(`___${currentImg}` + currentListImgRemove);
-                    }}
-                    className={styles.imgBackGround}
-                  ></BackGroundImg>
-                )}
-                {mainImg && mainImg !== 1 && (
-                  <BackGroundImg
-                    imgURL={mainImg}
+                    imgURL={mainImg.url}
                     deleteProduct={() => {
                       setMainImg(undefined);
-                      mainImgRef.current.value = '';
                     }}
                     main={true}
                     className={styles.imgBackGround}
@@ -514,37 +546,15 @@ function EditProduct() {
             <div className={styles.listImg}>
               <div className={styles.listImg_header}>Images</div>
               <div className={styles.listImg_input}>
-                {currentListImg &&
-                  currentListImg.map((img, index) => {
-                    return (
-                      <BackGroundImg
-                        key={index}
-                        deleteProduct={() => {
-                          let arr = currentListImgRemove;
-                          setCurrentListImg(
-                            currentListImg.filter(function (url, innerIndex) {
-                              if (innerIndex === index) {
-                                arr += `___${url}`;
-                              }
-                              return innerIndex !== index;
-                            })
-                          );
-                          setCurrentListImgRemove(arr);
-                        }}
-                        imgURL={img}
-                        className={styles.imgBackGround}
-                      ></BackGroundImg>
-                    );
-                  })}
                 {listImg &&
                   listImg.map((img, index) => {
                     return (
                       <BackGroundImg
                         key={index}
                         deleteProduct={() => {
-                          removeFile(listImgRef.current, index);
+                          removeFile(index)
                         }}
-                        imgURL={img}
+                        imgURL={img.url}
                         className={styles.imgBackGround}
                       ></BackGroundImg>
                     );
@@ -552,13 +562,9 @@ function EditProduct() {
                 <input
                   type="file"
                   multiple
-                  ref={listImgRef}
                   accept=".jpg, .jpeg, .png"
                   className={`${listImgFill ? styles.noInput : ''}`}
-                  onChange={() => {
-                    setListImgFill(false);
-                    addFile(listImgRef.current);
-                  }}
+                  onChange={handleImageChange}
                 ></input>
               </div>
             </div>
@@ -577,7 +583,7 @@ function EditProduct() {
             </Popup>
           )}
           <MainButton
-            title={'Save'}
+            title={'Submit'}
             className={styles.button}
             onClick={handleSubmit}
           ></MainButton>
@@ -596,12 +602,12 @@ function EditProduct() {
         </div>
       </div>
       {
-        openPopup
+        popUpSpecific
           ?
           <Popup
             width='500px'
             onClick={() => {
-              setOpenPopup(false)
+              setPopUpSpecific(false)
             }}
             highestZIndex={true}
           >
@@ -609,8 +615,27 @@ function EditProduct() {
               onDelete={onDeleteSpecific}
               onSubmit={onSubmitSpecific}
               data={createSpecific}
-              setOpenPopup={setOpenPopup}
+              setOpenPopup={setPopUpSpecific}
             ></CreateProductSpecific>
+          </Popup>
+          :
+          undefined
+      }
+      {
+        popUpSpecificPics
+          ?
+          <Popup
+            width='500px'
+            onClick={() => {
+              setPopUpSpecificPics(false)
+            }}
+            highestZIndex={true}
+          >
+            <CreateSpecificPics
+              onSubmit={onSubmitSpecificPics}
+              value={createSpecificPics}
+              setOpenPopup={setPopUpSpecificPics}
+            ></CreateSpecificPics>
           </Popup>
           :
           undefined

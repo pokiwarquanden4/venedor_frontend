@@ -154,7 +154,6 @@ function CreateProduct() {
         mainImgUrl: mainImgUrl,
         listImgUrl: listImgUrl
       };
-      console.log(productData)
 
       await dispatch(productActions.createProductRequest(productData));
 
