@@ -20,6 +20,10 @@ export const loginActions = createActions({
   getPasswordSuccess: (payload) => payload,
   getPasswordFailure: (payload) => payload,
 
+  getUserDataRequest: (payload) => payload,
+  getUserDataSuccess: (payload) => payload,
+  getUserDataFailure: (payload) => payload,
+
   loginPopup: (payload) => payload,
 
   loginStatus: (payload) => payload,

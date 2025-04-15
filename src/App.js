@@ -25,6 +25,10 @@ function App() {
   );
 
   useEffect(() => {
+    dispatch(loginActions.getUserDataRequest())
+  }, [dispatch])
+
+  useEffect(() => {
     dispatch(productActions.getCategoryRequest())
   }, [dispatch])
 

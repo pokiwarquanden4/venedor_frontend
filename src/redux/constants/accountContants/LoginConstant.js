@@ -3,6 +3,7 @@ export const LoginConstant = {
   loginError: false,
   loginRole: false,
   isLoading: false,
+  userData: {},
   loginPopup: false,
   wishList: [],
 };

@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import {
   CompareIcon,
   DownArrowIcon,
@@ -22,7 +22,7 @@ import { productActions } from '../../redux/actions/product/ProductActions';
 import Pagination from '../Pagination/Pagination';
 import { formatVND } from '../../config/utils';
 
-function ProductDetails({ data, fullScreen, edit, preview }) {
+function ProductDetails({ data, fullScreen, preview }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const loginSelect = useSelector(LoginSelector);
@@ -147,6 +147,10 @@ function ProductDetails({ data, fullScreen, edit, preview }) {
       }
     }
   }, [productData.id, loginSelect.wishList]);
+
+  const edit = useMemo(() => {
+    return data.sellerId === loginSelect.userData.id
+  }, [data.sellerId, loginSelect.userData.id])
 
   return (
     <div className={styles.container}>

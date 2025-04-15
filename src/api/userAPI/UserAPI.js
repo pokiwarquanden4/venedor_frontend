@@ -24,6 +24,14 @@ export const wishListAPI = () => {
   });
 };
 
+export const getUserDataAPI = () => {
+  return axios.get(`${URL}users/getUserData`, {
+    headers: createHeaders({
+      Authorization: getJWTToken(),
+    })
+  });
+};
+
 export const createOtpAPI = (payload) => {
   return axios.post(`${URL}users/createOtp`, payload, {
     headers: createHeaders()

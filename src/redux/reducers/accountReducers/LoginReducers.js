@@ -44,6 +44,25 @@ export default function loginReducers(state = LoginConstant, action) {
         login: false,
         loading: false,
       };
+    case getType(loginActions.getUserDataRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(loginActions.getUserDataSuccess):
+      const userData = action.payload.obj
+
+      return {
+        ...state,
+        userData: userData,
+        loading: false,
+      };
+    case getType(loginActions.getUserDataFailure):
+      return {
+        ...state,
+
+        loading: false,
+      };
     case getType(loginActions.loginPopup):
       return {
         ...state,

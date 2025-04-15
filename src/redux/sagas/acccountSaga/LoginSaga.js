@@ -3,7 +3,7 @@
 //put sẽ chọc vào trong file reducers/post để thực hiện lệnh
 import { takeLatest, call, put } from 'redux-saga/effects';
 import { loginActions } from '../../actions/account/LoginActions';
-import { createOtpAPI, getPasswordAPI, loginAPI, wishListAPI } from '../../../api/userAPI/UserAPI';
+import { createOtpAPI, getPasswordAPI, getUserDataAPI, loginAPI, wishListAPI } from '../../../api/userAPI/UserAPI';
 import { jwtCheck, removeJWT } from '../jwtCheck';
 import { loadingActions } from '../../actions/loading/LoadingActions';
 import { notificationActions } from '../../actions/notification/notificationAction';
@@ -91,12 +91,27 @@ function* getPasswordSaga(action) {
   }
 }
 
+function* getUserDataSaga(action) {
+  try {
+    yield put(loadingActions.setLoadingLoading(true));
+
+    const data = yield call(getUserDataAPI, action.payload);
+    yield put(loginActions.getUserDataSuccess(data.data));
+
+    yield put(loadingActions.setLoadingLoading(false));
+  } catch (err) {
+    yield put(loginActions.getUserDataFailure());
+    yield put(loadingActions.setLoadingLoading(false));
+  }
+}
+
 function* loginSagas() {
   yield takeLatest(loginActions.loginRequest, loginSaga);
   yield takeLatest(loginActions.logoutRequest, logoutSaga);
   yield takeLatest(loginActions.setLoginWishListRequest, setWishListSaga);
   yield takeLatest(loginActions.createOtpRequest, createOtpSaga);
   yield takeLatest(loginActions.getPasswordRequest, getPasswordSaga);
+  yield takeLatest(loginActions.getUserDataRequest, getUserDataSaga);
 }
 
 export default loginSagas;
