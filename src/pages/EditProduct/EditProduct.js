@@ -26,10 +26,13 @@ import { notificationActions } from '../../redux/actions/notification/notificati
 import { loadingActions } from '../../redux/actions/loading/LoadingActions';
 import CreateProductSpecific from '../CreateProduct/createProductSpecific';
 import CreateSpecificPics from '../CreateProduct/CreateSpecificPics';
+import { productSearchActions } from '../../redux/actions/product/ProductSearchAction';
+import { productSearchSelector } from '../../redux/selectors/productSelector/productSearchSelector';
 
 function EditProduct() {
   const params = useParams();
   const productSelect = useSelector(productSelector);
+  const productSearchSelect = useSelector(productSearchSelector);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [data, setData] = useState()
@@ -69,12 +72,67 @@ function EditProduct() {
 
   const [preview, setPreview] = useState(false);
   const [combination, setCombination] = useState([])
-  console.log(data)
+
   useEffect(() => {
-    if (productSelect.sellerProductData) {
-      setData(productSelect.sellerProductData.find((obj) => obj.id == params.id));
+    dispatch(productSearchActions.searchProductByIdRequest({ id: params.id }));
+  }, [dispatch, params.id]);
+
+  useEffect(() => {
+    if (productSearchSelect.searchProductById) {
+      const convertData = {
+        ...productSearchSelect.searchProductById,
+        listImgURL: productSearchSelect.searchProductById.listImgURL.split('___'),
+      };
+      setData(convertData);
     }
-  }, [params.id, productSelect.sellerProductData]);
+  }, [productSearchSelect.searchProductById]);
+
+  const addDefaultData = useCallback(() => {
+    if (!data) return
+    setName(data.productName)
+    setPrice(data.price)
+    setQuantity(data.number)
+    setDescription(data.description)
+    setSaleOff(data.saleOff)
+    setCategoryId(data.categoryId)
+    setCategoryListId(data.categoryList.split('/').map(s => Number(s)))
+    setBrand(data.brandName)
+    setSpecific(data.StorageSpecifics.map((item) => {
+      return {
+        specificName: item.specificName,
+        specific: item.specific.split('___')
+      }
+    }))
+    setSpecificPics(data.StorageSpecificPics.map(item => {
+      return {
+        combination: [item.option1, item.option2],
+        img: item.listImgURL.split('___').map(item => {
+          return {
+            file: undefined,
+            url: item
+          }
+        }),
+        price: item.price,
+        number: item.number,
+        saleOff: item.saleOff,
+        valid: true
+      }
+    }))
+    setMainImg({
+      url: data.imgURL,
+      file: undefined
+    })
+    setListImg(data.listImgURL.map(url => {
+      return {
+        file: undefined,
+        url: url
+      }
+    }))
+  }, [data])
+
+  useEffect(() => {
+    addDefaultData()
+  }, [addDefaultData])
 
   const checkinput = useCallback(() => {
     !name && setNameFill(true);
@@ -114,15 +172,15 @@ function EditProduct() {
     if (checkinput()) {
       //upload img
       dispatch(loadingActions.setLoadingLoading(true))
-      const mainImgUrl = await uploadFirebaseImage({
+      const mainImgUrl = mainImg.file ? await uploadFirebaseImage({
         location: 'mainImg'
-      }, mainImg.file);
+      }, mainImg.file) : mainImg.url;
 
       const listImgUrl = []
       for (let i = 0; i < listImg.length; i++) {
-        const url = await uploadFirebaseImage({
+        const url = listImg[i].file ? await uploadFirebaseImage({
           location: 'listImg'
-        }, listImg[i].file);
+        }, listImg[i].file) : listImg[i].url;
 
         listImgUrl.push(url)
       }
@@ -130,10 +188,10 @@ function EditProduct() {
       const specificPicsData = await Promise.all(
         specificPics.map(async (item) => {
           const imgURL = []
-          const data = item.img.map(d => d.file)
 
-          for (let i = 0; i < data.length; i++) {
-            const url = await uploadFirebaseImage({ location: 'listImg' }, data[i])
+          for (let i = 0; i < item.img.length; i++) {
+            const data = item.img[i]
+            const url = data.file ? await uploadFirebaseImage({ location: 'listImg' }, data.file) : data.url
             imgURL.push(url)
           }
 
@@ -148,6 +206,7 @@ function EditProduct() {
       )
 
       const productData = {
+        id: data.id,
         productName: name,
         price: decodePrice(price),
         description: description,
@@ -162,11 +221,11 @@ function EditProduct() {
         listImgUrl: listImgUrl
       };
 
-      await dispatch(productActions.createProductRequest(productData));
+      await dispatch(productActions.editProductRequest(productData));
 
       navigate(routes.accountSeller);
     }
-  }, [brand, categoryId, categoryListId, checkinput, description, dispatch, listImg, mainImg, name, navigate, price, quantity, saleOff, specific, specificPics]);
+  }, [brand, categoryId, categoryListId, checkinput, data, description, dispatch, listImg, mainImg, name, navigate, price, quantity, saleOff, specific, specificPics]);
 
   const generateCombinations = (specific) => {
     if (!specific.length) return []
@@ -193,13 +252,15 @@ function EditProduct() {
       combination.forEach((value, index) => {
         result[names[index]] = value;
       });
-      return result;
+      const [option1, option2] = Object.values(result)
+      return [option1, option2];
     });
   };
 
   useEffect(() => {
     const combinations = generateCombinations(specific)
     setCombination(combinations)
+    if (combinations.length === specificPics.length) return
     setSpecificPics(combinations.map(item => {
       return {
         combination: item,
@@ -210,7 +271,7 @@ function EditProduct() {
         valid: false,
       }
     }));
-  }, [specific])
+  }, [specific, specificPics.length])
 
   const getReviewData = useCallback(() => {
     return {
@@ -290,8 +351,8 @@ function EditProduct() {
     <div className={styles.wrapper}>
       <div className={styles.inner_wrapper}>
         <div className={styles.header}>
-          <div className={styles.main_header}>Create Product</div>
-          <div className={styles.sub_header}>Create your own business</div>
+          <div className={styles.main_header}>Update Product</div>
+          <div className={styles.sub_header}>Make your product more recognizable</div>
         </div>
         <div className={styles.content}>
           <div className={styles.left_content}>
@@ -299,6 +360,7 @@ function EditProduct() {
               <div className={styles.name_header}>Name</div>
               <input
                 placeholder="Product Name"
+                value={name}
                 className={`${styles.name_input} ${nameFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setName(e.target.value);
@@ -315,6 +377,7 @@ function EditProduct() {
               <div className={styles.price_header}>Price</div>
               <input
                 placeholder="Price"
+                value={price}
                 className={`${styles.price_input} ${priceFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setPrice(e.target.value);
@@ -333,6 +396,7 @@ function EditProduct() {
               <div className={styles.quantity_header}>Quantity</div>
               <input
                 placeholder="Quantity"
+                value={quantity}
                 className={`${styles.quantity_input} ${quantityFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setQuantity(e.target.value);
@@ -365,6 +429,7 @@ function EditProduct() {
               <div className={styles.saleOff_header}>Sale Off</div>
               <input
                 placeholder="Sale Off"
+                value={saleOff}
                 className={`${styles.saleOff_input} ${saleOffFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setSaleOff(e.target.value);
@@ -388,6 +453,7 @@ function EditProduct() {
               <div className={styles.category_header}>Category</div>
               <select
                 className={styles.category_input}
+                value={categoryId}
                 onChange={(e) => {
                   setCategoryIdFill(false)
                   setCategoryId(e.target.value);
@@ -432,6 +498,7 @@ function EditProduct() {
               <div className={styles.brand_header}>Brand</div>
               <input
                 placeholder="Brand name"
+                value={brand}
                 className={`${styles.brand_input}`}
                 onChange={(e) => {
                   setBrand(e.target.value);
@@ -488,8 +555,6 @@ function EditProduct() {
               </div>
               <div className={styles.specific_groups}>
                 {combination.map((item, index) => {
-                  const data = Object.values(item)
-
                   return <div key={index} className={styles.specific_values}>
                     <div className={styles.specific_content_header}>Pictures {index + 1}</div>
                     <EditButton
@@ -504,7 +569,8 @@ function EditProduct() {
                       }}
                     ></EditButton>
                     <div className={styles.specific_content_values}>
-                      {data.map((name, index) => {
+                      {item.map((name, index) => {
+                        if (!name) return undefined
                         return <div key={index} className={styles.specific_content_value}>{name}</div>
                       })}
                     </div>
@@ -594,6 +660,11 @@ function EditProduct() {
                 setPreview(true);
               }
             }}
+            className={styles.button}
+          ></MainButton>
+          <MainButton
+            title={'Reset'}
+            onClick={addDefaultData}
             className={styles.button}
           ></MainButton>
           {(nameFill || priceFill || descriptionFill || quantityFill) && (

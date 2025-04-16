@@ -14,7 +14,10 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
 
     useEffect(() => {
         setListImg(value.data.img)
-    }, [value.data.img])
+        setPrice(value.data.price)
+        setQuantity(value.data.number)
+        setSaleOff(value.data.saleOff)
+    }, [value.data.img, value.data.number, value.data.price, value.data.saleOff])
 
     const removeFile = (index) => {
         setListImg((prevImages) => prevImages.filter((_, idx) => idx !== index));

@@ -26,7 +26,7 @@ function App() {
 
   useEffect(() => {
     dispatch(loginActions.getUserDataRequest())
-  }, [dispatch])
+  }, [dispatch, jwtToken])
 
   useEffect(() => {
     dispatch(productActions.getCategoryRequest())
