@@ -48,8 +48,8 @@ function EditProduct() {
   const [saleOffFill, setSaleOffFill] = useState();
   const [categoryId, setCategoryId] = useState();
   const [categoryIdFill, setCategoryIdFill] = useState();
-  const [categoryListId, setCategoryListId] = useState([])
-  const [categoryListIdFill, setCategoryListIdFill] = useState()
+  const [categoryDetailId, setCategoryDetailId] = useState()
+  const [categoryDetailIdFill, setCategoryDetailIdFill] = useState()
   const [brand, setBrand] = useState();
 
   const [specific, setSpecific] = useState([])
@@ -95,14 +95,17 @@ function EditProduct() {
     setDescription(data.description)
     setSaleOff(data.saleOff)
     setCategoryId(data.categoryId)
-    setCategoryListId(data.categoryList.split('/').map(s => Number(s)))
+    setCategoryDetailId(data.categoryDetailId)
     setBrand(data.brandName)
-    setSpecific(data.StorageSpecifics.map((item) => {
+    const specific = data.StorageSpecifics.map((item) => {
       return {
         specificName: item.specificName,
         specific: item.specific.split('___')
       }
-    }))
+    })
+    setSpecific(specific)
+
+    setCombination(generateCombinations(specific))
     setSpecificPics(data.StorageSpecificPics.map(item => {
       return {
         combination: [item.option1, item.option2],
@@ -140,7 +143,7 @@ function EditProduct() {
     (!quantity || !quantityFilter(quantity)) && setQuantityFill(true);
     saleOff && !saleOffFilter(saleOff) && setSaleOffFill(true);
     !categoryId && setCategoryIdFill(true)
-    !categoryListId.length && setCategoryListIdFill(true)
+    !categoryDetailId && setCategoryDetailIdFill(true)
     !description && setDescriptionFill(true);
     !mainImg && setMainImgFill(true);
     !listImg.length && setListImgFill(true);
@@ -156,7 +159,7 @@ function EditProduct() {
       !priceFill &&
       !descriptionFill &&
       !categoryIdFill &&
-      !categoryListIdFill &&
+      !categoryDetailIdFill &&
       !quantityFill &&
       !saleOffFill &&
       !mainImgFill &&
@@ -166,7 +169,7 @@ function EditProduct() {
     } else {
       return false;
     }
-  }, [categoryId, categoryIdFill, categoryListId.length, categoryListIdFill, combination.length, description, descriptionFill, dispatch, listImg.length, listImgFill, mainImg, mainImgFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill, specificPics]);
+  }, [categoryDetailId, categoryDetailIdFill, categoryId, categoryIdFill, combination.length, description, descriptionFill, dispatch, listImg.length, listImgFill, mainImg, mainImgFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill, specificPics]);
 
   const handleSubmit = useCallback(async () => {
     if (checkinput()) {
@@ -213,7 +216,7 @@ function EditProduct() {
         number: quantity,
         saleOff: decodeSaleOff(saleOff),
         categoryId: categoryId,
-        categoryList: categoryListId,
+        categoryDetailId: categoryDetailId,
         brandName: brand,
         specifics: specific,
         specificPics: specificPicsData,
@@ -225,7 +228,7 @@ function EditProduct() {
 
       navigate(routes.accountSeller);
     }
-  }, [brand, categoryId, categoryListId, checkinput, data, description, dispatch, listImg, mainImg, name, navigate, price, quantity, saleOff, specific, specificPics]);
+  }, [brand, categoryDetailId, categoryId, checkinput, data.id, description, dispatch, listImg, mainImg.file, mainImg.url, name, navigate, price, quantity, saleOff, specific, specificPics]);
 
   const generateCombinations = (specific) => {
     if (!specific.length) return []
@@ -257,22 +260,6 @@ function EditProduct() {
     });
   };
 
-  useEffect(() => {
-    const combinations = generateCombinations(specific)
-    setCombination(combinations)
-    if (combinations.length === specificPics.length) return
-    setSpecificPics(combinations.map(item => {
-      return {
-        combination: item,
-        img: [],
-        price: 0,
-        number: 0,
-        saleOff: 0,
-        valid: false,
-      }
-    }));
-  }, [specific, specificPics.length])
-
   const getReviewData = useCallback(() => {
     return {
       listImgURL: listImg,
@@ -282,11 +269,6 @@ function EditProduct() {
       saleOff: decodeSaleOff(saleOff),
     };
   }, [description, listImg, price, quantity, saleOff]);
-
-  const categoryListOptions = (productSelect.category.categoryDetails[categoryId] || []).map((item) => ({
-    value: item.id,
-    label: item.categoryName,
-  }));
 
   const onSubmitSpecific = (data) => {
     if (data.index !== undefined) {
@@ -309,6 +291,19 @@ function EditProduct() {
         return newSpe
       })
     }
+
+    const combinations = generateCombinations(specific)
+    setCombination(combinations)
+    setSpecificPics(combinations.map(item => {
+      return {
+        combination: item,
+        img: [],
+        price: 0,
+        number: 0,
+        saleOff: 0,
+        valid: false,
+      }
+    }));
   }
 
   const onSubmitSpecificPics = (data) => {
@@ -477,18 +472,24 @@ function EditProduct() {
             </div>
             <div className={styles.categoryList}>
               <div className={styles.categoryList_header}>Category Details</div>
-              <Select
-                className={styles.categoryList_input}
-                isMulti
-                options={[{ value: undefined, label: "None" }, ...categoryListOptions]}
-                value={categoryListOptions.filter((option) => categoryListId.includes(option.value))}
-                onChange={(selectedOptions) => {
-                  setCategoryListIdFill(false)
-                  setCategoryListId(selectedOptions.map((option) => option.value))
+              <select
+                className={styles.category_input}
+                onChange={(e) => {
+                  setCategoryDetailIdFill(false)
+                  setCategoryDetailId(e.target.value);
                 }}
-                placeholder="Select categories..."
-              />
-              {categoryListIdFill ? (
+              >
+                <option value={undefined}>None</option>
+                {productSelect.category.categoryDetails[categoryId].map((key, index) => {
+                  const item = productSelect.category.category[key]
+                  return (
+                    <option value={key} key={index}>
+                      {item.name}
+                    </option>
+                  );
+                })}
+              </select>
+              {categoryDetailIdFill ? (
                 <div className={styles.notification}>
                   You need to select categories
                 </div>
