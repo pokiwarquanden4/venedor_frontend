@@ -556,7 +556,7 @@ function EditProduct() {
               <div className={styles.specific_groups}>
                 {combination.map((item, index) => {
                   return <div key={index} className={styles.specific_values}>
-                    <div className={styles.specific_content_header}>Pictures {index + 1}</div>
+                    <div className={styles.specific_content_header}>Details {index + 1}</div>
                     <EditButton
                       width='16px'
                       className={styles.editButton}
