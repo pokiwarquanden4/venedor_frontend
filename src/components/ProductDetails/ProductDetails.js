@@ -149,8 +149,9 @@ function ProductDetails({ data, fullScreen, preview }) {
   }, [productData.id, loginSelect.wishList]);
 
   const edit = useMemo(() => {
+    if (!loginSelect.userData) return
     return data.sellerId === loginSelect.userData.id
-  }, [data.sellerId, loginSelect.userData.id])
+  }, [data.sellerId, loginSelect.userData])
 
   return (
     <div className={styles.container}>
