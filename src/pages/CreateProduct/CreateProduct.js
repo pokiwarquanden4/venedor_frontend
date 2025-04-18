@@ -103,6 +103,21 @@ function CreateProduct() {
     }
   }, [categoryDetailId, categoryDetailIdFill, categoryId, categoryIdFill, combination.length, description, descriptionFill, dispatch, listImg.length, listImgFill, mainImg, mainImgFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill, specificPics]);
 
+  useEffect(() => {
+    if (specificPics.length) {
+      let sum = 0
+
+      specificPics.forEach(data => sum += data.number)
+
+      setPrice(0)
+      setPriceFill(false)
+      setSaleOff(0 + '%')
+      setSaleOffFill(false)
+      setQuantity(sum)
+      setQuantityFill(false)
+    }
+  }, [specificPics])
+
   const handleSubmit = useCallback(async () => {
     if (checkinput()) {
       //upload img
@@ -302,7 +317,9 @@ function CreateProduct() {
             <div className={styles.price}>
               <div className={styles.price_header}>Price</div>
               <input
+                disabled={specificPics.length ? true : false}
                 placeholder="Price"
+                value={price}
                 className={`${styles.price_input} ${priceFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setPrice(e.target.value);
@@ -320,7 +337,9 @@ function CreateProduct() {
             <div className={styles.quantity}>
               <div className={styles.quantity_header}>Quantity</div>
               <input
+                disabled={specificPics.length ? true : false}
                 placeholder="Quantity"
+                value={quantity}
                 className={`${styles.quantity_input} ${quantityFill ? styles.noInput : ''}`}
                 onChange={(e) => {
                   setQuantity(e.target.value);
@@ -352,6 +371,8 @@ function CreateProduct() {
             <div className={styles.saleOff}>
               <div className={styles.saleOff_header}>Sale Off</div>
               <input
+                disabled={specificPics.length ? true : false}
+                value={saleOff}
                 placeholder="Sale Off"
                 className={`${styles.saleOff_input} ${saleOffFill ? styles.noInput : ''}`}
                 onChange={(e) => {
@@ -407,7 +428,7 @@ function CreateProduct() {
                 }}
               >
                 <option value={undefined}>None</option>
-                {productSelect.category.categoryDetails[categoryId].map((key, index) => {
+                {(productSelect.category.categoryDetails[categoryId] || []).map((key, index) => {
                   const item = productSelect.category.category[key]
                   return (
                     <option value={key} key={index}>
@@ -485,7 +506,7 @@ function CreateProduct() {
                   const data = Object.values(item)
 
                   return <div key={index} className={styles.specific_values}>
-                    <div className={styles.specific_content_header}>Pictures {index + 1}</div>
+                    <div className={styles.specific_content_header}>Products {index + 1}</div>
                     <EditButton
                       width='16px'
                       className={styles.editButton}
