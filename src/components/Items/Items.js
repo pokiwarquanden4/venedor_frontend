@@ -18,6 +18,7 @@ import { wishListActions } from '../../redux/actions/product/wishListActions';
 import { useNavigate } from 'react-router-dom';
 import { cartActions } from '../../redux/actions/product/cartActions';
 import { formatVND } from '../../config/utils';
+import { notificationActions } from '../../redux/actions/notification/notificationAction';
 
 function Items({ data, vertical, wishList, edit }) {
   const navigate = useNavigate();
@@ -119,15 +120,17 @@ function Items({ data, vertical, wishList, edit }) {
                   dispatch(loginActions.loginPopup(true));
                 }
                 if (role) {
-                  if (data.number > 0) {
-                    dispatch(
-                      cartActions.createCartProductRequest({
-                        id: data.id,
-                        quantity: 1,
-                        specific: Object.keys(selectedSpecific).map(key => specificData.find(d => d.specificName === key)?.specific[selectedSpecific[key]]).join(" - ")
-                      })
-                    );
+                  if (Number(data.number) === 0) {
+                    dispatch(notificationActions.setNotificationContent('Run out of stock'));
+                    return
                   }
+                  dispatch(
+                    cartActions.createCartProductRequest({
+                      id: data.id,
+                      quantity: 1,
+                      specific: Object.keys(selectedSpecific).map(key => specificData.find(d => d.specificName === key)?.specific[selectedSpecific[key]]).join(" - ")
+                    })
+                  );
                 }
               }}
             >

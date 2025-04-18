@@ -1,3 +1,3 @@
 export const formatVND = (amount) => {
-    return amount.toLocaleString("vi-VN") + " VND";
-}
+    return Math.floor(amount).toLocaleString("vi-VN") + " VND";
+};

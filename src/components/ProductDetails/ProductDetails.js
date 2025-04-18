@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   CompareIcon,
   DownArrowIcon,
@@ -21,6 +21,7 @@ import Comment from '../Comment/Comment';
 import { productActions } from '../../redux/actions/product/ProductActions';
 import Pagination from '../Pagination/Pagination';
 import { formatVND } from '../../config/utils';
+import { notificationActions } from '../../redux/actions/notification/notificationAction';
 
 function ProductDetails({ data, fullScreen, preview }) {
   const navigate = useNavigate();
@@ -44,9 +45,29 @@ function ProductDetails({ data, fullScreen, preview }) {
   })
   const [productData, setProductData] = useState(data)
   const [specificData, setSpecificData] = useState([])
-  const [specificDatapics, setSpecificDatapics] = useState([])
   const [selectedSpecific, setSelectedSpecific] = useState({})
+  const [specificDatapics, setSpecificDatapics] = useState([])
+  const [selectedSpecificDataPics, setSelectedSpecificDataPics] = useState()
   const [commentData, setCommentData] = useState(productSelect.productComments)
+
+  useEffect(() => {
+    const [option1, option2] = specificData.map((data) => {
+      return data.specific[selectedSpecific[data.specificName]]
+    })
+
+    const currentOptionData = specificDatapics.find(item => {
+      if (
+        (item.option1 === option1 && !option2)
+        ||
+        (item.option1 === option1 && item.option2 === option2)
+      ) {
+        return true
+      }
+    })
+
+    if (!currentOptionData) return
+    setSelectedSpecificDataPics(currentOptionData)
+  }, [selectedSpecific, specificData, specificDatapics])
 
   useEffect(() => {
     const newData = {
@@ -251,12 +272,12 @@ function ProductDetails({ data, fullScreen, preview }) {
           <div>
             <p className={styles.header}>{productData.productName}</p>
           </div>
-          <div className={styles.stock}>Availability: {productData.number}</div>
+          <div className={styles.stock}>Availability: {selectedSpecificDataPics ? selectedSpecificDataPics.number : productData.number}</div>
           <div className={styles.price}>
-            <div className={styles.olePrice} style={productData.saleOff === 0 ? { display: 'none' } : {}}>
-              {formatVND(productData.price)}
+            <div className={styles.olePrice} style={selectedSpecificDataPics ? selectedSpecificDataPics.saleOff : productData.saleOff === 0 ? { display: 'none' } : {}}>
+              {formatVND(selectedSpecificDataPics ? selectedSpecificDataPics.price : productData.price)}
             </div>
-            <div className={styles.newPrice}>{formatVND(productData.price - productData.price * (productData.saleOff / 100))}</div>
+            <div className={styles.newPrice}>{formatVND((selectedSpecificDataPics ? selectedSpecificDataPics.price : productData.price) * (1 - ((selectedSpecificDataPics ? selectedSpecificDataPics.saleOff : productData.saleOff) / 100)))}</div>
           </div>
           <div className={styles.buyer}>
             <div className={styles.number}>
@@ -274,7 +295,7 @@ function ProductDetails({ data, fullScreen, preview }) {
               <div
                 className={styles.plus}
                 onClick={() => {
-                  if (number + 1 <= productData.number) {
+                  if (number + 1 <= (selectedSpecificDataPics ? selectedSpecificDataPics.number : productData.number)) {
                     setNumber(number + 1);
                   }
                 }}
@@ -293,6 +314,10 @@ function ProductDetails({ data, fullScreen, preview }) {
                 if (edit) {
                   navigate(`/accountSeller/${productData.id}`);
                 } else {
+                  if (number > (selectedSpecificDataPics ? selectedSpecificDataPics.number : productData.number)) {
+                    dispatch(notificationActions.setNotificationContent('Run out of stock'));
+                    return
+                  }
                   dispatch(
                     cartActions.createCartProductRequest({
                       id: productData.id,

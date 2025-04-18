@@ -93,15 +93,10 @@ function* getPasswordSaga(action) {
 
 function* getUserDataSaga(action) {
   try {
-    yield put(loadingActions.setLoadingLoading(true));
-
     const data = yield call(getUserDataAPI, action.payload);
     yield put(loginActions.getUserDataSuccess(data.data));
-
-    yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(loginActions.getUserDataFailure());
-    yield put(loadingActions.setLoadingLoading(false));
   }
 }
 
