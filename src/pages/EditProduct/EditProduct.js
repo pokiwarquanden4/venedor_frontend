@@ -93,7 +93,7 @@ function EditProduct() {
     setPrice(data.price)
     setQuantity(data.number)
     setDescription(data.description)
-    setSaleOff(data.saleOff)
+    setSaleOff(data.saleOff + '%')
     setCategoryId(data.categoryId)
     setCategoryDetailId(data.categoryDetailId)
     setBrand(data.brandName)
@@ -228,7 +228,7 @@ function EditProduct() {
 
       navigate(routes.accountSeller);
     }
-  }, [brand, categoryDetailId, categoryId, checkinput, data.id, description, dispatch, listImg, mainImg.file, mainImg.url, name, navigate, price, quantity, saleOff, specific, specificPics]);
+  }, [brand, categoryDetailId, categoryId, checkinput, data, description, dispatch, listImg, mainImg, name, navigate, price, quantity, saleOff, specific, specificPics]);
 
   const generateCombinations = (specific) => {
     if (!specific.length) return []
@@ -473,6 +473,7 @@ function EditProduct() {
             <div className={styles.categoryList}>
               <div className={styles.categoryList_header}>Category Details</div>
               <select
+                value={categoryDetailId}
                 className={styles.category_input}
                 onChange={(e) => {
                   setCategoryDetailIdFill(false)
@@ -480,11 +481,10 @@ function EditProduct() {
                 }}
               >
                 <option value={undefined}>None</option>
-                {productSelect.category.categoryDetails[categoryId].map((key, index) => {
-                  const item = productSelect.category.category[key]
+                {(productSelect.category.categoryDetails[categoryId] || []).map((item, index) => {
                   return (
-                    <option value={key} key={index}>
-                      {item.name}
+                    <option value={item.id} key={index}>
+                      {item.categoryName}
                     </option>
                   );
                 })}
