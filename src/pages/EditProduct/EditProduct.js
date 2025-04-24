@@ -319,6 +319,32 @@ function EditProduct() {
     })
   }
 
+  useEffect(() => {
+    if (specificPics.length) {
+      let number = 0
+      let price = 0
+      let saleOff = 0
+
+      specificPics.forEach(data => {
+        number += data.number
+
+        //get the lowest acutal price
+        const actualPrice = data.price - (data.price * data.saleOff) / 100
+        if (price === 0 || actualPrice < price) {
+          price = data.price
+          saleOff = data.saleOff
+        }
+      })
+
+      setPrice(price)
+      setPriceFill(false)
+      setSaleOff(saleOff + '%')
+      setSaleOffFill(false)
+      setQuantity(number)
+      setQuantityFill(false)
+    }
+  }, [specificPics])
+
   const onDeleteSpecific = (index) => {
     setSpecific((prev) => prev.filter((_, i) => i !== index));
   };
@@ -371,6 +397,7 @@ function EditProduct() {
             <div className={styles.price}>
               <div className={styles.price_header}>Price</div>
               <input
+                disabled={specificPics.length ? true : false}
                 placeholder="Price"
                 value={price}
                 className={`${styles.price_input} ${priceFill ? styles.noInput : ''}`}
@@ -390,6 +417,7 @@ function EditProduct() {
             <div className={styles.quantity}>
               <div className={styles.quantity_header}>Quantity</div>
               <input
+                disabled={specificPics.length ? true : false}
                 placeholder="Quantity"
                 value={quantity}
                 className={`${styles.quantity_input} ${quantityFill ? styles.noInput : ''}`}
@@ -423,6 +451,7 @@ function EditProduct() {
             <div className={styles.saleOff}>
               <div className={styles.saleOff_header}>Sale Off</div>
               <input
+                disabled={specificPics.length ? true : false}
                 placeholder="Sale Off"
                 value={saleOff}
                 className={`${styles.saleOff_input} ${saleOffFill ? styles.noInput : ''}`}

@@ -105,15 +105,26 @@ function CreateProduct() {
 
   useEffect(() => {
     if (specificPics.length) {
-      let sum = 0
+      let number = 0
+      let price = 0
+      let saleOff = 0
 
-      specificPics.forEach(data => sum += data.number)
+      specificPics.forEach(data => {
+        number += data.number
 
-      setPrice(0)
+        //get the lowest acutal price
+        const actualPrice = data.price - (data.price * data.saleOff) / 100
+        if (price === 0 || actualPrice < price) {
+          price = data.price
+          saleOff = data.saleOff
+        }
+      })
+
+      setPrice(price)
       setPriceFill(false)
-      setSaleOff(0 + '%')
+      setSaleOff(saleOff + '%')
       setSaleOffFill(false)
-      setQuantity(sum)
+      setQuantity(number)
       setQuantityFill(false)
     }
   }, [specificPics])
@@ -505,7 +516,7 @@ function CreateProduct() {
                   const data = Object.values(item)
 
                   return <div key={index} className={styles.specific_values}>
-                    <div className={styles.specific_content_header}>Products {index + 1}</div>
+                    <div className={styles.specific_content_header}>Details {index + 1}</div>
                     <EditButton
                       width='16px'
                       className={styles.editButton}
