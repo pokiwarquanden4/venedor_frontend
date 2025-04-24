@@ -274,7 +274,13 @@ function ProductDetails({ data, fullScreen, preview }) {
           </div>
           <div className={styles.stock}>Availability: {selectedSpecificDataPics ? selectedSpecificDataPics.number : productData.number}</div>
           <div className={styles.price}>
-            <div className={styles.olePrice} style={selectedSpecificDataPics ? selectedSpecificDataPics.saleOff : productData.saleOff === 0 ? { display: 'none' } : {}}>
+            <div className={styles.olePrice} style={
+              selectedSpecificDataPics
+                ? { display: selectedSpecificDataPics.saleOff ? 'block' : 'none' }
+                : productData.saleOff === 0
+                  ? { display: 'none' }
+                  : {}
+            }>
               {formatVND(selectedSpecificDataPics ? selectedSpecificDataPics.price : productData.price)}
             </div>
             <div className={styles.newPrice}>{formatVND((selectedSpecificDataPics ? selectedSpecificDataPics.price : productData.price) * (1 - ((selectedSpecificDataPics ? selectedSpecificDataPics.saleOff : productData.saleOff) / 100)))}</div>

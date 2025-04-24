@@ -428,11 +428,10 @@ function CreateProduct() {
                 }}
               >
                 <option value={undefined}>None</option>
-                {(productSelect.category.categoryDetails[categoryId] || []).map((key, index) => {
-                  const item = productSelect.category.category[key]
+                {(productSelect.category.categoryDetails[categoryId] || []).map((data, index) => {
                   return (
-                    <option value={key} key={index}>
-                      {item.name}
+                    <option value={data.id} key={index}>
+                      {data.categoryName}
                     </option>
                   );
                 })}
