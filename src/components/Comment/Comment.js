@@ -1,6 +1,9 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import styles from './Comment.module.scss'; // Giả sử bạn dùng CSS Modules
 import ReviewComment from './reviewComment';
+import { use } from 'react';
+import { useDispatch } from 'react-redux';
+import { productActions } from '../../redux/actions/product/ProductActions';
 
 // Tạo component Star riêng
 const Star = () => (
@@ -67,9 +70,24 @@ const sendIconActive = 'https://salt.tikicdn.com/ts/upload/04/75/f0/441726ca3900
 const sendIconInActive = 'https://salt.tikicdn.com/ts/upload/1e/49/2d/92f01c5a743f7c8c1c7433a0a7090191.png'
 
 export default function Comment({ data }) {
+    const dispatch = useDispatch()
     const [openCommentBox, setOpenCommentBox] = useState(false)
     const [commentInput, setCommentInput] = useState('')
     const [showComment, setShowComment] = useState(false)
+
+    const onComment = useCallback(() => {
+        if (commentInput.trim() === '') return;
+        dispatch(productActions.createCommentRequest({
+            productId: data.productId,
+            content: commentInput,
+            rate: null,
+            parentId: data.id,
+        }))
+
+        setCommentInput('')
+        setOpenCommentBox(false)
+        setShowComment(true)
+    }, [commentInput, data, dispatch]);
 
     return (
         <div className={styles.container}>
@@ -106,8 +124,18 @@ export default function Comment({ data }) {
                                     type="text"
                                     value={commentInput}
                                     onChange={(e) => setCommentInput(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if (e.key === 'Enter') {
+                                            onComment();
+                                        }
+                                    }}
                                 />
-                                <img className={styles.send_icon} alt='' src={commentInput ? sendIconActive : sendIconInActive}></img>
+                                <img
+                                    className={styles.send_icon}
+                                    alt=""
+                                    src={commentInput ? sendIconActive : sendIconInActive}
+                                    onClick={onComment}
+                                ></img>
                             </div>
                             :
                             undefined

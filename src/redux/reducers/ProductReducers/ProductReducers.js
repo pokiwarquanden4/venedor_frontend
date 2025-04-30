@@ -38,6 +38,37 @@ export default function ProductReducers(state = productConstants, action) {
         success: false,
         loading: false,
       };
+    case getType(productActions.createCommentRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(productActions.createCommentSuccess):
+      const newComments = state.productComments.comments.map((item) => {
+        if (item.id === action.payload.obj.comment.parentId) {
+          return {
+            ...item,
+            children: [...item.children, action.payload.obj.comment],
+          };
+        }
+        return item;
+      });
+
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        productComments: {
+          ...state.productComments,
+          comments: newComments,
+        }
+      };
+    case getType(productActions.createCommentFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
     case getType(productActions.getCategoryRequest):
       return {
         ...state,

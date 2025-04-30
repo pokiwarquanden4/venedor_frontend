@@ -10,18 +10,19 @@ function CreateProductSpecific({ data, onSubmit, setOpenPopup, onDelete }) {
     const [specific, setSpecific] = useState(data.specific)
 
     const submitSpecific = () => {
-        if (specificHeader && specific.length) {
+        // Kiểm tra nếu specificHeader tồn tại và specific không chứa chuỗi rỗng
+        if (specificHeader && specific.length && specific.every(value => value.trim() !== '')) {
             onSubmit({
                 id: data.id,
                 index: data.index,
                 specificName: specificHeader,
                 specific: specific
-            })
-            setOpenPopup(false)
+            });
+            setOpenPopup(false);
         } else {
-            dispatch(notificationActions.setNotificationContent('Please fill all the field'));
+            dispatch(notificationActions.setNotificationContent('Please fill all the fields and ensure no empty details.'));
         }
-    }
+    };
 
     return (
         <div className={styles.container}>

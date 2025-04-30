@@ -211,7 +211,7 @@ function HeaderFloating({ mainRef }) {
                   }
                 }}
               ></BoxIcon>
-              <MessageIcon
+              {/* <MessageIcon
                 className={styles.messageIcon}
                 onClick={() => {
                   if (!loginStatus) {
@@ -220,7 +220,7 @@ function HeaderFloating({ mainRef }) {
                     navigate('/message');
                   }
                 }}
-              ></MessageIcon>
+              ></MessageIcon> */}
             </div>
           </div>
         </div>

@@ -76,6 +76,12 @@ export const getCommentAPI = (payload) => {
   });
 };
 
+export const createCommentAPI = (payload) => {
+  return axios.post(`${URL}users/addComment`, payload, {
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+
 export const getCategoryAPI = (payload) => {
   return axios.get(`${URL}users/getCategory`, {
     headers: createHeaders(),

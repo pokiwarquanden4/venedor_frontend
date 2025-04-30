@@ -248,7 +248,7 @@ function Message() {
                     sendMessage();
                   }}
                 >
-                  <MessageIcon></MessageIcon>
+                  {/* <MessageIcon></MessageIcon> */}
                 </div>
               </div>
             </Fragment>

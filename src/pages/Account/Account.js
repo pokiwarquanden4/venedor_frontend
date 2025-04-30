@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { addressActions } from '../../redux/actions/account/AddressActions';
 import { historyActions } from '../../redux/actions/purchase/historyActions';
 import { historySelector } from '../../redux/selectors/historySelector/historySelector';
+import { formatVND } from '../../config/utils';
 
 function Account() {
   const navigate = useNavigate();
@@ -67,10 +68,12 @@ function Account() {
                     ></img>
                     <div className={styles.flex_wrapper}>
                       <div className={styles.list_wrapper}>
-                        <div className={styles.name}>{item.productName}</div>
+                        <div className={styles.name} title={`${item.productName} - ${item.specific}`}>
+                          {item.productName} - {item.specific}
+                        </div>
                         <div className={styles.quantity}>Quantity: {item.number}</div>
                       </div>
-                      <div className={styles.price}>{item.paid}$</div>
+                      <div className={styles.price}>{formatVND(item.paid)}</div>
                       <div className={styles.status}>
                         {item.status === 0
                           ? 'Pending'

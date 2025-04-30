@@ -178,15 +178,27 @@
 }
 
 .vertical {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     max-height: 300px;
     animation-name: scaling;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
     transform-origin: 50% 30%;
     animation-duration: 0.3s;
-    display: block;
     max-height: none;
-    box-shadow: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08); // Thêm bóng mờ nhẹ
+    border: 1px solid #ddd; // Viền màu xám nhạt
+    border-radius: 12px; // Bo góc mềm mại
+    padding: 16px; // Thêm khoảng cách bên trong
+    background-color: #fff; // Nền trắng để nổi bật
+    transition: transform 0.3s ease, box-shadow 0.3s ease; // Hiệu ứng chuyển đổi khi hover
+
+    &:hover {
+        transform: translateY(-5px); // Nâng lên một chút khi hover
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15); // Tăng bóng mờ khi hover
+    }
 
     .heartIcon {
         cursor: pointer;
@@ -210,9 +222,10 @@
         }
     }
 
-
     .item_img {
         margin-bottom: 20px;
+        border-radius: 8px; // Bo góc cho hình ảnh
+        overflow: hidden; // Đảm bảo hình ảnh không tràn ra ngoài
     }
 
     .item_img:hover {

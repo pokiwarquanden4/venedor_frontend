@@ -30,18 +30,17 @@ function Address() {
     setCountry('');
     setPhoneNumber('');
 
-    if (currentAddress) {
+    if (typeof currentAddress === 'number') {
       addressRef.current[currentAddress].classList.remove(`${styles.focus}`);
       setCurrentAddress(undefined);
     }
   }, [currentAddress]);
 
   useEffect(() => {
-    handleStopFocus();
     if (addressSelect.addressList) {
       setData(addressSelect.addressList);
     }
-  }, [addressSelect.addressList, handleStopFocus]);
+  }, [addressSelect.addressList]);
 
   useEffect(() => {
     dispatch(addressActions.getAddressRequest());
@@ -246,6 +245,7 @@ function Address() {
                     title="SAVE"
                     onClick={() => {
                       handleEdit(currentId);
+                      handleStopFocus();
                     }}
                   ></MainButton>
                   <MainButton

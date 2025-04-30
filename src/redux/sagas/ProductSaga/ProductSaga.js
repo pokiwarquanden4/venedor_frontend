@@ -11,6 +11,7 @@ import {
   searchCategoryProductAPI,
   searchProductAPI,
   searchProductByIdAPI,
+  createCommentAPI,
 } from '../../../api/storageAPI/StorageAPI';
 import { productActions } from '../../actions/product/ProductActions';
 import { jwtCheck } from '../jwtCheck';
@@ -190,10 +191,19 @@ function* searchCategorySaga(action) {
 
 function* getCommentSaga(action) {
   try {
-    const products = yield call(getCommentAPI, action.payload);
-    yield put(productActions.getCommentSuccess(products.data));
+    const comment = yield call(getCommentAPI, action.payload);
+    yield put(productActions.getCommentSuccess(comment.data));
   } catch (err) {
     yield put(productActions.getCommentFailure(err.response.data));
+  }
+}
+
+function* createCommentSaga(action) {
+  try {
+    const comment = yield call(createCommentAPI, action.payload);
+    yield put(productActions.createCommentSuccess(comment.data));
+  } catch (err) {
+    yield put(productActions.createCommentFailure(err.response.data));
   }
 }
 
@@ -219,6 +229,7 @@ function* productSagas() {
   yield takeLatest(cartActions.editCartProductRequest, editCartProductSaga);
   yield takeLatest(productSearchActions.searchCategoryProductRequest, searchCategorySaga);
   yield takeLatest(productActions.getCommentRequest, getCommentSaga);
+  yield takeLatest(productActions.createCommentRequest, createCommentSaga);
   yield takeLatest(productActions.getCategoryRequest, getCategory);
 }
 

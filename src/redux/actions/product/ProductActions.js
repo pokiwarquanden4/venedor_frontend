@@ -25,4 +25,8 @@ export const productActions = createActions({
   getCommentRequest: (payload) => payload,
   getCommentSuccess: (payload) => payload,
   getCommentFailure: (payload) => payload,
+
+  createCommentRequest: (payload) => payload,
+  createCommentSuccess: (payload) => payload,
+  createCommentFailure: (payload) => payload,
 });

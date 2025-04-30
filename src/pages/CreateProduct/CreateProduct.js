@@ -71,9 +71,9 @@ function CreateProduct() {
 
   const checkinput = useCallback(() => {
     !name && setNameFill(true);
-    !price && setPriceFill(true);
-    (!quantity || !quantityFilter(quantity)) && setQuantityFill(true);
-    saleOff && !saleOffFilter(saleOff) && setSaleOffFill(true);
+    !price && !combination.length && setPriceFill(true);
+    (!quantity || !quantityFilter(quantity)) && !combination.length && setQuantityFill(true);
+    saleOff && !combination.length && !saleOffFilter(saleOff) && setSaleOffFill(true);
     !categoryId && setCategoryIdFill(true)
     !categoryDetailId && setCategoryDetailIdFill(true)
     !description && setDescriptionFill(true);
