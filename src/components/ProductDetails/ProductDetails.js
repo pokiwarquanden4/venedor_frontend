@@ -320,6 +320,10 @@ function ProductDetails({ data, fullScreen, preview }) {
                 if (edit) {
                   navigate(`/accountSeller/${productData.id}`);
                 } else {
+                  if (number === 0) {
+                    dispatch(notificationActions.setNotificationContent('Please choose the quantity'));
+                  }
+
                   if (number > (selectedSpecificDataPics ? selectedSpecificDataPics.number : productData.number)) {
                     dispatch(notificationActions.setNotificationContent('Run out of stock'));
                     return
@@ -403,12 +407,15 @@ function ProductDetails({ data, fullScreen, preview }) {
                       const selected = selectedSpecific[item.specificName] === index
                       return <div
                         key={index}
-                        onClick={() => setSelectedSpecific(preVal => {
-                          return {
-                            ...preVal,
-                            [item.specificName]: index
-                          }
-                        })}
+                        onClick={() => {
+                          setSelectedSpecific(preVal => {
+                            return {
+                              ...preVal,
+                              [item.specificName]: index
+                            };
+                          });
+                          setNumber(0); // Reset the number to 0
+                        }}
                         className={`${styles.specifics_content} ${selected ? styles.selected : ''}`}
                       >
                         <div className={styles.specifics_content_text}>{s}</div>

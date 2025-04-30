@@ -105,7 +105,7 @@ function HomeCategory() {
             setFilterPopUp(false);
           }}
         >
-          <CategoryFilterPopUp></CategoryFilterPopUp>
+          <CategoryFilterPopUp setPopup={setFilterPopUp}></CategoryFilterPopUp>
         </Popup>
       ) : undefined}
       <div className={styles.wrapper}>

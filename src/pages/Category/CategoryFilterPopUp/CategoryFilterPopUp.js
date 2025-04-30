@@ -4,7 +4,7 @@ import styles from './CategoryFilterPopUp.module.scss';
 import { useSelector } from 'react-redux';
 import { productSelector } from '../../../redux/selectors/productSelector/productSelector';
 
-function CategoryFilterPopUp() {
+function CategoryFilterPopUp({ setPopup }) {
   const productSelect = useSelector(productSelector);
   const params = useParams();
   const navigate = useNavigate();
@@ -25,6 +25,7 @@ function CategoryFilterPopUp() {
                 title={item.name}
                 onClick={() => {
                   navigate(`/category/${id}`);
+                  setPopup(false);
                 }}
                 active={currentCategory.toLowerCase() === item.name.toLowerCase()}
               ></MainButton>
