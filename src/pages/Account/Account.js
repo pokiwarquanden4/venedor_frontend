@@ -150,17 +150,8 @@ function Account() {
                         ) : (
                           <div
                             className={styles.confirm}
-                            onClick={() => {
-                              dispatch(
-                                historyActions.cancelOrderRequest({
-                                  historyId: item.id,
-                                  number: item.number,
-                                  productId: item.productId,
-                                })
-                              );
-                            }}
                           >
-                            Confirm
+                            Done
                           </div>
                         )}
                       </div>
