@@ -141,14 +141,7 @@
 
         .details {
             cursor: pointer;
-            font-size: 20px;
-            margin-bottom: 0px;
-            // width: 300px;
-            display: -webkit-box;
-            -webkit-line-clamp: 10;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            word-wrap: break-word;
+
         }
 
         .stock {
@@ -450,7 +443,8 @@
         }
 
         .details {
-            max-height: 200px;
+            margin-top: 10px;
+            max-height: 350px;
             overflow-y: auto;
             cursor: pointer;
         }

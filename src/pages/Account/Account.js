@@ -4,11 +4,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import routes from '../../config/routes';
 import { useDispatch, useSelector } from 'react-redux';
 import { addressSelector } from '../../redux/selectors/accountSelector/AddressSelector';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { addressActions } from '../../redux/actions/account/AddressActions';
 import { historyActions } from '../../redux/actions/purchase/historyActions';
 import { historySelector } from '../../redux/selectors/historySelector/historySelector';
 import { formatVND } from '../../config/utils';
+import { productActions } from '../../redux/actions/product/ProductActions';
+import { notificationActions } from '../../redux/actions/notification/notificationAction';
+import Popup from '../../components/Popup/Popup';
 
 function Account() {
   const navigate = useNavigate();
@@ -17,6 +20,8 @@ function Account() {
   const historySelect = useSelector(historySelector);
   const [dataAddress, setDataAddress] = useState([]);
   const [history, setHistory] = useState([]);
+  const [feedbackData, setFeedbackData] = useState({});
+  const [openFeedback, setOpenFeedback] = useState(false);
 
   useEffect(() => {
     if (addressSelect.addressList) {
@@ -44,6 +49,30 @@ function Account() {
       setHistory(historySelect.historyList);
     }
   }, [historySelect.historyList]);
+
+  const onFeedBack = useCallback(() => {
+    if (!feedbackData.rate) {
+      dispatch(notificationActions.setNotificationContent('Please fill all the fields!'));
+      return
+    }
+
+    dispatch(productActions.createCommentRequest({
+      productId: feedbackData.productId,
+      content: feedbackData.content,
+      rate: feedbackData.rate,
+      parentId: feedbackData.parentId,
+      historyId: feedbackData.historyId,
+    }))
+
+    dispatch(notificationActions.setNotificationContent('Thank you for your feedback!'));
+    setOpenFeedback(false);
+    setFeedbackData({
+      ...feedbackData,
+      productId: null,
+      content: null,
+      rate: null,
+    });
+  }, [feedbackData, dispatch]);
 
   return (
     <div className={styles.wrapper}>
@@ -90,33 +119,51 @@ function Account() {
                           year: 'numeric',
                         })}
                       </div>
-                      {item.status !== 2 ? (
-                        <div
-                          className={` ${item.status === 1 ? styles.disable : styles.delete}`}
-                          onClick={() => {
-                            if (item.status === 0 || (item.status !== 1 && item.status !== 2)) {
-                              dispatch(historyActions.cancelOrderRequest({ historyId: item.id }));
-                            }
-                          }}
-                        >
-                          Delete
-                        </div>
-                      ) : (
-                        <div
-                          className={styles.confirm}
-                          onClick={() => {
-                            dispatch(
-                              historyActions.cancelOrderRequest({
+                      <div className={styles.status_content}>
+                        {item.status === 2 && !item.feedbackId && (
+                          <div
+                            className={styles.addComment}
+                            onClick={() => {
+                              setOpenFeedback(true);
+                              setFeedbackData({
+                                ...feedbackData,
                                 historyId: item.id,
-                                number: item.number,
                                 productId: item.productId,
-                              })
-                            );
-                          }}
-                        >
-                          Confirm
-                        </div>
-                      )}
+                                parentId: null,
+                              });
+                            }}
+                          >
+                            Give Feedback
+                          </div>
+                        )}
+                        {item.status !== 2 ? (
+                          <div
+                            className={`${item.status === 1 ? styles.disable : styles.delete}`}
+                            onClick={() => {
+                              if (item.status === 0 || (item.status !== 1 && item.status !== 2)) {
+                                dispatch(historyActions.cancelOrderRequest({ historyId: item.id }));
+                              }
+                            }}
+                          >
+                            Cancel Order
+                          </div>
+                        ) : (
+                          <div
+                            className={styles.confirm}
+                            onClick={() => {
+                              dispatch(
+                                historyActions.cancelOrderRequest({
+                                  historyId: item.id,
+                                  number: item.number,
+                                  productId: item.productId,
+                                })
+                              );
+                            }}
+                          >
+                            Confirm
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 );
@@ -162,6 +209,46 @@ function Account() {
           </div>
         </div>
       </div>
+
+      {openFeedback ? (
+        <Popup
+          width='400px'
+          height='auto'
+          onClick={() => {
+            setOpenFeedback(false)
+          }}
+          highestZIndex={true}
+        >
+          <div className={styles.feedback_container}>
+            <div className={styles.feedback_header}>Give Your Feedback</div>
+            <div className={styles.feedback_stars}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  className={`${styles.star} ${feedbackData.rate >= star ? styles.selected : ''}`}
+                  onClick={() => setFeedbackData((prev) => ({ ...prev, rate: star }))}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+            <textarea
+              className={styles.feedback_comment}
+              placeholder="Write your comment here..."
+              value={feedbackData.content || ''}
+              onChange={(e) => setFeedbackData((prev) => ({ ...prev, content: e.target.value }))}
+            ></textarea>
+            <div className={styles.feedback_actions}>
+              <button className={styles.submit_button} onClick={onFeedBack}>
+                Submit
+              </button>
+              <button className={styles.cancel_button} onClick={() => setOpenFeedback(false)}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </Popup>
+      ) : undefined}
     </div>
   );
 }

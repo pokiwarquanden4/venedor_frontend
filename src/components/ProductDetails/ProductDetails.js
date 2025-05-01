@@ -427,7 +427,11 @@ function ProductDetails({ data, fullScreen, preview }) {
               </div>
             })
           }
-          {fullScreen ? <p className={styles.details} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: productData.description }} /> : undefined}
+          {fullScreen ? (
+            <div className={styles.details} onClick={() => setIsShowDetails(true)}>
+              <div dangerouslySetInnerHTML={{ __html: productData.description }} />
+            </div>
+          ) : undefined}
           {/* {fullScreen && (
             <div className={styles.guaranteed}>
               <div className={styles.guaranteed_header}>Guaranteed Safe Checkout</div>
