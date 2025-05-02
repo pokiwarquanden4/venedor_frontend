@@ -4,6 +4,7 @@ import MainButton from '../../components/MainButton/MainButton';
 import { notificationActions } from '../../redux/actions/notification/notificationAction';
 import { useDispatch } from 'react-redux';
 import BackGroundImg from '../../components/BackGroundImg/BackGroundImg';
+import { encodePrice, encodeSaleOff } from '../../config/filterInput';
 
 function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
     const dispatch = useDispatch()
@@ -14,9 +15,9 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
 
     useEffect(() => {
         setListImg(value.data.img)
-        setPrice(value.data.price)
+        setPrice(encodePrice(value.data.price))
         setQuantity(value.data.number)
-        setSaleOff(value.data.saleOff)
+        setSaleOff(encodeSaleOff(value.data.saleOff))
     }, [value.data.img, value.data.number, value.data.price, value.data.saleOff])
 
     const removeFile = (index) => {
@@ -54,33 +55,22 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
         <div className={styles.container}>
             <div className={styles.price}>
                 <div className={styles.price_header}>Price</div>
-                <input
-                    type="number"
-                    min="1"
-                    step="1"
-                    placeholder="Price"
-                    value={price}
-                    className={`${styles.price_input}`}
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === "") {
-                            setPrice("");
-                        } else {
-                            const parsed = parseInt(value);
-                            if (!isNaN(parsed) && parsed >= 0) {
-                                setPrice(parsed);
-                            }
-                        }
-                    }}
-                />
+                <div className={styles.price_wrapper}>
+                    <input
+                        placeholder="Price"
+                        value={price}
+                        className={`${styles.price_input}`}
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ''); // Loại bỏ ký tự không phải số
+                            setPrice(encodePrice(value)); // Định dạng giá trị
+                        }}
+                    />
+                    <span className={styles.price_unit}>VND</span>
+                </div>
             </div>
             <div className={styles.quantity}>
                 <div className={styles.quantity_header}>Quantity</div>
                 <input
-                    type="number"
-                    min="0"
-                    step="1"
-                    placeholder="Quantity"
                     value={quantity}
                     className={`${styles.quantity_input}`}
                     onChange={(e) => {
@@ -106,34 +96,20 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
             </div>
             <div className={styles.saleOff}>
                 <div className={styles.saleOff_header}>Sale Off</div>
-                <input
-                    type="number"
-                    min="0"
-                    max="100"
-                    step="1"
-                    placeholder="Sale Off"
-                    className={`${styles.saleOff_input}`}
-                    value={saleOff}
-                    onChange={(e) => {
-                        const value = e.target.value;
-                        if (value === "") {
-                            setSaleOff("");
-                        } else {
-                            const parsed = parseInt(value);
-                            if (!isNaN(parsed) && parsed >= 0 && parsed <= 100) {
-                                setSaleOff(parsed);
+                <div className={styles.saleOff_wrapper}>
+                    <input
+                        placeholder="Sale Off"
+                        className={`${styles.saleOff_input}`}
+                        value={saleOff}
+                        onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                            if (value === '' || (Number(value) >= 0 && Number(value) <= 100)) {
+                                setSaleOff(value);
                             }
-                        }
-                    }}
-                    onKeyDown={(e) => {
-                        // Ngăn người dùng gõ ký tự không phải là số
-                        if (["e", "E", "+", "-", ".", ","].includes(e.key)) {
-                            e.preventDefault();
-                        }
-                    }}
-                />
-
-
+                        }}
+                    />
+                    <span className={styles.saleOff_unit}>%</span>
+                </div>
             </div>
             <div className={styles.listImg_header}>Images</div>
             <div className={styles.listImg_input}>

@@ -22,7 +22,7 @@ function DailyDeal() {
         setNumeberPerPage(2);
         setCurrentPage(0);
       } else {
-        console.log('in');
+
         setNumeberPerPage(1);
         setCurrentPage(0);
       }

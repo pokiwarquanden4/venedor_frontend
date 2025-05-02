@@ -268,3 +268,49 @@
     font-size: 14px;
     width: 150px;
 }
+
+.saleOff_wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.saleOff_input {
+    padding-right: 30px;
+    /* Để chừa khoảng trống cho đơn vị */
+}
+
+.saleOff_wrapper::after {
+    content: '%';
+    /* Đơn vị hiển thị */
+    position: absolute;
+    right: 10px;
+    /* Căn lề phải */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+    /* Màu chữ */
+    pointer-events: none;
+    /* Không cho phép người dùng tương tác */
+}
+
+.price_wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.price_input {
+    padding-right: 40px;
+    /* Chừa khoảng trống cho đơn vị */
+}
+
+.price_unit {
+    position: absolute;
+    right: 10px;
+    /* Căn lề phải */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+    /* Màu chữ */
+    pointer-events: none;
+    /* Không cho phép người dùng tương tác */
+}

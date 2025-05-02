@@ -92,7 +92,7 @@ function Cart() {
       setValid(false);
     }
   }, [data, addressSelect.addressList]);
-  console.log(data)
+
   return (
     <Fragment>
       {addressPopup && (

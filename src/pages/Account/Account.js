@@ -83,85 +83,87 @@ function Account() {
         <div className={styles.content}>
           <div className={styles.order_history}>
             <div className={styles.order_history_header}>Order History</div>
-            {history.length !== 0 ? (
-              history.map((item, index) => {
-                return (
-                  <div className={styles.history_list} key={index}>
-                    <img
-                      alt=''
-                      className={styles.picture}
-                      src={item.imgURL}
-                      onClick={() => {
-                        navigate(`/category/${item.category}/${item.productId}`);
-                      }}
-                    ></img>
-                    <div className={styles.flex_wrapper}>
-                      <div className={styles.list_wrapper}>
-                        <div className={styles.name} title={`${item.productName} - ${item.specific}`}>
-                          {item.productName} - {item.specific}
+            <div className={styles.history_content}>
+              {history.length !== 0 ? (
+                history.map((item, index) => {
+                  return (
+                    <div className={styles.history_list} key={index}>
+                      <img
+                        alt=''
+                        className={styles.picture}
+                        src={item.imgURL}
+                        onClick={() => {
+                          navigate(`/category/${item.category}/${item.productId}`);
+                        }}
+                      ></img>
+                      <div className={styles.flex_wrapper}>
+                        <div className={styles.list_wrapper}>
+                          <div className={styles.name} title={`${item.productName} - ${item.specific}`}>
+                            {item.productName} - {item.specific}
+                          </div>
+                          <div className={styles.quantity}>Quantity: {item.number}</div>
                         </div>
-                        <div className={styles.quantity}>Quantity: {item.number}</div>
-                      </div>
-                      <div className={styles.price}>{formatVND(item.paid)}</div>
-                      <div className={styles.status}>
-                        {item.status === 0
-                          ? 'Pending'
-                          : item.status === 1
-                            ? 'Shipping'
-                            : item.status === 2
-                              ? 'Done'
-                              : 'Cancel'}
-                      </div>
-                      <div className={styles.purchaseDate}>
-                        {new Date(item.updatedAt).toLocaleDateString('en-GB', {
-                          day: '2-digit',
-                          month: '2-digit',
-                          year: 'numeric',
-                        })}
-                      </div>
-                      <div className={styles.status_content}>
-                        {item.status === 2 && !item.feedbackId && (
-                          <div
-                            className={styles.addComment}
-                            onClick={() => {
-                              setOpenFeedback(true);
-                              setFeedbackData({
-                                ...feedbackData,
-                                historyId: item.id,
-                                productId: item.productId,
-                                parentId: null,
-                              });
-                            }}
-                          >
-                            Give Feedback
-                          </div>
-                        )}
-                        {item.status !== 2 ? (
-                          <div
-                            className={`${item.status === 1 ? styles.disable : styles.delete}`}
-                            onClick={() => {
-                              if (item.status === 0 || (item.status !== 1 && item.status !== 2)) {
-                                dispatch(historyActions.cancelOrderRequest({ historyId: item.id }));
-                              }
-                            }}
-                          >
-                            Cancel Order
-                          </div>
-                        ) : (
-                          <div
-                            className={styles.confirm}
-                          >
-                            Done
-                          </div>
-                        )}
+                        <div className={styles.price}>{formatVND(item.paid)}</div>
+                        <div className={styles.status}>
+                          {item.status === 0
+                            ? 'Pending'
+                            : item.status === 1
+                              ? 'Shipping'
+                              : item.status === 2
+                                ? 'Done'
+                                : 'Cancel'}
+                        </div>
+                        <div className={styles.purchaseDate}>
+                          {new Date(item.updatedAt).toLocaleDateString('en-GB', {
+                            day: '2-digit',
+                            month: '2-digit',
+                            year: 'numeric',
+                          })}
+                        </div>
+                        <div className={styles.status_content}>
+                          {item.status === 2 && !item.feedbackId && (
+                            <div
+                              className={styles.addComment}
+                              onClick={() => {
+                                setOpenFeedback(true);
+                                setFeedbackData({
+                                  ...feedbackData,
+                                  historyId: item.id,
+                                  productId: item.productId,
+                                  parentId: null,
+                                });
+                              }}
+                            >
+                              Give Feedback
+                            </div>
+                          )}
+                          {item.status !== 2 ? (
+                            <div
+                              className={`${item.status === 1 ? styles.disable : styles.delete}`}
+                              onClick={() => {
+                                if (item.status === 0 || (item.status !== 1 && item.status !== 2)) {
+                                  dispatch(historyActions.cancelOrderRequest({ historyId: item.id }));
+                                }
+                              }}
+                            >
+                              Cancel Order
+                            </div>
+                          ) : (
+                            <div
+                              className={styles.confirm}
+                            >
+                              Done
+                            </div>
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className={styles.order_history_content}>You haven't placed any orders yet.</div>
-            )}
+                  );
+                })
+              ) : (
+                <div className={styles.order_history_content}>You haven't placed any orders yet.</div>
+              )}
+            </div>
           </div>
           <div className={styles.account_details}>
             <div className={styles.account_details_header}>Account Details</div>

@@ -304,6 +304,11 @@
     color: #aaa;
 }
 
+.history_content {
+    max-height: 700px;
+    overflow: auto;
+}
+
 .feedback_actions {
     display: flex;
     justify-content: space-between;

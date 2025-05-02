@@ -30,13 +30,12 @@
         font-size: 16px;
         padding: 15px 30px;
         height: 50px;
-        width: 400px;
+        width: 100%;
     }
 
     .img_input,
     .listImg_input {
         height: 50px;
-        width: 400px;
     }
 
     .listImg_input {
@@ -61,7 +60,6 @@
             font-size: 16px;
             padding: 15px 30px;
             height: 45px;
-            width: 400px;
         }
     }
 
@@ -76,7 +74,6 @@
             font-size: 16px;
             padding: 15px 30px;
             height: 45px;
-            width: 400px;
         }
 
         .inputWrapper {
@@ -114,4 +111,52 @@
             font-size: 16px;
         }
     }
+}
+
+.price_wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.price_input {
+    flex: 1;
+    padding-right: 40px;
+    /* Chừa khoảng trống cho đơn vị */
+}
+
+.price_unit {
+    position: absolute;
+    right: 10px;
+    /* Căn lề phải */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+    /* Màu chữ */
+    pointer-events: none;
+    /* Không cho phép người dùng tương tác */
+}
+
+.saleOff_wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.saleOff_input {
+    flex: 1;
+    padding-right: 30px;
+    /* Chừa khoảng trống cho ký hiệu % */
+}
+
+.saleOff_unit {
+    position: absolute;
+    right: 10px;
+    /* Căn lề phải */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+    /* Màu chữ */
+    pointer-events: none;
+    /* Không cho phép người dùng tương tác */
 }

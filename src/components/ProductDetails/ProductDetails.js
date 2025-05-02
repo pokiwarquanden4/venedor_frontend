@@ -132,7 +132,8 @@ function ProductDetails({ data, fullScreen, preview }) {
 
   useEffect(() => {
     dispatch(productActions.getCommentRequest({ page: pageData.page, limit: pageData.limit, productId: pageData.productId }));
-  }, [dispatch, pageData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, JSON.stringify(pageData)])
 
   useEffect(() => {
     setCommentData({
@@ -362,41 +363,7 @@ function ProductDetails({ data, fullScreen, preview }) {
             >
               <HeartIcon className={styles.heart_icon}></HeartIcon>
             </div>
-            <div
-              className={`${!(preview || !role) ? styles.compare : styles.disable}`}
-              onClick={
-                !(preview || !role)
-                  ? () => {
-                    if (!loginSelect.login) {
-                      dispatch(loginActions.loginPopup(true));
-                    }
-                  }
-                  : null
-              }
-            >
-              <CompareIcon className={styles.compare_icon}></CompareIcon>
-            </div>
           </div>
-          {fullScreen && (
-            <div className={styles.directCall}>
-              <div
-                className={styles.zaloCall}
-                onClick={() => {
-                  if (loginSelect.loginRole === 'User') {
-                    dispatch(
-                      messageActions.createRoomChatRequest({
-                        sellerId: productData.sellerId,
-                      })
-                    );
-                    navigate('/message');
-                  }
-                }}
-              >
-                <ZaloIcon className={styles.zaloIcon}></ZaloIcon>
-                <div className={styles.zaloCall_description}>Ask about this product</div>
-              </div>
-            </div>
-          )}
           {
             specificData.map((item, index) => {
               return <div key={index} className={styles.specifics}>

@@ -12,6 +12,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 import {
   decodePrice,
   decodeSaleOff,
+  encodePrice,
+  encodeSaleOff,
   quantityFilter,
   saleOffFilter,
 } from '../../config/filterInput';
@@ -90,10 +92,10 @@ function EditProduct() {
   const addDefaultData = useCallback(() => {
     if (!data) return
     setName(data.productName)
-    setPrice(data.price)
+    setPrice(encodePrice(data.price))
     setQuantity(data.number)
     setDescription(data.description)
-    setSaleOff(data.saleOff + '%')
+    setSaleOff(encodeSaleOff(data.saleOff))
     setCategoryId(data.categoryId)
     setCategoryDetailId(data.categoryDetailId)
     setBrand(data.brandName)
@@ -138,38 +140,38 @@ function EditProduct() {
   }, [addDefaultData])
 
   const checkinput = useCallback(() => {
-    !name && setNameFill(true);
-    !price && setPriceFill(true);
-    (!quantity || !quantityFilter(quantity)) && setQuantityFill(true);
-    saleOff && !saleOffFilter(saleOff) && setSaleOffFill(true);
-    !categoryId && setCategoryIdFill(true)
-    !categoryDetailId && setCategoryDetailIdFill(true)
-    !description && setDescriptionFill(true);
-    !mainImg && setMainImgFill(true);
-    !listImg.length && setListImgFill(true);
-    if (
-      combination.length !== specificPics.filter(data => data.valid).length
-    ) {
-      dispatch(notificationActions.setNotificationContent('Please check specific'));
-      return false
-    }
+    // Validate each field and set corresponding error states
+    const isNameValid = !!name || setNameFill(true);
+    const isPriceValid = (!!decodePrice(price) || combination.length > 0) || setPriceFill(true);
+    const isQuantityValid = ((!!quantity && quantityFilter(quantity)) || combination.length > 0) || setQuantityFill(true);
+    const isSaleOffValid = (!!decodeSaleOff(saleOff) || combination.length > 0) || setSaleOffFill(true);
+    const isCategoryIdValid = !!categoryId || setCategoryIdFill(true);
+    const isCategoryDetailIdValid = !!categoryDetailId || setCategoryDetailIdFill(true);
+    const isDescriptionValid = !!description || setDescriptionFill(true);
+    const isMainImgValid = !!mainImg || setMainImgFill(true);
+    const isListImgValid = listImg.length > 0 || setListImgFill(true);
 
-    if (
-      !nameFill &&
-      !priceFill &&
-      !descriptionFill &&
-      !categoryIdFill &&
-      !categoryDetailIdFill &&
-      !quantityFill &&
-      !saleOffFill &&
-      !mainImgFill &&
-      !listImgFill !== 0
-    ) {
-      return true;
-    } else {
+    // Check if specific combinations are valid
+    const isSpecificValid = combination.length === specificPics.filter(data => data.valid).length;
+    if (!isSpecificValid) {
+      dispatch(notificationActions.setNotificationContent('Please check specific'));
       return false;
     }
-  }, [categoryDetailId, categoryDetailIdFill, categoryId, categoryIdFill, combination.length, description, descriptionFill, dispatch, listImg.length, listImgFill, mainImg, mainImgFill, name, nameFill, price, priceFill, quantity, quantityFill, saleOff, saleOffFill, specificPics]);
+
+    // Return true if all fields are valid
+    return (
+      isNameValid &&
+      isPriceValid &&
+      isQuantityValid &&
+      isSaleOffValid &&
+      isCategoryIdValid &&
+      isCategoryDetailIdValid &&
+      isDescriptionValid &&
+      isMainImgValid &&
+      isListImgValid
+    );
+  }, [name, price, quantity, saleOff, categoryId, categoryDetailId, description, mainImg, listImg, combination.length, specificPics, dispatch]);
+
 
   const handleSubmit = useCallback(async () => {
     if (checkinput()) {
@@ -310,9 +312,9 @@ function EditProduct() {
     setSpecificPics((pre) => {
       const newSpe = [...pre]
       newSpe[data.index].img = data.img
-      newSpe[data.index].price = data.price
+      newSpe[data.index].price = decodePrice(data.price)
       newSpe[data.index].number = data.number
-      newSpe[data.index].saleOff = data.saleOff
+      newSpe[data.index].saleOff = decodeSaleOff(data.saleOff)
       newSpe[data.index].valid = true
 
       return newSpe
@@ -336,9 +338,9 @@ function EditProduct() {
         }
       })
 
-      setPrice(price)
+      setPrice(encodePrice(price))
       setPriceFill(false)
-      setSaleOff(saleOff + '%')
+      setSaleOff(encodeSaleOff(saleOff))
       setSaleOffFill(false)
       setQuantity(number)
       setQuantityFill(false)
@@ -396,21 +398,25 @@ function EditProduct() {
             </div>
             <div className={styles.price}>
               <div className={styles.price_header}>Price</div>
-              <input
-                disabled={specificPics.length ? true : false}
-                placeholder="Price"
-                value={price}
-                className={`${styles.price_input} ${priceFill ? styles.noInput : ''}`}
-                onChange={(e) => {
-                  setPrice(e.target.value);
-                }}
-                onFocus={(e) => {
-                  setPriceFill(false);
-                }}
-              ></input>
+              <div className={styles.price_wrapper}>
+                <input
+                  disabled={specificPics.length ? true : false}
+                  placeholder="Price"
+                  value={price}
+                  className={`${styles.price_input} ${priceFill ? styles.noInput : ''}`}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, ''); // Loại bỏ ký tự không phải số
+                    setPrice(encodePrice(value)); // Định dạng giá trị
+                  }}
+                  onFocus={(e) => {
+                    setPriceFill(false);
+                  }}
+                />
+                <span className={styles.price_unit}>VND</span>
+              </div>
               {priceFill ? (
                 <div className={styles.notification}>
-                  You need to fill in this blank (Ex: 1.000$, 10.000.000$)
+                  You need to fill in this blank (Ex: 1.000 VND, 10.000.000 VND)
                 </div>
               ) : undefined}
             </div>
@@ -450,23 +456,23 @@ function EditProduct() {
             </div>
             <div className={styles.saleOff}>
               <div className={styles.saleOff_header}>Sale Off</div>
-              <input
-                disabled={specificPics.length ? true : false}
-                placeholder="Sale Off"
-                value={saleOff}
-                className={`${styles.saleOff_input} ${saleOffFill ? styles.noInput : ''}`}
-                onChange={(e) => {
-                  setSaleOff(e.target.value);
-                }}
-                onFocus={(e) => {
-                  setSaleOffFill(false);
-                }}
-                onBlur={() => {
-                  if (saleOff) {
-                    !saleOffFilter(saleOff) && setSaleOffFill(true);
-                  }
-                }}
-              ></input>
+              <div className={styles.saleOff_wrapper}>
+                <input
+                  disabled={specificPics.length ? true : false}
+                  placeholder="Sale Off"
+                  value={saleOff}
+                  className={`${styles.saleOff_input} ${saleOffFill ? styles.noInput : ''}`}
+                  onChange={(e) => {
+                    const value = e.target.value.replace(/\D/g, ''); // Remove non-numeric characters
+                    if (value === '' || (Number(value) >= 0 && Number(value) <= 100)) {
+                      setSaleOff(value);
+                    }
+                  }}
+                  onFocus={(e) => {
+                    setSaleOffFill(false);
+                  }}
+                />
+              </div>
               {saleOffFill ? (
                 <div className={styles.notification}>
                   You need to fill in this blank (1% to 100%)
