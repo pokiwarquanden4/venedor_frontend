@@ -59,7 +59,6 @@ function EditProduct() {
     specificName: '',
     specific: []
   })
-
   const [specificPics, setSpecificPics] = useState([])
   const [createSpecificPics, setCreateSpecificPics] = useState(undefined)
 
@@ -74,6 +73,7 @@ function EditProduct() {
 
   const [preview, setPreview] = useState(false);
   const [combination, setCombination] = useState([])
+  console.log('specificPics', specificPics)
 
   useEffect(() => {
     dispatch(productSearchActions.searchProductByIdRequest({ id: params.id }));
@@ -143,8 +143,8 @@ function EditProduct() {
     // Validate each field and set corresponding error states
     const isNameValid = !!name || setNameFill(true);
     const isPriceValid = (!!decodePrice(price) || combination.length > 0) || setPriceFill(true);
-    const isQuantityValid = ((!!quantity && quantityFilter(quantity)) || combination.length > 0) || setQuantityFill(true);
-    const isSaleOffValid = (!!decodeSaleOff(saleOff) || combination.length > 0) || setSaleOffFill(true);
+    const isQuantityValid = ((!!(quantity >= 0) && quantityFilter(quantity)) || combination.length > 0) || setQuantityFill(true);
+    const isSaleOffValid = (!!(decodeSaleOff(price) >= 0) || combination.length > 0) || setSaleOffFill(true);
     const isCategoryIdValid = !!categoryId || setCategoryIdFill(true);
     const isCategoryDetailIdValid = !!categoryDetailId || setCategoryDetailIdFill(true);
     const isDescriptionValid = !!description || setDescriptionFill(true);
@@ -170,7 +170,7 @@ function EditProduct() {
       isMainImgValid &&
       isListImgValid
     );
-  }, [name, price, quantity, saleOff, categoryId, categoryDetailId, description, mainImg, listImg, combination.length, specificPics, dispatch]);
+  }, [name, price, quantity, categoryId, categoryDetailId, description, mainImg, listImg, combination.length, specificPics, dispatch]);
 
 
   const handleSubmit = useCallback(async () => {
@@ -273,40 +273,43 @@ function EditProduct() {
   }, [description, listImg, price, quantity, saleOff]);
 
   const onSubmitSpecific = (data) => {
-    if (data.index !== undefined) {
-      setSpecific((pre) => {
-        const newSpe = [...pre]
-        newSpe[data.index] = {
+    setSpecific((prev) => {
+      let updatedSpecific;
+      if (data.index !== undefined) {
+        // Update an existing specific
+        updatedSpecific = [...prev];
+        updatedSpecific[data.index] = {
           specificName: data.specificName,
-          specific: data.specific
-        }
-
-        return newSpe
-      })
-    } else {
-      setSpecific((pre) => {
-        const newSpe = [...pre, {
-          specificName: data.specificName,
-          specific: data.specific
-        }]
-
-        return newSpe
-      })
-    }
-
-    const combinations = generateCombinations(specific)
-    setCombination(combinations)
-    setSpecificPics(combinations.map(item => {
-      return {
-        combination: item,
-        img: [],
-        price: 0,
-        number: 0,
-        saleOff: 0,
-        valid: false,
+          specific: data.specific,
+        };
+      } else {
+        // Add a new specific
+        updatedSpecific = [
+          ...prev,
+          {
+            specificName: data.specificName,
+            specific: data.specific,
+          },
+        ];
       }
-    }));
-  }
+
+      // Generate combinations based on the updated specific
+      const combinations = generateCombinations(updatedSpecific);
+      setCombination(combinations);
+      setSpecificPics(
+        combinations.map((item) => ({
+          combination: item,
+          img: [],
+          price: 0,
+          number: 0,
+          saleOff: 0,
+          valid: false,
+        }))
+      );
+
+      return updatedSpecific;
+    });
+  };
 
   const onSubmitSpecificPics = (data) => {
     setSpecificPics((pre) => {
@@ -348,9 +351,26 @@ function EditProduct() {
   }, [specificPics])
 
   const onDeleteSpecific = (index) => {
-    setSpecific((prev) => prev.filter((_, i) => i !== index));
-  };
+    setSpecific((prev) => {
+      const updatedSpecific = prev.filter((_, i) => i !== index);
 
+      // Generate combinations based on the updated specific
+      const combinations = generateCombinations(updatedSpecific);
+      setCombination(combinations);
+      setSpecificPics(
+        combinations.map((item) => ({
+          combination: item,
+          img: [],
+          price: 0,
+          number: 0,
+          saleOff: 0,
+          valid: false,
+        }))
+      );
+
+      return updatedSpecific;
+    });
+  };
   // Hàm để thêm ảnh vào listImg
   const handleImageChange = (e) => {
     const files = e.target.files;
@@ -475,7 +495,7 @@ function EditProduct() {
               </div>
               {saleOffFill ? (
                 <div className={styles.notification}>
-                  You need to fill in this blank (1% to 100%)
+                  You need to fill in this blank (0% to 100%)
                 </div>
               ) : undefined}
             </div>

@@ -1,14 +1,19 @@
 import { useNavigate } from 'react-router-dom';
 import styles from './SearchPopup.module.scss';
+import { useSelector } from 'react-redux';
+import { productSearchSelector } from '../../redux/selectors/productSelector/productSearchSelector';
 
 function SearchPopup({ data }) {
   const navigate = useNavigate();
+  const productSelect = useSelector(productSearchSelector);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.content}>
-        {data.length !== 0
-          ? data.map((item, index) => {
+        {productSelect.quickSearchLoading ? (
+          <div className={styles.loading}>Searching...</div> // Hiển thị loading
+        ) : data.length !== 0 ? (
+          data.map((item, index) => {
             return (
               <div
                 className={styles.item}
@@ -31,7 +36,9 @@ function SearchPopup({ data }) {
               </div>
             );
           })
-          : undefined}
+        ) : (
+          <div className={styles.noData}>No products found</div> // Hiển thị khi không có dữ liệu
+        )}
       </div>
     </div>
   );

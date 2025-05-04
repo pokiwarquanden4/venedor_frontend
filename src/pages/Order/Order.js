@@ -17,9 +17,9 @@ function Order() {
   const [pageData, setPageData] = useState({
     page: 1,
     limit: 16,
-    productId: undefined
+    productId: 0
   })
-  const [selectProductId, setSelectProductId] = useState()
+  const [selectProductId, setSelectProductId] = useState(0)
 
   useEffect(() => {
     setData(historySelect.orderList);

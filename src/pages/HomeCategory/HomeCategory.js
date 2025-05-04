@@ -34,57 +34,6 @@ function HomeCategory() {
   }, [params.id])
 
   useEffect(() => {
-    const filterTemp = filter;
-    const tempData = data.products;
-    if (!tempData) return
-    switch (filterTemp) {
-      case 'Feature':
-        tempData.sort(() => Math.random() - 0.5);
-        break;
-
-      case 'Best Selling':
-        tempData.sort((a, b) => b.sold - a.sold);
-        break;
-
-      case 'Alphabetically,A-Z':
-        tempData.sort((a, b) => a.description.localeCompare(b.description));
-        break;
-
-      case 'Alphabetically,Z-A':
-        tempData.sort((a, b) => b.description.localeCompare(a.description));
-        break;
-
-      case 'Price, high to low':
-        tempData.sort((a, b) => {
-          const truePriceA = a.price - a.price * (a.saleOff / 100);
-          const truePriceB = b.price - b.price * (b.saleOff / 100);
-          return truePriceB - truePriceA;
-        });
-        break;
-
-      case 'Price, low to high':
-        tempData.sort((a, b) => {
-          const truePriceA = a.price - a.price * (a.saleOff / 100);
-          const truePriceB = b.price - b.price * (b.saleOff / 100);
-          return truePriceA - truePriceB;
-        });
-        break;
-
-      case 'Date, old to new':
-        tempData.sort((a, b) => new Date(a.updatedAt) - new Date(b.updatedAt));
-        break;
-
-      case 'Date, new to old':
-        tempData.sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
-        break;
-
-      default:
-        break;
-    }
-
-  }, [filter, data]);
-
-  useEffect(() => {
     if (!productSearchSelect.categorySearchProduct) return
     setData(productSearchSelect.categorySearchProduct);
   }, [productSearchSelect.categorySearchProduct]);
@@ -93,9 +42,10 @@ function HomeCategory() {
     dispatch(productSearchActions.searchCategoryProductRequest({
       categoryId: pageData.categoryId,
       page: pageData.page,
-      limit: pageData.limit
+      limit: pageData.limit,
+      sortType: filter
     }));
-  }, [dispatch, pageData]);
+  }, [dispatch, filter, pageData]);
 
   return (
     <Fragment>

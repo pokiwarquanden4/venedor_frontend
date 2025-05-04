@@ -4,6 +4,7 @@ import MainButton from '../../../components/MainButton/MainButton';
 import Popup from '../../../components/Popup/Popup';
 import { useDispatch } from 'react-redux';
 import { historyActions } from '../../../redux/actions/purchase/historyActions';
+import { formatVND } from '../../../config/utils';
 
 function OrderItems({ data, upperData }) {
   const dispatch = useDispatch();
@@ -43,7 +44,7 @@ function OrderItems({ data, upperData }) {
         </td>
         <td className={styles.content_content}>{upperData.productName}</td>
         <td className={styles.content_content}>{data.number}</td>
-        <td className={styles.content_content}>{data.number * upperData.price}$</td>
+        <td className={styles.content_content}>{formatVND(data.number * upperData.price)}</td>
         <td className={styles.content_content}>
           <select
             className={styles.dropdown_input}

@@ -33,6 +33,7 @@ export default function ProductSearchReducers(state = productSearchConstants, ac
         ...state,
         success: false,
         loading: true,
+        quickSearchLoading: true,
       };
     case getType(productSearchActions.quickSearchProductSuccess):
       return {
@@ -40,12 +41,14 @@ export default function ProductSearchReducers(state = productSearchConstants, ac
         success: true,
         quickSearchProduct: action.payload.obj,
         loading: false,
+        quickSearchLoading: false,
       };
     case getType(productSearchActions.quickSearchProductFailure):
       return {
         ...state,
         success: false,
         loading: false,
+        quickSearchLoading: false,
       };
     case getType(productSearchActions.searchProductByIdRequest):
       return {
