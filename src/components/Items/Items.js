@@ -104,49 +104,6 @@ function Items({ data, vertical, wishList, edit }) {
             }}
           ></Img>
           <Img vertical={vertical} className={styles.imgHover} imgUrl={data.listImgURL[0] || data.imgURL}></Img>
-          <div className={styles.img_button}>
-            <div
-              className={styles.searchButton}
-              onClick={() => {
-                navigate(`/category/${data.categoryId}/${data.id}`);
-              }}
-            >
-              <SearchIcon className={styles.icon}></SearchIcon>
-            </div>
-            <div
-              className={styles.saveButton}
-              onClick={() => {
-                if (!loginSelect.login) {
-                  dispatch(loginActions.loginPopup(true));
-                }
-                if (role) {
-                  if (Number(data.number) === 0) {
-                    dispatch(notificationActions.setNotificationContent('Run out of stock'));
-                    return
-                  }
-                  dispatch(
-                    cartActions.createCartProductRequest({
-                      id: data.id,
-                      quantity: 1,
-                      specific: Object.keys(selectedSpecific).map(key => specificData.find(d => d.specificName === key)?.specific[selectedSpecific[key]]).join(" - ")
-                    })
-                  );
-                }
-              }}
-            >
-              <PackICon className={styles.icon}></PackICon>
-            </div>
-            <div
-              className={styles.compareButton}
-              onClick={() => {
-                if (!loginSelect.login) {
-                  dispatch(loginActions.loginPopup(true));
-                }
-              }}
-            >
-              <CompareIcon className={styles.icon}></CompareIcon>
-            </div>
-          </div>
         </div>
         <div className={styles.item_content}>
           <div className={styles.brand_name}>{data.brandName}</div>
@@ -159,21 +116,6 @@ function Items({ data, vertical, wishList, edit }) {
           </div>
           {data.saleOff ? <div className={styles.saving}>you save {data.saleOff}%</div> : null}
         </div>
-        {wishList && (
-          <MainButton
-            className={styles.add_to_cart}
-            title="ADD TOO CART"
-            onClick={() => {
-              dispatch(
-                cartActions.createCartProductRequest({
-                  id: data.id,
-                  quantity: 1,
-                  specific: Object.keys(selectedSpecific).map(key => specificData.find(d => d.specificName === key)?.specific[selectedSpecific[key]]).join(" - ")
-                })
-              );
-            }}
-          ></MainButton>
-        )}
       </div>
     </Fragment>
   );

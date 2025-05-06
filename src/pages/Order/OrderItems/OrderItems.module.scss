@@ -1,33 +1,47 @@
 .content_content {
     border: 1px solid black;
 }
+
 .dropdown_input {
     width: 100%;
     height: 40px;
 }
+
 .button {
     height: 40px;
 }
+
 td {
     min-height: 85px;
 }
+
 .address_wrapper {
     padding: 50px;
+
     .addresses {
         padding: 18px;
         border: 1px solid #c3c3c3;
         border-radius: 3px;
         background-color: #f9f9f9;
+
         .addresses_content {
             font-weight: lighter;
             color: #161d25;
             font-size: 14px;
-            & + .addresses_content {
+
+            &+.addresses_content {
                 margin-top: 5px;
             }
         }
-        &+.addresses{
+
+        &+.addresses {
             margin-top: 15px;
         }
     }
+}
+
+.total_price {
+    font-weight: bold;
+    color: #ff5722;
+    /* Màu nổi bật */
 }

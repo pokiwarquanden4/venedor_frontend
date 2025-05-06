@@ -39,12 +39,17 @@ function OrderItems({ data, upperData }) {
         </Popup>
       )}
       <tr>
+        <td className={styles.content_content}>{data.id}</td>
         <td className={styles.content_content}>
           <img alt='' src={upperData.imgURL} style={{ width: '100%' }}></img>
         </td>
         <td className={styles.content_content}>{upperData.productName}</td>
-        <td className={styles.content_content}>{data.number}</td>
-        <td className={styles.content_content}>{formatVND(data.number * upperData.price)}</td>
+        <td className={styles.content_content}>
+          <div>
+            <span>{data.number}</span> x <span>{formatVND(upperData.price)}</span>
+          </div>
+          <div>= <span className={styles.total_price}>{formatVND(data.number * upperData.price)}</span></div>
+        </td>
         <td className={styles.content_content}>
           <select
             className={styles.dropdown_input}

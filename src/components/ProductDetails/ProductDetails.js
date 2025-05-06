@@ -47,7 +47,7 @@ function ProductDetails({ data, fullScreen, preview }) {
   const [specificData, setSpecificData] = useState([])
   const [selectedSpecific, setSelectedSpecific] = useState({})
   const [specificDatapics, setSpecificDatapics] = useState([])
-  const [selectedSpecificDataPics, setSelectedSpecificDataPics] = useState()
+  const [selectedSpecificDataPics, setSelectedSpecificDataPics] = useState(null)
   const [commentData, setCommentData] = useState(productSelect.productComments)
 
   useEffect(() => {
@@ -65,7 +65,10 @@ function ProductDetails({ data, fullScreen, preview }) {
       }
     })
 
-    if (!currentOptionData) return
+    if (!currentOptionData) {
+      setSelectedSpecificDataPics(null)
+      return
+    }
     setSelectedSpecificDataPics(currentOptionData)
   }, [selectedSpecific, specificData, specificDatapics])
 
@@ -333,7 +336,7 @@ function ProductDetails({ data, fullScreen, preview }) {
                     cartActions.createCartProductRequest({
                       id: productData.id,
                       quantity: number,
-                      specific: Object.keys(selectedSpecific).map(key => specificData.find(d => d.specificName === key)?.specific[selectedSpecific[key]]).join(" - ")
+                      specificPicsId: selectedSpecificDataPics && selectedSpecificDataPics.id
                     })
                   );
                 }

@@ -66,13 +66,16 @@ function Account() {
 
     dispatch(notificationActions.setNotificationContent('Thank you for your feedback!'));
     setOpenFeedback(false);
+
+    navigate(`/category/${feedbackData.category}/${feedbackData.productId}`);
+
     setFeedbackData({
       ...feedbackData,
       productId: null,
       content: null,
       rate: null,
     });
-  }, [feedbackData, dispatch]);
+  }, [feedbackData, dispatch, navigate]);
 
   return (
     <div className={styles.wrapper}>
@@ -86,22 +89,29 @@ function Account() {
             <div className={styles.history_content}>
               {history.length !== 0 ? (
                 history.map((item, index) => {
+                  const productName = item.productName +
+                    (item.StorageSpecificPic && item.StorageSpecificPic.option1 ? ` - ${item.StorageSpecificPic.option1}` : '') +
+                    (item.StorageSpecificPic && item.StorageSpecificPic.option2 ? ` - ${item.StorageSpecificPic.option2}` : '');
+
+                  const imgURL = item.StorageSpecificPic && item.StorageSpecificPic.imgURL ? item.StorageSpecificPic.imgURL : item.imgURL;
+
                   return (
                     <div className={styles.history_list} key={index}>
                       <img
                         alt=''
                         className={styles.picture}
-                        src={item.imgURL}
+                        src={imgURL}
                         onClick={() => {
                           navigate(`/category/${item.category}/${item.productId}`);
                         }}
                       ></img>
                       <div className={styles.flex_wrapper}>
                         <div className={styles.list_wrapper}>
-                          <div className={styles.name} title={`${item.productName} - ${item.specific}`}>
-                            {item.productName} - {item.specific}
+                          <div className={styles.name} title={productName}>
+                            {productName}
                           </div>
                           <div className={styles.quantity}>Quantity: {item.number}</div>
+                          <div className={styles.id}>Id: {item.id}</div>
                         </div>
                         <div className={styles.price}>{formatVND(item.paid)}</div>
                         <div className={styles.status}>
@@ -203,46 +213,48 @@ function Account() {
         </div>
       </div>
 
-      {openFeedback ? (
-        <Popup
-          width='400px'
-          height='auto'
-          onClick={() => {
-            setOpenFeedback(false)
-          }}
-          highestZIndex={true}
-        >
-          <div className={styles.feedback_container}>
-            <div className={styles.feedback_header}>Give Your Feedback</div>
-            <div className={styles.feedback_stars}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span
-                  key={star}
-                  className={`${styles.star} ${feedbackData.rate >= star ? styles.selected : ''}`}
-                  onClick={() => setFeedbackData((prev) => ({ ...prev, rate: star }))}
-                >
-                  ★
-                </span>
-              ))}
+      {
+        openFeedback ? (
+          <Popup
+            width='400px'
+            height='auto'
+            onClick={() => {
+              setOpenFeedback(false)
+            }}
+            highestZIndex={true}
+          >
+            <div className={styles.feedback_container}>
+              <div className={styles.feedback_header}>Give Your Feedback</div>
+              <div className={styles.feedback_stars}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    className={`${styles.star} ${feedbackData.rate >= star ? styles.selected : ''}`}
+                    onClick={() => setFeedbackData((prev) => ({ ...prev, rate: star }))}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
+              <textarea
+                className={styles.feedback_comment}
+                placeholder="Write your comment here..."
+                value={feedbackData.content || ''}
+                onChange={(e) => setFeedbackData((prev) => ({ ...prev, content: e.target.value }))}
+              ></textarea>
+              <div className={styles.feedback_actions}>
+                <button className={styles.submit_button} onClick={onFeedBack}>
+                  Submit
+                </button>
+                <button className={styles.cancel_button} onClick={() => setOpenFeedback(false)}>
+                  Cancel
+                </button>
+              </div>
             </div>
-            <textarea
-              className={styles.feedback_comment}
-              placeholder="Write your comment here..."
-              value={feedbackData.content || ''}
-              onChange={(e) => setFeedbackData((prev) => ({ ...prev, content: e.target.value }))}
-            ></textarea>
-            <div className={styles.feedback_actions}>
-              <button className={styles.submit_button} onClick={onFeedBack}>
-                Submit
-              </button>
-              <button className={styles.cancel_button} onClick={() => setOpenFeedback(false)}>
-                Cancel
-              </button>
-            </div>
-          </div>
-        </Popup>
-      ) : undefined}
-    </div>
+          </Popup>
+        ) : undefined
+      }
+    </div >
   );
 }
 

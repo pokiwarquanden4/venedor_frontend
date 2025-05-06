@@ -1,7 +1,7 @@
 import styles from './Order.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { historySelector } from '../../redux/selectors/historySelector/historySelector';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { historyActions } from '../../redux/actions/purchase/historyActions';
 import OrderItems from './OrderItems/OrderItems';
 import Pagination from '../../components/Pagination/Pagination';
@@ -13,13 +13,16 @@ function Order() {
     storages: [],
     histories: []
   });
+  const [selectedId, setSelectedId] = useState(undefined);
   // const [check, setCheck] = useState(false);
   const [pageData, setPageData] = useState({
     page: 1,
     limit: 16,
-    productId: 0
+    productId: 0,
+    selectedId: selectedId
   })
-  const [selectProductId, setSelectProductId] = useState(0)
+  const [selectProductId, setSelectProductId] = useState(undefined)
+  const selectedIdRef = useRef(undefined);
 
   useEffect(() => {
     setData(historySelect.orderList);
@@ -29,10 +32,11 @@ function Order() {
     setPageData((preData) => {
       return {
         ...preData,
-        productId: selectProductId
+        productId: selectProductId,
+        selectedId: selectedId
       }
     })
-  }, [selectProductId])
+  }, [selectProductId, selectedId])
 
   useEffect(() => {
     dispatch(historyActions.orderRequest(pageData));
@@ -44,7 +48,43 @@ function Order() {
         <div className={styles.header_wrapper}>
           <div className={styles.header}>
             <div className={styles.main_header}>Your Order</div>
-            <div className={styles.sub_header}>Your customer is waiting for you response</div>
+            <div className={styles.sub_header}>Your customer is waiting for your response</div>
+          </div>
+          <div className={styles.search_wrapper}>
+            <input
+              type="text"
+              placeholder="Search by ID"
+              className={styles.search_input}
+              onChange={(e) => {
+                if (e.target.value === '') {
+                  selectedIdRef.current = undefined;
+                } else {
+                  selectedIdRef.current = Number(e.target.value);
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  setSelectedId(selectedIdRef.current); // Thực hiện tìm kiếm khi nhấn Enter
+                }
+              }}
+            />
+            <button
+              className={styles.search_button}
+              onClick={() => {
+                setSelectedId(selectedIdRef.current);
+              }}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                className={styles.search_icon}
+                viewBox="0 0 16 16"
+              >
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.099zm-5.442 1.398a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11z" />
+              </svg>
+            </button>
           </div>
           <select
             className={styles.category_input}
@@ -67,9 +107,9 @@ function Order() {
             <table className={styles.table}>
               <tbody>
                 <tr className={styles.content_table_header}>
+                  <th className={styles.content_header}>Id</th>
                   <th className={styles.content_header}>Picture</th>
                   <th className={styles.content_header}>Product Name</th>
-                  <th className={styles.content_header}>Quantity</th>
                   <th className={styles.content_header}>Price</th>
                   <th className={styles.content_header}>Status</th>
                   <th className={styles.content_header}>Purchase Date</th>
