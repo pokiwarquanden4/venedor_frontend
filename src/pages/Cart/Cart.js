@@ -34,27 +34,38 @@ function Cart() {
   useEffect(() => {
     //Orginal
     let temp = 0;
+
     data.forEach((item) => {
-      temp += item.cartQuantity * item.price;
+      const unitPrice = item.specific ? item.specific.price : item.price;
+      temp += item.cartQuantity * unitPrice;
     });
     setOriginalPrice(temp);
 
-    //discount
+    //Discount
     temp = 0;
     data.forEach((item) => {
-      temp += item.cartQuantity * item.price * (item.saleOff / 100);
+      if (item.saleOff) {
+        const unitPrice = item.specific ? item.specific.price : item.price;
+        const unitSaleOff = item.specific ? item.specific.saleOff : item.saleOff;
+
+        temp += item.cartQuantity * unitPrice * (unitSaleOff / 100);
+      }
     });
     setDiscount(temp);
 
     //Total
     temp = 0;
     data.forEach((item) => {
+      const unitPrice = item.specific ? item.specific.price : item.price;
+      const unitSaleOff = item.specific ? item.specific.saleOff : item.saleOff;
+
       if (item.saleOff) {
-        temp += item.cartQuantity * (item.price - item.price * (item.saleOff / 100));
+        temp += item.cartQuantity * (unitPrice - unitPrice * (unitSaleOff / 100));
       } else {
-        temp += item.cartQuantity * item.price;
+        temp += item.cartQuantity * unitPrice;
       }
     });
+
     setTotal(temp);
   }, [data]);
 

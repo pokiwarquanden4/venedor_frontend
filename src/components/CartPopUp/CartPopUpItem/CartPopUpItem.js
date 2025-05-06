@@ -6,7 +6,7 @@ import { notificationActions } from '../../../redux/actions/notification/notific
 
 function CartPopUpItem({ data }) {
   const dispatch = useDispatch();
-  console.log(data);
+
   return (
     <div className={styles.cart_item}>
       <div

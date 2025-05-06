@@ -6,7 +6,7 @@ import { notificationActions } from '../../../redux/actions/notification/notific
 
 function CartItems({ data }) {
   const dispatch = useDispatch();
-  console.log(data.specific)
+
   return (
     <div className={styles.item}>
       <div style={{ backgroundImage: `url(${data.imgURL})` }} className={styles.item_img}></div>
