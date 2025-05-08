@@ -88,4 +88,11 @@ export const getCategoryAPI = (payload) => {
   });
 };
 
+export const getShopRankingAPI = (payload) => {
+  return axios.get(`${URL}sellers/getShopRanking`, {
+    params: payload,
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+
 

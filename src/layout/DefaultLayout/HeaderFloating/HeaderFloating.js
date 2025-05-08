@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import {
   BoxIcon,
+  GraphIcon,
   HeartIcon,
   HumanIcon,
   LogoutIcon,
@@ -176,15 +177,6 @@ function HeaderFloating({ mainRef }) {
                   }
                 }}
               ></HumanIcon>
-              {loginStatus && (
-                <LogoutIcon
-                  className={styles.logoutIcon}
-                  onClick={() => {
-                    navigate('/');
-                    dispatch(loginActions.logoutRequest());
-                  }}
-                ></LogoutIcon>
-              )}
               {loginSelect.loginRole === 'Seller' ? undefined : (
                 <HeartIcon
                   className={styles.heartIcon}
@@ -211,6 +203,25 @@ function HeaderFloating({ mainRef }) {
                   }
                 }}
               ></BoxIcon>
+              <GraphIcon
+                onClick={() => {
+                  if (!loginStatus) {
+                    dispatch(loginActions.loginPopup(true));
+                  } else {
+                    navigate('/static');
+                  }
+                }}
+                className={styles.graphIcon}
+              ></GraphIcon>
+              {loginStatus && (
+                <LogoutIcon
+                  className={styles.logoutIcon}
+                  onClick={() => {
+                    navigate('/');
+                    dispatch(loginActions.logoutRequest());
+                  }}
+                ></LogoutIcon>
+              )}
               {/* <MessageIcon
                 className={styles.messageIcon}
                 onClick={() => {

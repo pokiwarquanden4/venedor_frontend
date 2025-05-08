@@ -4,5 +4,9 @@ export const productConstants = {
   sellerProductData: undefined,
   searchProducts: undefined,
   productComments: undefined,
+  shopRanking: {
+    sales: [],
+    ratingData: []
+  },
   category: {}
 };

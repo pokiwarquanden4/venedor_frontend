@@ -12,6 +12,7 @@ import {
   searchProductAPI,
   searchProductByIdAPI,
   createCommentAPI,
+  getShopRankingAPI,
 } from '../../../api/storageAPI/StorageAPI';
 import { productActions } from '../../actions/product/ProductActions';
 import { jwtCheck } from '../jwtCheck';
@@ -94,7 +95,7 @@ function* searchProductSaga(action) {
 
 function* quickSearchProductSaga(action) {
   try {
-    const products = yield call(searchProductAPI, action.payload);
+    const products = yield call(searchProductAPI, { ...action.payload, limit: 10 });
     yield put(productSearchActions.quickSearchProductSuccess(products.data));
   } catch (err) {
     yield put(productSearchActions.quickSearchProductFailure(err.response.data));
@@ -189,12 +190,27 @@ function* searchCategorySaga(action) {
   }
 }
 
+function* getShopRankingSaga(action) {
+  try {
+    yield put(loadingActions.setLoadingLoading(true));
+    const ranks = yield call(getShopRankingAPI, action.payload);
+    yield put(productActions.getShopRankingSuccess(ranks.data));
+    yield put(loadingActions.setLoadingLoading(false));
+  } catch (err) {
+    yield put(productActions.getShopRankingFailure(err.response.data));
+    yield put(loadingActions.setLoadingLoading(false));
+  }
+}
+
 function* getCommentSaga(action) {
   try {
+    yield put(loadingActions.setLoadingLoading(true));
     const comment = yield call(getCommentAPI, action.payload);
     yield put(productActions.getCommentSuccess(comment.data));
+    yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productActions.getCommentFailure(err.response.data));
+    yield put(loadingActions.setLoadingLoading(false));
   }
 }
 
@@ -231,6 +247,7 @@ function* productSagas() {
   yield takeLatest(productActions.getCommentRequest, getCommentSaga);
   yield takeLatest(productActions.createCommentRequest, createCommentSaga);
   yield takeLatest(productActions.getCategoryRequest, getCategory);
+  yield takeLatest(productActions.getShopRankingRequest, getShopRankingSaga);
 }
 
 export default productSagas;

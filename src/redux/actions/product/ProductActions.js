@@ -29,4 +29,8 @@ export const productActions = createActions({
   createCommentRequest: (payload) => payload,
   createCommentSuccess: (payload) => payload,
   createCommentFailure: (payload) => payload,
+
+  getShopRankingRequest: (payload) => payload,
+  getShopRankingSuccess: (payload) => payload,
+  getShopRankingFailure: (payload) => payload,
 });

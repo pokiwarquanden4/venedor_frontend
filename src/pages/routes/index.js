@@ -18,6 +18,7 @@ import ThankYou from '../ThankYou/ThankYou';
 import EditAccount from '../EditAccount/EditAccount';
 import Order from '../Order/Order';
 import Message from '../Message/Message';
+import Statistical from '../Statistical/Statistical';
 
 const publicRoutes = [
   { path: routes.home, component: Home, Layout: HeaderOnly },
@@ -32,6 +33,12 @@ const publicRoutes = [
   {
     path: routes.createProduct,
     component: CreateProduct,
+    Layout: HeaderOnlyWithLink,
+    authorization: 'Seller',
+  },
+  {
+    path: routes.static,
+    component: Statistical,
     Layout: HeaderOnlyWithLink,
     authorization: 'Seller',
   },
