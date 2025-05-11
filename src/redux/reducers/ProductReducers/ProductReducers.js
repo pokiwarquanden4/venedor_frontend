@@ -38,20 +38,85 @@ export default function ProductReducers(state = productConstants, action) {
         success: false,
         loading: false,
       };
-    case getType(productActions.getShopRankingRequest):
+    case getType(productActions.getShopRankingSalesRequest):
       return {
         ...state,
         loading: true,
       };
-    case getType(productActions.getShopRankingSuccess):
-      console.log(action.payload.obj)
+    case getType(productActions.getShopRankingSalesSuccess):
       return {
         ...state,
         success: true,
         loading: false,
-        shopRanking: action.payload.obj
+        shopRanking: {
+          ...state.shopRanking,
+          sales: action.payload.obj
+        }
       };
-    case getType(productActions.getShopRankingFailure):
+    case getType(productActions.getShopRankingSalesFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
+    case getType(productActions.getShopRankingRatingRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(productActions.getShopRankingRatingSuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        shopRanking: {
+          ...state.shopRanking,
+          ratingData: action.payload.obj
+        }
+      };
+    case getType(productActions.getShopRankingRatingFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
+    case getType(productActions.getRankingDataRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(productActions.getRankingDataSuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        shopRanking: {
+          ...state.shopRanking,
+          rankingData: action.payload.obj
+        }
+      };
+    case getType(productActions.getRankingDataFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
+    case getType(productActions.getProductSalesDataRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(productActions.getProductSalesDataSuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        shopRanking: {
+          ...state.shopRanking,
+          productSales: action.payload.obj
+        }
+      };
+    case getType(productActions.getProductSalesDataFailure):
       return {
         ...state,
         success: false,

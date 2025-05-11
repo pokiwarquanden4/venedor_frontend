@@ -12,7 +12,10 @@ import {
   searchProductAPI,
   searchProductByIdAPI,
   createCommentAPI,
-  getShopRankingAPI,
+  getShopRankingSalesAPI,
+  getShopRankingRatingAPI,
+  getShopRankingProductSalesAPI,
+  getRankingDataAPI,
 } from '../../../api/storageAPI/StorageAPI';
 import { productActions } from '../../actions/product/ProductActions';
 import { jwtCheck } from '../jwtCheck';
@@ -190,14 +193,50 @@ function* searchCategorySaga(action) {
   }
 }
 
-function* getShopRankingSaga(action) {
+function* getShopRankingSalesSaga(action) {
   try {
     yield put(loadingActions.setLoadingLoading(true));
-    const ranks = yield call(getShopRankingAPI, action.payload);
-    yield put(productActions.getShopRankingSuccess(ranks.data));
+    const ranks = yield call(getShopRankingSalesAPI, action.payload);
+    yield put(productActions.getShopRankingSalesSuccess(ranks.data));
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
-    yield put(productActions.getShopRankingFailure(err.response.data));
+    yield put(productActions.getShopRankingSalesFailure(err.response));
+    yield put(loadingActions.setLoadingLoading(false));
+  }
+}
+
+function* getShopRankingRatingSaga(action) {
+  try {
+    yield put(loadingActions.setLoadingLoading(true));
+    const ranks = yield call(getShopRankingRatingAPI, action.payload);
+    yield put(productActions.getShopRankingRatingSuccess(ranks.data));
+    yield put(loadingActions.setLoadingLoading(false));
+  } catch (err) {
+    yield put(productActions.getShopRankingRatingFailure(err.response));
+    yield put(loadingActions.setLoadingLoading(false));
+  }
+}
+
+function* getRankingDataSaga(action) {
+  try {
+    yield put(loadingActions.setLoadingLoading(true));
+    const ranks = yield call(getRankingDataAPI, action.payload);
+    yield put(productActions.getRankingDataSuccess(ranks.data));
+    yield put(loadingActions.setLoadingLoading(false));
+  } catch (err) {
+    yield put(productActions.getRankingDataFailure(err.response));
+    yield put(loadingActions.setLoadingLoading(false));
+  }
+}
+
+function* getProductSalesDataSaga(action) {
+  try {
+    yield put(loadingActions.setLoadingLoading(true));
+    const ranks = yield call(getShopRankingProductSalesAPI, action.payload);
+    yield put(productActions.getProductSalesDataSuccess(ranks.data));
+    yield put(loadingActions.setLoadingLoading(false));
+  } catch (err) {
+    yield put(productActions.getProductSalesDataFailure(err.response));
     yield put(loadingActions.setLoadingLoading(false));
   }
 }
@@ -247,7 +286,10 @@ function* productSagas() {
   yield takeLatest(productActions.getCommentRequest, getCommentSaga);
   yield takeLatest(productActions.createCommentRequest, createCommentSaga);
   yield takeLatest(productActions.getCategoryRequest, getCategory);
-  yield takeLatest(productActions.getShopRankingRequest, getShopRankingSaga);
+  yield takeLatest(productActions.getShopRankingSalesRequest, getShopRankingSalesSaga);
+  yield takeLatest(productActions.getShopRankingRatingRequest, getShopRankingRatingSaga);
+  yield takeLatest(productActions.getRankingDataRequest, getRankingDataSaga);
+  yield takeLatest(productActions.getProductSalesDataRequest, getProductSalesDataSaga);
 }
 
 export default productSagas;

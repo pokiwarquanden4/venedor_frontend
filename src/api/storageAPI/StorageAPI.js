@@ -88,8 +88,28 @@ export const getCategoryAPI = (payload) => {
   });
 };
 
-export const getShopRankingAPI = (payload) => {
-  return axios.get(`${URL}sellers/getShopRanking`, {
+export const getShopRankingSalesAPI = (payload) => {
+  return axios.get(`${URL}sellers/getShopRankingSales`, {
+    params: payload,
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+
+export const getShopRankingRatingAPI = (payload) => {
+  return axios.get(`${URL}sellers/getShopRankingRating`, {
+    params: payload,
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+export const getRankingDataAPI = (payload) => {
+  return axios.get(`${URL}sellers/getRankingData`, {
+    params: payload,
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+
+export const getShopRankingProductSalesAPI = (payload) => {
+  return axios.get(`${URL}sellers/getShopRankingProductSales`, {
     params: payload,
     headers: createHeaders({ Authorization: getJWTToken() }),
   });

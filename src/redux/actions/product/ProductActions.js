@@ -30,7 +30,19 @@ export const productActions = createActions({
   createCommentSuccess: (payload) => payload,
   createCommentFailure: (payload) => payload,
 
-  getShopRankingRequest: (payload) => payload,
-  getShopRankingSuccess: (payload) => payload,
-  getShopRankingFailure: (payload) => payload,
+  getShopRankingSalesRequest: (payload) => payload,
+  getShopRankingSalesSuccess: (payload) => payload,
+  getShopRankingSalesFailure: (payload) => payload,
+
+  getShopRankingRatingRequest: (payload) => payload,
+  getShopRankingRatingSuccess: (payload) => payload,
+  getShopRankingRatingFailure: (payload) => payload,
+
+  getRankingDataRequest: (payload) => payload,
+  getRankingDataSuccess: (payload) => payload,
+  getRankingDataFailure: (payload) => payload,
+
+  getProductSalesDataRequest: (payload) => payload,
+  getProductSalesDataSuccess: (payload) => payload,
+  getProductSalesDataFailure: (payload) => payload,
 });

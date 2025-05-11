@@ -203,7 +203,7 @@ function HeaderFloating({ mainRef }) {
                   }
                 }}
               ></BoxIcon>
-              <GraphIcon
+              {loginSelect.loginRole === 'Seller' ? <GraphIcon
                 onClick={() => {
                   if (!loginStatus) {
                     dispatch(loginActions.loginPopup(true));
@@ -212,7 +212,7 @@ function HeaderFloating({ mainRef }) {
                   }
                 }}
                 className={styles.graphIcon}
-              ></GraphIcon>
+              ></GraphIcon> : undefined}
               {loginStatus && (
                 <LogoutIcon
                   className={styles.logoutIcon}

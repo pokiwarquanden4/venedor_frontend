@@ -30,10 +30,13 @@ const dateFilters = [
 function Statistical() {
     const dispatch = useDispatch()
     const productSelect = useSelector(productSelector)
+    const [rankingData, setRankingData] = useState({})
     const [ratingData, setRatingData] = useState([])
     const [sales, setSales] = useState([])
+    const [productSales, setProductSales] = useState([])
     const [filter, setFilter] = useState({
-        salesFiler: 365
+        salesFiler: 365,
+        productSalesFilter: 365,
     })
 
     // Hàm định dạng giá trị VND
@@ -42,16 +45,40 @@ function Statistical() {
     };
 
     useEffect(() => {
-        dispatch(productActions.getShopRankingRequest(filter))
-    }, [dispatch, filter])
+        dispatch(productActions.getShopRankingSalesRequest({
+            salesFiler: filter.salesFiler
+        }))
+    }, [dispatch, filter.salesFiler])
+
+    useEffect(() => {
+        dispatch(productActions.getShopRankingRatingRequest())
+    }, [dispatch])
+
+    useEffect(() => {
+        dispatch(productActions.getRankingDataRequest())
+    }, [dispatch])
+
+    useEffect(() => {
+        dispatch(productActions.getProductSalesDataRequest({
+            productSalesFilter: filter.productSalesFilter
+        }))
+    }, [dispatch, filter.productSalesFilter])
 
     useEffect(() => {
         setRatingData(productSelect.shopRanking.ratingData)
     }, [productSelect.shopRanking.ratingData])
 
     useEffect(() => {
+        setProductSales(productSelect.shopRanking.productSales)
+    }, [productSelect.shopRanking.productSales])
+
+    useEffect(() => {
         setSales(productSelect.shopRanking.sales)
     }, [productSelect.shopRanking.sales])
+
+    useEffect(() => {
+        setRankingData(productSelect.shopRanking.rankingData)
+    }, [productSelect.shopRanking.rankingData])
 
     return (
         <div className={styles.chartWrapper}>
@@ -60,34 +87,45 @@ function Statistical() {
                     <div className={styles.main_header}>Overview Statistics</div>
                 </div>
                 <div className={styles.content}>
-                    <div className={styles.circleChart}>
-                        <h3 className={styles.chartTitle}>Rating Distribution (1-5 Stars)</h3>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <PieChart>
-                                <Pie
-                                    data={ratingData}
-                                    dataKey="value"
-                                    nameKey="name"
-                                    cx="50%"
-                                    cy="50%"
-                                    outerRadius={100}
-                                    fill="#8884d8"
-                                >
-                                    {ratingData.map((entry, index) => (
-                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                    ))}
-                                </Pie>
-                                <Tooltip
-                                    formatter={(value, name, props) => {
-                                        const percent = (props.payload.percent).toFixed(2); // Tính phần trăm từ props.payload.percent
-                                        return [`${name} (${value}) - ${percent}%`];
-                                    }}
-                                />
-                                <Legend
-                                    formatter={(value) => `${value.length} ⭐`}
-                                />
-                            </PieChart>
-                        </ResponsiveContainer>
+                    <div className={styles.chartRow}>
+                        <div className={styles.circleChart}>
+                            <h3 className={styles.chartTitle}>Rating Distribution (1-5 Stars)</h3>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <PieChart>
+                                    <Pie
+                                        data={ratingData}
+                                        dataKey="value"
+                                        nameKey="name"
+                                        cx="50%"
+                                        cy="50%"
+                                        outerRadius={100}
+                                        fill="#8884d8"
+                                    >
+                                        {ratingData.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                        ))}
+                                    </Pie>
+                                    <Tooltip
+                                        formatter={(value, name, props) => {
+                                            const percent = (props.payload.percent).toFixed(2); // Tính phần trăm từ props.payload.percent
+                                            return [`${name} (${value}) - ${percent}%`];
+                                        }}
+                                    />
+                                    <Legend
+                                        formatter={(value) => `${value.length} ⭐`}
+                                    />
+                                </PieChart>
+                            </ResponsiveContainer>
+                        </div>
+                        <div className={styles.rankingData}>
+                            <h3 className={styles.chartTitle}>Overview</h3>
+                            <ul>
+                                <li>Sales History: {rankingData.salesHistory}</li>
+                                <li>Sales Number: {rankingData.salesNumber}</li>
+                                <li>View: {rankingData.view}</li>
+                                <li>View to Buy: {rankingData.viewToBuy}</li>
+                            </ul>
+                        </div>
                     </div>
                     <div className={styles.barChart}>
                         <div className={styles.barChart_header}>
@@ -96,6 +134,7 @@ function Statistical() {
                                 value={filter.salesFiler}
                                 className={styles.category_input}
                                 onChange={(e) => setFilter({
+                                    ...filter,
                                     salesFiler: e.target.value
                                 })}
                             >
@@ -107,17 +146,66 @@ function Statistical() {
                             </select>
                         </div>
                         <ResponsiveContainer width="100%" height={300}>
-                            <BarChart
-                                data={sales}
-                                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                            {sales.length > 0 ? (
+                                <BarChart
+                                    data={sales}
+                                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="day" />
+                                    <YAxis tickFormatter={formatVND} />
+                                    <Tooltip formatter={(value) => formatVND(value)} />
+                                    <Legend />
+                                    <Bar dataKey="sales" fill="#8884d8" />
+                                </BarChart>
+                            ) : (
+                                <div style={{ textAlign: 'center', padding: '50px', color: '#888' }}>
+                                    No data available
+                                </div>
+                            )}
+                        </ResponsiveContainer>
+                    </div>
+                    <div className={styles.barChart}>
+                        <div className={styles.barChart_header}>
+                            <h3 className={styles.chartTitle}>Number of Sales by Product</h3>
+                            <select
+                                value={filter.productSalesFilter}
+                                className={styles.category_input}
+                                onChange={(e) => setFilter({
+                                    ...filter,
+                                    productSalesFilter: e.target.value
+                                })}
                             >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="day" />
-                                <YAxis tickFormatter={formatVND} />
-                                <Tooltip formatter={(value) => formatVND(value)} />
-                                <Legend />
-                                <Bar dataKey="sales" fill="#8884d8" />
-                            </BarChart>
+                                {dateFilters.map((filter, index) => (
+                                    <option value={filter.value} key={index}>
+                                        {filter.content}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        <ResponsiveContainer width="100%" height={300}>
+                            {productSales.length > 0 ? (
+                                <BarChart
+                                    data={productSales}
+                                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <XAxis dataKey="name" hide />
+                                    <YAxis />
+                                    <Tooltip
+                                        formatter={(value, name, props) => {
+                                            const saleQuantity = props.payload?.saleNumber || 0; // Lấy số lượng bán hoặc mặc định là 0
+                                            return [`Sold Number: ${saleQuantity}`];
+                                        }}
+                                    />
+                                    <Legend />
+                                    <Bar dataKey="saleNumber" fill="#8884d8" />
+                                </BarChart>
+                            ) : (
+                                <div style={{ textAlign: 'center', padding: '50px', color: '#888' }}>
+                                    No data available
+                                </div>
+                            )}
                         </ResponsiveContainer>
                     </div>
                 </div>

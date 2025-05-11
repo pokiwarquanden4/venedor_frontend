@@ -45,4 +45,60 @@
     .category_input {
         min-width: 200px;
     }
+
+    .chartRow {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        /* Thay thế margin-right bằng gap để đồng bộ */
+        margin-top: 50px;
+
+        .circleChart {
+            flex: 0.5;
+        }
+
+        .rankingData {
+            flex: 0.5;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            /* Hiệu ứng đổ bóng */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+            &:hover {
+                transform: translateY(-5px);
+                /* Hiệu ứng nổi lên khi hover */
+                box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+            }
+
+            ul {
+                list-style: none;
+                padding: 0;
+
+                li {
+                    margin-bottom: 10px;
+                    font-size: 16px;
+                    color: #333;
+                    /* Màu chữ đậm hơn */
+                    line-height: 1.5;
+                    /* Tăng khoảng cách dòng */
+                    position: relative;
+                    padding-left: 20px;
+
+                    &::before {
+                        content: '•';
+                        /* Thêm dấu chấm tròn trước mỗi mục */
+                        position: absolute;
+                        left: 0;
+                        color: #8884d8;
+                        /* Màu tím nhạt */
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+    }
 }

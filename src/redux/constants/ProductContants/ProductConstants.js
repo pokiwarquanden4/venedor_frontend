@@ -6,7 +6,9 @@ export const productConstants = {
   productComments: undefined,
   shopRanking: {
     sales: [],
-    ratingData: []
+    ratingData: [],
+    productSales: [],
+    rankingData: {}
   },
   category: {}
 };
