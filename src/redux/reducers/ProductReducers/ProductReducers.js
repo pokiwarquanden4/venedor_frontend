@@ -122,6 +122,27 @@ export default function ProductReducers(state = productConstants, action) {
         success: false,
         loading: false,
       };
+    case getType(productActions.getSalesToBuyRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(productActions.getSalesToBuySuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        shopRanking: {
+          ...state.shopRanking,
+          salesToBuy: action.payload.obj
+        }
+      };
+    case getType(productActions.getSalesToBuyFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
     case getType(productActions.createCommentRequest):
       return {
         ...state,

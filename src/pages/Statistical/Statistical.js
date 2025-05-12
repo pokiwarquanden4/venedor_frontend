@@ -1,4 +1,4 @@
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, LabelList } from 'recharts';
 import styles from './Statistical.module.scss';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,7 +26,6 @@ const dateFilters = [
     { value: 3650, content: 'All' }
 ];
 
-
 function Statistical() {
     const dispatch = useDispatch()
     const productSelect = useSelector(productSelector)
@@ -34,6 +33,7 @@ function Statistical() {
     const [ratingData, setRatingData] = useState([])
     const [sales, setSales] = useState([])
     const [productSales, setProductSales] = useState([])
+    const [salesToBuy, setSalesToBuy] = useState([])
     const [filter, setFilter] = useState({
         salesFiler: 365,
         productSalesFilter: 365,
@@ -59,6 +59,10 @@ function Statistical() {
     }, [dispatch])
 
     useEffect(() => {
+        dispatch(productActions.getSalesToBuyRequest())
+    }, [dispatch])
+
+    useEffect(() => {
         dispatch(productActions.getProductSalesDataRequest({
             productSalesFilter: filter.productSalesFilter
         }))
@@ -67,6 +71,10 @@ function Statistical() {
     useEffect(() => {
         setRatingData(productSelect.shopRanking.ratingData)
     }, [productSelect.shopRanking.ratingData])
+
+    useEffect(() => {
+        setSalesToBuy(productSelect.shopRanking.salesToBuy)
+    }, [productSelect.shopRanking.salesToBuy])
 
     useEffect(() => {
         setProductSales(productSelect.shopRanking.productSales)
@@ -79,6 +87,21 @@ function Statistical() {
     useEffect(() => {
         setRankingData(productSelect.shopRanking.rankingData)
     }, [productSelect.shopRanking.rankingData])
+
+    const CustomTooltip = ({ active, payload, label }) => {
+        if (active && payload && payload.length) {
+            const data = payload[0].payload;
+            return (
+                <div style={{ background: 'white', border: '1px solid #ccc', padding: 10 }}>
+                    <p><strong>{data.productName}</strong></p>
+                    <p>Views: {data.viewNumber}</p>
+                    <p>Purchases: {data.salesNumber}</p>
+                    <p>Conversion Rate: {(data.rate || 0).toFixed(2)}%</p>
+                </div>
+            );
+        }
+        return null;
+    };
 
     return (
         <div className={styles.chartWrapper}>
@@ -123,7 +146,7 @@ function Statistical() {
                                 <li>Sales History: {rankingData.salesHistory}</li>
                                 <li>Sales Number: {rankingData.salesNumber}</li>
                                 <li>View: {rankingData.view}</li>
-                                <li>View to Buy: {rankingData.viewToBuy}</li>
+                                <li>View to Buy: {(rankingData.viewToBuy || 0).toFixed(2)}%</li>
                             </ul>
                         </div>
                     </div>
@@ -206,6 +229,24 @@ function Statistical() {
                                     No data available
                                 </div>
                             )}
+                        </ResponsiveContainer>
+                    </div>
+                    <div className={styles.barChart}>
+                        <div className={styles.barChart_header}>
+                            <h3 className={styles.chartTitle}>Comparison of Views and Purchases</h3>
+                        </div>
+                        <ResponsiveContainer width="100%" height={300}>
+                            <BarChart
+                                data={salesToBuy}
+                                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <YAxis />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Legend />
+                                <Bar dataKey="viewNumber" fill="#8884d8" name="Views"></Bar>
+                                <Bar dataKey="salesNumber" fill="#82ca9d" name="Purchases" />
+                            </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>

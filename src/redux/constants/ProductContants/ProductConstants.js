@@ -8,7 +8,8 @@ export const productConstants = {
     sales: [],
     ratingData: [],
     productSales: [],
-    rankingData: {}
+    rankingData: {},
+    salesToBuy: []
   },
   category: {}
 };

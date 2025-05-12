@@ -115,4 +115,11 @@ export const getShopRankingProductSalesAPI = (payload) => {
   });
 };
 
+export const getSalesToBuyAPI = (payload) => {
+  return axios.get(`${URL}sellers/getSaleToBuyData`, {
+    params: payload,
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+
 

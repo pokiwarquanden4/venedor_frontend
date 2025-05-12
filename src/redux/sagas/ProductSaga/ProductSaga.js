@@ -16,6 +16,7 @@ import {
   getShopRankingRatingAPI,
   getShopRankingProductSalesAPI,
   getRankingDataAPI,
+  getSalesToBuyAPI,
 } from '../../../api/storageAPI/StorageAPI';
 import { productActions } from '../../actions/product/ProductActions';
 import { jwtCheck } from '../jwtCheck';
@@ -241,6 +242,18 @@ function* getProductSalesDataSaga(action) {
   }
 }
 
+function* getSalesToBuyDataSaga(action) {
+  try {
+    yield put(loadingActions.setLoadingLoading(true));
+    const ranks = yield call(getSalesToBuyAPI, action.payload);
+    yield put(productActions.getSalesToBuySuccess(ranks.data));
+    yield put(loadingActions.setLoadingLoading(false));
+  } catch (err) {
+    yield put(productActions.getSalesToBuyFailure(err.response));
+    yield put(loadingActions.setLoadingLoading(false));
+  }
+}
+
 function* getCommentSaga(action) {
   try {
     yield put(loadingActions.setLoadingLoading(true));
@@ -290,6 +303,7 @@ function* productSagas() {
   yield takeLatest(productActions.getShopRankingRatingRequest, getShopRankingRatingSaga);
   yield takeLatest(productActions.getRankingDataRequest, getRankingDataSaga);
   yield takeLatest(productActions.getProductSalesDataRequest, getProductSalesDataSaga);
+  yield takeLatest(productActions.getSalesToBuyRequest, getSalesToBuyDataSaga);
 }
 
 export default productSagas;
