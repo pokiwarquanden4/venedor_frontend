@@ -197,6 +197,69 @@ function Statistical() {
                             </ul>
                         </div>
                     </div>
+                    <div className={styles.chartRow}>
+                        <div className={styles.barChart}>
+                            <div className={styles.barChart_header}>
+                                <h3 className={styles.chartTitle}>Number of Sales by Product</h3>
+                                <select
+                                    value={filter.productSalesFilter}
+                                    className={styles.category_input}
+                                    onChange={(e) => setFilter({
+                                        ...filter,
+                                        productSalesFilter: e.target.value
+                                    })}
+                                >
+                                    {dateFilters.map((filter, index) => (
+                                        <option value={filter.value} key={index}>
+                                            {filter.content}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                            <ResponsiveContainer width="100%" height={300}>
+                                {productSales.length > 0 ? (
+                                    <BarChart
+                                        data={productSales}
+                                        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                                    >
+                                        <CartesianGrid strokeDasharray="3 3" />
+                                        <XAxis dataKey="name" hide />
+                                        <YAxis />
+                                        <Tooltip
+                                            formatter={(value, name, props) => {
+                                                const saleQuantity = props.payload?.saleNumber || 0; // Lấy số lượng bán hoặc mặc định là 0
+                                                return [`Sold Number: ${saleQuantity}`];
+                                            }}
+                                        />
+                                        <Legend />
+                                        <Bar dataKey="saleNumber" fill="#8884d8" />
+                                    </BarChart>
+                                ) : (
+                                    <div style={{ textAlign: 'center', padding: '50px', color: '#888' }}>
+                                        No data available
+                                    </div>
+                                )}
+                            </ResponsiveContainer>
+                        </div>
+                        <div className={styles.barChart}>
+                            <div className={styles.barChart_header}>
+                                <h3 className={styles.chartTitle}>Comparison of Views and Purchases</h3>
+                            </div>
+                            <ResponsiveContainer width="100%" height={300}>
+                                <BarChart
+                                    data={salesToBuy}
+                                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+                                >
+                                    <CartesianGrid strokeDasharray="3 3" />
+                                    <YAxis />
+                                    <Tooltip content={<CustomTooltip />} />
+                                    <Legend />
+                                    <Bar dataKey="viewNumber" fill="#8884d8" name="Views"></Bar>
+                                    <Bar dataKey="salesNumber" fill="#82ca9d" name="Purchases" />
+                                </BarChart>
+                            </ResponsiveContainer>
+                        </div>
+                    </div>
                     <div className={styles.barChart}>
                         <div className={styles.barChart_header}>
                             <h3 className={styles.chartTitle}>Sales Revenue</h3>
@@ -233,67 +296,6 @@ function Statistical() {
                                     No data available
                                 </div>
                             )}
-                        </ResponsiveContainer>
-                    </div>
-                    <div className={styles.barChart}>
-                        <div className={styles.barChart_header}>
-                            <h3 className={styles.chartTitle}>Number of Sales by Product</h3>
-                            <select
-                                value={filter.productSalesFilter}
-                                className={styles.category_input}
-                                onChange={(e) => setFilter({
-                                    ...filter,
-                                    productSalesFilter: e.target.value
-                                })}
-                            >
-                                {dateFilters.map((filter, index) => (
-                                    <option value={filter.value} key={index}>
-                                        {filter.content}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                        <ResponsiveContainer width="100%" height={300}>
-                            {productSales.length > 0 ? (
-                                <BarChart
-                                    data={productSales}
-                                    margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                                >
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis dataKey="name" hide />
-                                    <YAxis />
-                                    <Tooltip
-                                        formatter={(value, name, props) => {
-                                            const saleQuantity = props.payload?.saleNumber || 0; // Lấy số lượng bán hoặc mặc định là 0
-                                            return [`Sold Number: ${saleQuantity}`];
-                                        }}
-                                    />
-                                    <Legend />
-                                    <Bar dataKey="saleNumber" fill="#8884d8" />
-                                </BarChart>
-                            ) : (
-                                <div style={{ textAlign: 'center', padding: '50px', color: '#888' }}>
-                                    No data available
-                                </div>
-                            )}
-                        </ResponsiveContainer>
-                    </div>
-                    <div className={styles.barChart}>
-                        <div className={styles.barChart_header}>
-                            <h3 className={styles.chartTitle}>Comparison of Views and Purchases</h3>
-                        </div>
-                        <ResponsiveContainer width="100%" height={300}>
-                            <BarChart
-                                data={salesToBuy}
-                                margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <YAxis />
-                                <Tooltip content={<CustomTooltip />} />
-                                <Legend />
-                                <Bar dataKey="viewNumber" fill="#8884d8" name="Views"></Bar>
-                                <Bar dataKey="salesNumber" fill="#82ca9d" name="Purchases" />
-                            </BarChart>
                         </ResponsiveContainer>
                     </div>
                 </div>
