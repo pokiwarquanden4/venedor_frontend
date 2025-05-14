@@ -9,7 +9,8 @@ export const productConstants = {
     ratingData: [],
     productSales: [],
     rankingData: {},
-    salesToBuy: []
+    salesToBuy: [],
+    overviewAI: undefined
   },
   category: {}
 };

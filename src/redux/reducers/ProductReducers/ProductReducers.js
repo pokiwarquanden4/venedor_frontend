@@ -143,6 +143,31 @@ export default function ProductReducers(state = productConstants, action) {
         success: false,
         loading: false,
       };
+    case getType(productActions.askOverviewAIRequest):
+      return {
+        ...state,
+        loading: true,
+        shopRanking: {
+          ...state.shopRanking,
+          overviewAI: undefined
+        }
+      };
+    case getType(productActions.askOverviewAISuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        shopRanking: {
+          ...state.shopRanking,
+          overviewAI: action.payload.obj
+        }
+      };
+    case getType(productActions.askOverviewAIFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
     case getType(productActions.createCommentRequest):
       return {
         ...state,

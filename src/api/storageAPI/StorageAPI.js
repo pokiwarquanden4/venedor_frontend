@@ -122,4 +122,10 @@ export const getSalesToBuyAPI = (payload) => {
   });
 };
 
+export const askOverviewAIAPI = (payload) => {
+  return axios.post(`${URL}sellers/askOverviewAI`, payload, {
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+
 

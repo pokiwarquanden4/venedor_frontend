@@ -17,6 +17,7 @@ import {
   getShopRankingProductSalesAPI,
   getRankingDataAPI,
   getSalesToBuyAPI,
+  askOverviewAIAPI,
 } from '../../../api/storageAPI/StorageAPI';
 import { productActions } from '../../actions/product/ProductActions';
 import { jwtCheck } from '../jwtCheck';
@@ -284,6 +285,15 @@ function* getCategory(action) {
   }
 }
 
+function* askOverviewAISaga(action) {
+  try {
+    const comment = yield call(askOverviewAIAPI, action.payload);
+    yield put(productActions.askOverviewAISuccess(comment.data));
+  } catch (err) {
+    yield put(productActions.askOverviewAIFailure(err.response.data));
+  }
+}
+
 function* productSagas() {
   yield takeLatest(productActions.createProductRequest, addProductSaga);
   yield takeLatest(productActions.getSellerProductRequest, getSellerProductSaga);
@@ -304,6 +314,7 @@ function* productSagas() {
   yield takeLatest(productActions.getRankingDataRequest, getRankingDataSaga);
   yield takeLatest(productActions.getProductSalesDataRequest, getProductSalesDataSaga);
   yield takeLatest(productActions.getSalesToBuyRequest, getSalesToBuyDataSaga);
+  yield takeLatest(productActions.askOverviewAIRequest, askOverviewAISaga);
 }
 
 export default productSagas;

@@ -49,4 +49,8 @@ export const productActions = createActions({
   getSalesToBuyRequest: (payload) => payload,
   getSalesToBuySuccess: (payload) => payload,
   getSalesToBuyFailure: (payload) => payload,
+
+  askOverviewAIRequest: (payload) => payload,
+  askOverviewAISuccess: (payload) => payload,
+  askOverviewAIFailure: (payload) => payload,
 });
