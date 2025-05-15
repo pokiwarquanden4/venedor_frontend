@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useState } from 'react';
-import { FilterIcon, LeftArrowIcon, RightArrowIcon } from '../../asset/img/ItemsIcon';
 import Collapse from '../../components/Collapse/Collapse';
 import styles from './HomeCategory.module.scss';
 import Items from '../../components/Items/Items';
@@ -7,13 +6,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { productSearchSelector } from '../../redux/selectors/productSelector/productSearchSelector';
 import { useNavigate, useParams } from 'react-router-dom';
 import { productSearchActions } from '../../redux/actions/product/ProductSearchAction';
-import Popup from '../../components/Popup/Popup';
-import CategoryFilterPopUp from '../Category/CategoryFilterPopUp/CategoryFilterPopUp';
 import Pagination from '../../components/Pagination/Pagination';
+import { productSelector } from '../../redux/selectors/productSelector/productSelector';
 
 function HomeCategory() {
+  const navigate = useNavigate()
   const params = useParams();
   const productSearchSelect = useSelector(productSearchSelector);
+  const productSelect = useSelector(productSelector);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
   const [filter, setFilter] = useState('Feature')
@@ -23,7 +23,7 @@ function HomeCategory() {
     limit: 16,
     categoryId: params.id
   })
-
+  const [selectedCategory, setSelectedCategory] = useState(null);
   useEffect(() => {
     setPageData((preData) => {
       return {
@@ -32,6 +32,11 @@ function HomeCategory() {
       }
     })
   }, [params.id])
+
+  useEffect(() => {
+    if (!productSelect.category) return
+    setSelectedCategory(params.id)
+  }, [params.id, productSelect.category])
 
   useEffect(() => {
     if (!productSearchSelect.categorySearchProduct) return
@@ -49,7 +54,7 @@ function HomeCategory() {
 
   return (
     <Fragment>
-      {filterPopUp ? (
+      {/* {filterPopUp ? (
         <Popup
           onClick={() => {
             setFilterPopUp(false);
@@ -57,8 +62,30 @@ function HomeCategory() {
         >
           <CategoryFilterPopUp setPopup={setFilterPopUp}></CategoryFilterPopUp>
         </Popup>
-      ) : undefined}
+      ) : undefined} */}
       <div className={styles.wrapper}>
+        <div className={styles.filter}>
+          <div className={styles.filter_content}>
+            {productSelect.category
+              ? Object.keys(productSelect.category.category).map((key) => {
+                const item = productSelect.category.category[key];
+
+                return (
+                  <div
+                    key={key}
+                    onClick={() => {
+                      navigate(`/category/${key}`);
+                    }}
+                    className={`${styles.filter_item} ${selectedCategory === key ? styles.active : ''
+                      }`}
+                  >
+                    {item.name}
+                  </div>
+                );
+              })
+              : undefined}
+          </div>
+        </div>
         <div className={styles.wrapper_content}>
           <div className={styles.header}>
             <div className={styles.feature}>
@@ -79,18 +106,6 @@ function HomeCategory() {
                 ]}
               ></Collapse>
             </div>
-            <div
-              className={styles.filter}
-              onClick={() => {
-                setFilterPopUp(true);
-              }}
-            >
-              <div className={styles.filter_header}>Filter</div>
-              <div className={styles.filter_icon_wrapper}>
-                <FilterIcon className={styles.filter_icon}></FilterIcon>
-              </div>
-            </div>
-            <div className={styles.filter_content}></div>
             <div className={styles.show}>
               <Collapse
                 title="Show: 16"
