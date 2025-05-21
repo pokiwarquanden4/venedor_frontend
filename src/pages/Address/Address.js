@@ -4,6 +4,7 @@ import MainButton from '../../components/MainButton/MainButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { addressSelector } from '../../redux/selectors/accountSelector/AddressSelector';
 import { addressActions } from '../../redux/actions/account/AddressActions';
+import { notificationActions } from '../../redux/actions/notification/notificationAction';
 
 function Address() {
   const dispatch = useDispatch();
@@ -53,19 +54,29 @@ function Address() {
   }, [addressSelect.success, dispatch]);
 
   const handleSubmit = useCallback(() => {
-    if (phoneNumber) {
-      dispatch(
-        addressActions.createAddressRequest({
-          name: name,
-          company: company,
-          address1: address1,
-          address2: address2,
-          city: city,
-          country: country,
-          phoneNumber: phoneNumber,
-        })
-      );
+    if (!name.trim()) {
+      dispatch(notificationActions.setNotificationContent('Please enter your name.'));
+      return;
     }
+    if (!address1.trim()) {
+      dispatch(notificationActions.setNotificationContent('Please enter Address1.'));
+      return;
+    }
+    if (!phoneNumber.trim()) {
+      dispatch(notificationActions.setNotificationContent('Please enter your phone number.'));
+      return;
+    }
+    dispatch(
+      addressActions.createAddressRequest({
+        name: name.trim(),
+        company: company.trim(),
+        address1: address1.trim(),
+        address2: address2.trim(),
+        city: city.trim(),
+        country: country.trim(),
+        phoneNumber: phoneNumber.trim(),
+      })
+    );
   }, [address1, address2, city, company, country, dispatch, name, phoneNumber]);
 
   const handleDelete = useCallback((id) => {
@@ -73,16 +84,28 @@ function Address() {
   }, [dispatch]);
 
   const handleEdit = useCallback((id) => {
+    if (!name.trim()) {
+      dispatch(notificationActions.setNotificationContent('Please enter your name.'));
+      return;
+    }
+    if (!address1.trim()) {
+      dispatch(notificationActions.setNotificationContent('Please enter Address1.'));
+      return;
+    }
+    if (!phoneNumber.trim()) {
+      dispatch(notificationActions.setNotificationContent('Please enter your phone number.'));
+      return;
+    }
     dispatch(
       addressActions.editAddressRequest({
         id: id,
-        name: name,
-        company: company,
-        address1: address1,
-        address2: address2,
-        city: city,
-        country: country,
-        phoneNumber: phoneNumber,
+        name: name.trim(),
+        company: company.trim(),
+        address1: address1.trim(),
+        address2: address2.trim(),
+        city: city.trim(),
+        country: country.trim(),
+        phoneNumber: phoneNumber.trim(),
       })
     );
   }, [address1, address2, city, company, country, dispatch, name, phoneNumber]);

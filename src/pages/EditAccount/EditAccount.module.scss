@@ -1,10 +1,12 @@
-.wrapper{
+.wrapper {
     display: flex;
     justify-content: center;
+
     .inner_wrapper {
         width: var(--default_page_width);
         padding-bottom: 200px;
-        .header{
+
+        .header {
             .main_header {
                 margin: 48px 0 15px;
                 padding-left: 10px;
@@ -12,11 +14,13 @@
                 font-size: 40px;
                 font-weight: bolder;
             }
+
             .sub_header {
                 margin-bottom: 70px;
                 font-size: 16px;
             }
         }
+
         .content {
             .notification {
                 position: absolute;
@@ -25,51 +29,87 @@
                 color: red;
                 font-size: 12px;
             }
+
             .error {
                 border-color: red !important;
             }
-            .name,.password{
+
+            .name,
+            .gender,
+            .password {
                 position: relative;
                 display: flex;
                 align-items: center;
                 margin-bottom: 20px;
             }
-            .name_header, .password_header {
+
+            .name_header,
+            .gender_header,
+            .password_header {
                 width: 100px;
                 color: #444;
                 font-size: 18px;
                 font-weight: bolder;
             }
-            .name_input, .password_input{
+
+            .name_input,
+            .gender_input,
+            .password_input {
                 font-size: 16px;
                 padding: 15px 30px;
                 height: 50px;
                 width: 400px;
             }
         }
-        .footer{
+
+        .footer {
             margin-left: 100px;
-            .create_button {
+
+            .edit_button,
+            .editPassword_button {
                 width: 160px;
                 height: 40px;
             }
+
+            .editPassword_button {
+                margin-left: 10px;
+            }
         }
     }
+
     @media (max-width: 680px) {
         .inner_wrapper {
             .content {
-                .name,  .password {
+
+                .name,
+                .gender,
+                .password {
                     display: block;
-                 }
-                .name_input,.password_input {
+                }
+
+                .name_input,
+                .gender_input,
+                .password_input {
                     margin-top: 15px;
                     width: 100%;
                 }
             }
+
             .footer {
                 margin-left: 0;
             }
         }
-        
+
     }
+}
+
+.password_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.update_password {
+    width: 160px;
+    height: 40px;
 }

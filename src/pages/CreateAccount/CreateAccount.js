@@ -21,6 +21,7 @@ function CreateAccount() {
   const [password, setPassword] = useState('');
   const [passwordNotification, setPasswordNotification] = useState();
   const [youAre, setYouAre] = useState('User');
+  const [gender, setGender] = useState('Male')
   const [otp, setOtp] = useState('');
   const [otpEnable, setOtpEnable] = useState(false);
   const [otpNotification, setOtpNotification] = useState(false);
@@ -147,6 +148,19 @@ function CreateAccount() {
               <option value="Seller">Seller</option>
             </select>
           </div>
+          <div className={styles.gender}>
+            <div className={styles.gender_header}>Gender</div>
+            <select
+              className={styles.gender_input}
+              value={gender}
+              onChange={(e) => {
+                setGender(e.target.value);
+              }}
+            >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
+          </div>
           {otpEnable ? (
             <div className={styles.otp}>
               <div className={styles.otp_header}>OTP</div>
@@ -192,6 +206,7 @@ function CreateAccount() {
                     createAccountActions.createAccountRequest({
                       name: name,
                       email: email,
+                      gender: gender,
                       account: accountName,
                       password: password,
                       roleName: youAre,

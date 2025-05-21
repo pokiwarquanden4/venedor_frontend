@@ -5,16 +5,19 @@ import { passwordFilter } from '../../config/filterInput';
 import { createAccountActions } from '../../redux/actions/account/CreateAccountActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAccountSelector } from '../../redux/selectors/accountSelector/CreateAccountSelector';
+import Popup from '../../components/Popup/Popup';
 
 function EditAccount() {
   const dispatch = useDispatch();
   const accountSelect = useSelector(createAccountSelector);
   const [name, setName] = useState('');
+  const [gender, setGender] = useState('');
   const [password, setPassword] = useState('');
   const [passwordNotification, setPasswordNotification] = useState();
-
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordNotification, setNewPasswordNotification] = useState();
+
+  const [editPasswordPopup, setEditPasswordPopup] = useState(false);
 
   return (
     <div className={styles.wrapper}>
@@ -24,6 +27,71 @@ function EditAccount() {
           <div className={styles.sub_header}>Get in touch and let us know how we can help.</div>
         </div>
         <div className={styles.content}>
+          {editPasswordPopup ? (
+            <Popup
+              width='600px'
+              height='270px'
+              onClick={() => {
+                setEditPasswordPopup(false)
+              }}
+              highestZIndex={true}
+            >
+              <div className={styles.password_wrapper}>
+                <h1 className={styles.passwordPopup_header}>Edit Password</h1>
+                <div className={styles.password}>
+                  <div className={styles.password_header}>Password</div>
+                  <input
+                    type=""
+                    value={password}
+                    placeholder="Your Password*"
+                    className={`${styles.password_input} ${passwordNotification ? styles.error : ''}`}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                    }}
+                    onFocus={() => {
+                      setPasswordNotification(false);
+                      dispatch(createAccountActions.setEditAccountWrongPassword(false));
+                    }}
+                    onBlur={() => {
+                      passwordFilter(password) || setPasswordNotification(true);
+                    }}
+                  ></input>
+                  {passwordNotification && (
+                    <div className={styles.notification}>Password need at least 10 character</div>
+                  )}
+                  {accountSelect.wrongPassword && (
+                    <div className={styles.notification}>Wrong password</div>
+                  )}
+                </div>
+                <div className={styles.password}>
+                  <div className={styles.password_header}>New Password</div>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    placeholder="New Password*"
+                    className={`${styles.password_input} ${newPasswordNotification ? styles.error : ''}`}
+                    onChange={(e) => {
+                      setNewPassword(e.target.value);
+                    }}
+                    onFocus={() => {
+                      setNewPasswordNotification(false);
+                    }}
+                    onBlur={() => {
+                      passwordFilter(newPassword) || setNewPasswordNotification(true);
+                    }}
+                  ></input>
+                  {newPasswordNotification && (
+                    <div className={styles.notification}>Password need at least 10 character</div>
+                  )}
+                </div>
+                <MainButton
+                  className={styles.update_password}
+                  title="CONFIRM"
+                ></MainButton>
+              </div>
+            </Popup>
+          ) : undefined}
+
           <div className={styles.name}>
             <div className={styles.name_header}>Name</div>
             <input
@@ -35,51 +103,18 @@ function EditAccount() {
               }}
             ></input>
           </div>
-          <div className={styles.password}>
-            <div className={styles.password_header}>Password</div>
-            <input
-              type="password"
-              value={password}
-              placeholder="Your Password*"
-              className={`${styles.password_input} ${passwordNotification ? styles.error : ''}`}
+          <div className={styles.gender}>
+            <div className={styles.gender_header}>Gender</div>
+            <select
+              className={styles.gender_input}
+              value={gender}
               onChange={(e) => {
-                setPassword(e.target.value);
+                setGender(e.target.value);
               }}
-              onFocus={() => {
-                setPasswordNotification(false);
-                dispatch(createAccountActions.setEditAccountWrongPassword(false));
-              }}
-              onBlur={() => {
-                passwordFilter(password) || setPasswordNotification(true);
-              }}
-            ></input>
-            {passwordNotification && (
-              <div className={styles.notification}>Password need at least 10 character</div>
-            )}
-            {accountSelect.wrongPassword && (
-              <div className={styles.notification}>Wrong password</div>
-            )}
-          </div>
-          <div className={styles.password}>
-            <div className={styles.password_header}>New Password</div>
-            <input
-              type="password"
-              value={newPassword}
-              placeholder="New Password*"
-              className={`${styles.password_input} ${newPasswordNotification ? styles.error : ''}`}
-              onChange={(e) => {
-                setNewPassword(e.target.value);
-              }}
-              onFocus={() => {
-                setNewPasswordNotification(false);
-              }}
-              onBlur={() => {
-                passwordFilter(newPassword) || setNewPasswordNotification(true);
-              }}
-            ></input>
-            {newPasswordNotification && (
-              <div className={styles.notification}>Password need at least 10 character</div>
-            )}
+            >
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+            </select>
           </div>
         </div>
         <div className={styles.footer}>
@@ -87,22 +122,25 @@ function EditAccount() {
             onClick={() => {
               if (
                 name &&
-                password &&
-                !passwordNotification &&
-                newPassword &&
-                !newPasswordNotification
+                gender
               ) {
                 dispatch(
                   createAccountActions.editAccountRequest({
                     name: name,
-                    password: password,
-                    newPassword: newPassword,
+                    gender: gender,
                   })
                 );
               }
             }}
-            className={styles.create_button}
-            title="EDT ACCOUNT"
+            className={styles.edit_button}
+            title="EDIT ACCOUNT"
+          ></MainButton>
+          <MainButton
+            onClick={() => {
+              setEditPasswordPopup(true);
+            }}
+            className={styles.editPassword_button}
+            title="EDIT PASSWORD"
           ></MainButton>
         </div>
       </div>

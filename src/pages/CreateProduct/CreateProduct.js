@@ -636,15 +636,6 @@ function CreateProduct() {
             className={styles.button}
             onClick={handleSubmit}
           ></MainButton>
-          <MainButton
-            title={'Preview'}
-            onClick={() => {
-              if (checkinput()) {
-                setPreview(true);
-              }
-            }}
-            className={styles.button}
-          ></MainButton>
           {(nameFill || priceFill || descriptionFill || quantityFill) && (
             <div className={styles.errorMessage}>Please correct all the input</div>
           )}

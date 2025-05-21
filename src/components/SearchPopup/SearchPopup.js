@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import styles from './SearchPopup.module.scss';
 import { useSelector } from 'react-redux';
 import { productSearchSelector } from '../../redux/selectors/productSelector/productSearchSelector';
+import { formatVND } from '../../config/utils';
 
 function SearchPopup({ data }) {
   const navigate = useNavigate();
@@ -29,7 +30,7 @@ function SearchPopup({ data }) {
                   <div className={styles.description_content}>{item.productName}</div>
                   <div className={styles.description_price}>
                     <div className={styles.newPrice}>
-                      ${item.price - item.price * (item.saleOff / 100)}
+                      {formatVND(item.price - item.price * (item.saleOff / 100))}
                     </div>
                   </div>
                 </div>

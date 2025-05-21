@@ -21,7 +21,8 @@ function Order() {
     productId: 0,
     selectedId: selectedId
   })
-  const [selectProductId, setSelectProductId] = useState(undefined)
+  const [selectProductId, setSelectProductId] = useState(0)
+  const [selectedStatus, setSelectedStatus] = useState('-1')
   const selectedIdRef = useRef(undefined);
 
   useEffect(() => {
@@ -32,11 +33,12 @@ function Order() {
     setPageData((preData) => {
       return {
         ...preData,
+        statusFilter: selectedStatus,
         productId: selectProductId,
         selectedId: selectedId
       }
     })
-  }, [selectProductId, selectedId])
+  }, [selectProductId, selectedId, selectedStatus])
 
   useEffect(() => {
     dispatch(historyActions.orderRequest(pageData));
@@ -86,6 +88,18 @@ function Order() {
               </svg>
             </button>
           </div>
+          <select
+            className={styles.status_input}
+            onChange={(e) => {
+              setSelectedStatus(e.target.value)
+            }}
+          >
+            <option value='-1'>All</option>
+            <option value="0">Pending</option>
+            <option value="1">Shipping</option>
+            <option value="2">Done</option>
+            <option value="3">Cancel</option>
+          </select>
           <select
             className={styles.category_input}
             onChange={(e) => {
