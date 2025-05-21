@@ -85,6 +85,10 @@ const ActionProvider = ({ createChatBotMessage, setState, children }) => {
         if (!chatbotData.chatbotMessages) return
 
         if (chatbotData.chatbotMessages.products) {
+            if (chatbotData.chatbotMessages.products.length) {
+                setCacheMessage([])
+            }
+
             chatbotData.chatbotMessages.products.forEach((product, index) => {
                 const botMessage = createChatBotMessage(`Sản phẩm số ${index + 1}`, {
                     widget: 'productoverview',
