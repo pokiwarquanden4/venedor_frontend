@@ -2,10 +2,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { messageSelector } from '../../redux/selectors/messageSelector/messageSelector';
 import { messageActions } from '../../redux/actions/message/messageActions';
+import { LoginSelector } from '../../redux/selectors/accountSelector/LoginSelector';
 
 const ActionProvider = ({ createChatBotMessage, setState, children }) => {
     const dispatch = useDispatch();
     const chatbotData = useSelector(messageSelector)
+    const loginSelect = useSelector(LoginSelector)
     const [cacheMessage, setCacheMessage] = useState([])
     const buyCache = useRef({})
 
@@ -116,7 +118,8 @@ const ActionProvider = ({ createChatBotMessage, setState, children }) => {
         cacheMessageFunc(newMessage, 'user')
         dispatch(messageActions.createChatbotRequest({
             message: newMessage,
-            cacheMessage: cacheMessage
+            cacheMessage: cacheMessage,
+            gender: loginSelect.userData.gender
         }))
     };
 
