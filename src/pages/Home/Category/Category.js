@@ -16,6 +16,7 @@ function Category() {
 
   return (
     <div className={styles.wrapper}>
+      <div className={styles.header}>Shop by Category</div>
       <div className={styles.contents}>
         <div className={styles.content}>
           <div className={styles.items}>

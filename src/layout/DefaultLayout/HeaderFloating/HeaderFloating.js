@@ -126,7 +126,7 @@ function HeaderFloating({ mainRef }) {
             <div
               className={styles.logo_wrapper}
               onClick={() => {
-                navigate('/');
+                navigate(routes.home);
               }}
             >
               <img
