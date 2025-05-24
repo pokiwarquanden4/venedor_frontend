@@ -18,6 +18,10 @@ export const createAccountActions = createActions({
   editAccountSuccess: (payload) => payload,
   editAccountFailure: (payload) => payload,
 
+  updatePasswordRequest: (payload) => payload,
+  updatePasswordSuccess: (payload) => payload,
+  updatePasswordFailure: (payload) => payload,
+
   setEditAccountWrongPassword: (payload) => payload,
 
   setAccountSuccessStatus: (payload) => payload,

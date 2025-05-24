@@ -421,6 +421,7 @@ function ProductDetails({ data, fullScreen, preview }) {
               setIsShowDetails(false)
             }}
             highestZIndex={true}
+            height='80%'
           >
             <p style={{ padding: '20px' }} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: productData.description }} />
           </Popup>

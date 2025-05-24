@@ -55,6 +55,24 @@ export default function createAccountReducers(state = createAccountConstant, act
         ...state,
         success: false,
         loading: false,
+      };
+
+    case getType(createAccountActions.updatePasswordRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(createAccountActions.updatePasswordSuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+      };
+    case getType(createAccountActions.updatePasswordFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
         wrongPassword: action.payload === 'Wrong Password' ? true : false,
       };
     case getType(createAccountActions.setEditAccountWrongPassword):

@@ -1,29 +1,37 @@
 import styles from './EditAccount.module.scss';
 import MainButton from '../../components/MainButton/MainButton';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { passwordFilter } from '../../config/filterInput';
 import { createAccountActions } from '../../redux/actions/account/CreateAccountActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { createAccountSelector } from '../../redux/selectors/accountSelector/CreateAccountSelector';
 import Popup from '../../components/Popup/Popup';
+import { LoginSelector } from '../../redux/selectors/accountSelector/LoginSelector';
 
 function EditAccount() {
   const dispatch = useDispatch();
   const accountSelect = useSelector(createAccountSelector);
+  const loginSelect = useSelector(LoginSelector);
   const [name, setName] = useState('');
   const [gender, setGender] = useState('');
   const [password, setPassword] = useState('');
   const [passwordNotification, setPasswordNotification] = useState();
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordNotification, setNewPasswordNotification] = useState();
-
   const [editPasswordPopup, setEditPasswordPopup] = useState(false);
+
+  useEffect(() => {
+    if (loginSelect.userData) {
+      setName(loginSelect.userData.name);
+      setGender(loginSelect.userData.gender)
+    }
+  }, [loginSelect.userData])
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.inner_wrapper}>
         <div className={styles.header}>
-          <div className={styles.main_header}>Edit Account</div>
+          <div className={styles.main_header}>Your Account Info</div>
           <div className={styles.sub_header}>Get in touch and let us know how we can help.</div>
         </div>
         <div className={styles.content}>
@@ -37,7 +45,7 @@ function EditAccount() {
               highestZIndex={true}
             >
               <div className={styles.password_wrapper}>
-                <h1 className={styles.passwordPopup_header}>Edit Password</h1>
+                <h1 className={styles.passwordPopup_header}>Password</h1>
                 <div className={styles.password}>
                   <div className={styles.password_header}>Password</div>
                   <input
@@ -85,6 +93,14 @@ function EditAccount() {
                   )}
                 </div>
                 <MainButton
+                  onClick={() => {
+                    dispatch(
+                      createAccountActions.updatePasswordRequest({
+                        password: password,
+                        newPassword: newPassword,
+                      })
+                    );
+                  }}
                   className={styles.update_password}
                   title="CONFIRM"
                 ></MainButton>
@@ -133,7 +149,7 @@ function EditAccount() {
               }
             }}
             className={styles.edit_button}
-            title="EDIT ACCOUNT"
+            title="SAVE"
           ></MainButton>
           <MainButton
             onClick={() => {

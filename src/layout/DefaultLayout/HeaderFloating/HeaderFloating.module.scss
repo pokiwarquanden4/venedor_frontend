@@ -33,12 +33,19 @@
             width: 20px;
         }
 
+        .shopIcon {
+            margin-top: 5px;
+            cursor: pointer;
+            width: 26px;
+        }
+
         .messageIcon {
             cursor: pointer;
             width: 25px;
         }
 
         .humanIcon,
+        .shopIcon,
         .heartIcon,
         .responsive,
         .graphIcon,

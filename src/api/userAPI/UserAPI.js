@@ -46,6 +46,14 @@ export const editAccountAPI = (payload) => {
   });
 };
 
+export const updatePasswordAPI = (payload) => {
+  return axios.post(`${URL}users/updatePassword`, payload, {
+    headers: createHeaders({
+      Authorization: getJWTToken(),
+    })
+  });
+};
+
 export const getPasswordAPI = (payload) => {
   return axios.post(`${URL}users/getPassword`, payload, {
     headers: createHeaders()

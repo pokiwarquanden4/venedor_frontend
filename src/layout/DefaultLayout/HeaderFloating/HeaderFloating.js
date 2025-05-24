@@ -7,6 +7,7 @@ import {
   LogoutIcon,
   MessageIcon,
   SearchIcon,
+  ShopIcon,
 } from '../../../asset/img/HeaderIcon';
 import styles from './HeaderFloating.module.scss';
 import { Fragment, useEffect, useRef, useState } from 'react';
@@ -38,6 +39,7 @@ function HeaderFloating({ mainRef }) {
   const productSelect = useSelector(productSearchSelector);
   const [data, setData] = useState([]);
 
+  console.log(loginSelect);
   useEffect(() => {
     const showResults = (e) => {
       if (inputBar.current.contains(e.target)) {
@@ -172,11 +174,21 @@ function HeaderFloating({ mainRef }) {
                       navigate('/account');
                     }
                     if (loginSelect.loginRole === 'Seller') {
-                      navigate('/accountSeller');
+                      navigate('/account/editAccount');
                     }
                   }
                 }}
               ></HumanIcon>
+              <ShopIcon
+                className={styles.shopIcon}
+                onClick={() => {
+                  if (!loginStatus) {
+                    dispatch(loginActions.loginPopup(true));
+                  } else {
+                    navigate('/accountSeller');
+                  }
+                }}
+              ></ShopIcon>
               {loginSelect.loginRole === 'Seller' ? undefined : (
                 <HeartIcon
                   className={styles.heartIcon}

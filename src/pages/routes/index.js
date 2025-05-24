@@ -67,7 +67,6 @@ const publicRoutes = [
     path: routes.editAccount,
     component: EditAccount,
     Layout: HeaderOnlyWithLink,
-    authorization: 'User',
   },
   {
     path: routes.oder,
