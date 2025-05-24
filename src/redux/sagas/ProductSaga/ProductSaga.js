@@ -90,6 +90,7 @@ function* searchProductSaga(action) {
     const products = yield call(searchProductAPI, action.payload);
     yield put(productSearchActions.searchProductSuccess(products.data));
 
+    yield jwtCheck(products);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productSearchActions.searchProductFailure(err.response.data));
@@ -102,6 +103,8 @@ function* quickSearchProductSaga(action) {
   try {
     const products = yield call(searchProductAPI, { ...action.payload, limit: 10 });
     yield put(productSearchActions.quickSearchProductSuccess(products.data));
+
+    yield jwtCheck(products);
   } catch (err) {
     yield put(productSearchActions.quickSearchProductFailure(err.response.data));
   }
@@ -114,6 +117,7 @@ function* searchProductByIdSaga(action) {
     const products = yield call(searchProductByIdAPI, action.payload);
     yield put(productSearchActions.searchProductByIdSuccess(products.data));
 
+    yield jwtCheck(products);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productSearchActions.searchProductByIdFailure(err.response.data));
@@ -129,6 +133,7 @@ function* getCartProductSaga(action) {
     const products = yield call(getCartProductAPI, action.payload);
     yield put(cartActions.getCartProductSuccess(products.data));
 
+    yield jwtCheck(products);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(cartActions.getCartProductFailure(err.response.data));
@@ -144,6 +149,7 @@ function* deleteCartProductSaga(action) {
     yield put(cartActions.deleteCartProductSuccess(products.data));
     yield put(cartActions.getCartProductRequest());
 
+    yield jwtCheck(products);
     yield put(loadingActions.setLoadingLoading(false));
     yield put(notificationActions.setNotificationContent('Delete Successfully'));
   } catch (err) {
@@ -160,6 +166,7 @@ function* createCartProductSaga(action) {
     yield put(cartActions.createCartProductSuccess(products.data));
     yield put(cartActions.getCartProductRequest());
 
+    yield jwtCheck(products);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(cartActions.createCartProductFailure(err.response.data));
@@ -174,7 +181,7 @@ function* editCartProductSaga(action) {
     const products = yield call(editCartProductAPI, action.payload);
     yield put(cartActions.editCartProductSuccess(products.data));
     yield put(cartActions.getCartProductRequest());
-
+    yield jwtCheck(products);
   } catch (err) {
     yield put(cartActions.editCartProductFailure(err.response.data));
   }
@@ -187,6 +194,7 @@ function* searchCategorySaga(action) {
     const products = yield call(searchCategoryProductAPI, action.payload);
     yield put(productSearchActions.searchCategoryProductSuccess(products.data));
 
+    yield jwtCheck(products);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productSearchActions.searchCategoryProductFailure(err.response.data));
@@ -200,6 +208,8 @@ function* getShopRankingSalesSaga(action) {
     yield put(loadingActions.setLoadingLoading(true));
     const ranks = yield call(getShopRankingSalesAPI, action.payload);
     yield put(productActions.getShopRankingSalesSuccess(ranks.data));
+
+    yield jwtCheck(ranks);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productActions.getShopRankingSalesFailure(err.response));
@@ -212,6 +222,8 @@ function* getShopRankingRatingSaga(action) {
     yield put(loadingActions.setLoadingLoading(true));
     const ranks = yield call(getShopRankingRatingAPI, action.payload);
     yield put(productActions.getShopRankingRatingSuccess(ranks.data));
+
+    yield jwtCheck(ranks);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productActions.getShopRankingRatingFailure(err.response));
@@ -224,6 +236,8 @@ function* getRankingDataSaga(action) {
     yield put(loadingActions.setLoadingLoading(true));
     const ranks = yield call(getRankingDataAPI, action.payload);
     yield put(productActions.getRankingDataSuccess(ranks.data));
+
+    yield jwtCheck(ranks);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productActions.getRankingDataFailure(err.response));
@@ -236,6 +250,8 @@ function* getProductSalesDataSaga(action) {
     yield put(loadingActions.setLoadingLoading(true));
     const ranks = yield call(getShopRankingProductSalesAPI, action.payload);
     yield put(productActions.getProductSalesDataSuccess(ranks.data));
+
+    yield jwtCheck(ranks);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productActions.getProductSalesDataFailure(err.response));
@@ -248,6 +264,8 @@ function* getSalesToBuyDataSaga(action) {
     yield put(loadingActions.setLoadingLoading(true));
     const ranks = yield call(getSalesToBuyAPI, action.payload);
     yield put(productActions.getSalesToBuySuccess(ranks.data));
+
+    yield jwtCheck(ranks);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productActions.getSalesToBuyFailure(err.response));
@@ -260,6 +278,8 @@ function* getCommentSaga(action) {
     yield put(loadingActions.setLoadingLoading(true));
     const comment = yield call(getCommentAPI, action.payload);
     yield put(productActions.getCommentSuccess(comment.data));
+
+    yield jwtCheck(comment);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(productActions.getCommentFailure(err.response.data));
@@ -271,6 +291,8 @@ function* createCommentSaga(action) {
   try {
     const comment = yield call(createCommentAPI, action.payload);
     yield put(productActions.createCommentSuccess(comment.data));
+
+    yield jwtCheck(comment);
   } catch (err) {
     yield put(productActions.createCommentFailure(err.response.data));
   }
@@ -280,6 +302,8 @@ function* getCategory(action) {
   try {
     const products = yield call(getCategoryAPI, action.payload);
     yield put(productActions.getCategorySuccess(products.data));
+
+    yield jwtCheck(products);
   } catch (err) {
     yield put(productActions.getCategoryFailure(err.response.data));
   }
@@ -289,6 +313,8 @@ function* askOverviewAISaga(action) {
   try {
     const comment = yield call(askOverviewAIAPI, action.payload);
     yield put(productActions.askOverviewAISuccess(comment.data));
+
+    yield jwtCheck(comment);
   } catch (err) {
     yield put(productActions.askOverviewAIFailure(err.response.data));
   }

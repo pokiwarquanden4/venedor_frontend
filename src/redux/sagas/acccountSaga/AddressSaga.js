@@ -11,6 +11,7 @@ import {
 } from '../../../api/userAPI/AddressAPI';
 import { notificationActions } from '../../actions/notification/notificationAction';
 import { loadingActions } from '../../actions/loading/LoadingActions';
+import { jwtCheck } from '../jwtCheck';
 
 function* createAddressSaga(action) {
   try {
@@ -19,6 +20,7 @@ function* createAddressSaga(action) {
     const address = yield call(createAddressAPI, action.payload);
     yield put(addressActions.createAddressSuccess(address.data));
 
+    yield jwtCheck(address);
     yield put(loadingActions.setLoadingLoading(false));
     yield put(notificationActions.setNotificationContent('Create Successfully'));
   } catch (err) {
@@ -34,6 +36,7 @@ function* editAddressSaga(action) {
     const address = yield call(editAddressAPI, action.payload);
     yield put(addressActions.editAddressSuccess(address.data));
 
+    yield jwtCheck(address);
     yield put(loadingActions.setLoadingLoading(false));
     yield put(notificationActions.setNotificationContent('Edit Successfully'));
   } catch (err) {
@@ -49,6 +52,7 @@ function* getAddressSaga(action) {
     const address = yield call(getAddressAPI, action.payload);
     yield put(addressActions.getAddressSuccess(address.data));
 
+    yield jwtCheck(address);
     yield put(loadingActions.setLoadingLoading(false));
   } catch (err) {
     yield put(addressActions.getAddressFailure(err.response.data));
@@ -63,6 +67,7 @@ function* deleteAddressSaga(action) {
     const address = yield call(deleteAddressAPI, action.payload);
     yield put(addressActions.deleteAddressSuccess(address.data));
 
+    yield jwtCheck(address);
     yield put(loadingActions.setLoadingLoading(false));
     yield put(notificationActions.setNotificationContent('Delete Successfully'));
   } catch (err) {

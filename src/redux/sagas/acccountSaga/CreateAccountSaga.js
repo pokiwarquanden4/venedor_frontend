@@ -11,6 +11,7 @@ import {
 import { createAccountActions } from '../../actions/account/CreateAccountActions';
 import { loadingActions } from '../../actions/loading/LoadingActions';
 import { notificationActions } from '../../actions/notification/notificationAction';
+import { jwtCheck } from '../jwtCheck';
 
 function* createAccountSaga(action) {
   try {
@@ -34,6 +35,7 @@ function* editAccountSaga(action) {
     const user = yield call(editAccountAPI, action.payload);
     yield put(createAccountActions.editAccountSuccess(user.data));
 
+    yield jwtCheck(user);
     yield put(loadingActions.setLoadingLoading(false));
     yield put(notificationActions.setNotificationContent('Edit Successfully'));
   } catch (err) {
@@ -49,6 +51,7 @@ function* updatePasswordSaga(action) {
     const user = yield call(updatePasswordAPI, action.payload);
     yield put(createAccountActions.updatePasswordSuccess(user.data));
 
+    yield jwtCheck(user);
     yield put(loadingActions.setLoadingLoading(false));
     yield put(notificationActions.setNotificationContent('Update Successfully'));
   } catch (err) {

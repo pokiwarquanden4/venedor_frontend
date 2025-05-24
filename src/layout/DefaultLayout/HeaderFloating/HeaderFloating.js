@@ -179,16 +179,20 @@ function HeaderFloating({ mainRef }) {
                   }
                 }}
               ></HumanIcon>
-              <ShopIcon
-                className={styles.shopIcon}
-                onClick={() => {
-                  if (!loginStatus) {
-                    dispatch(loginActions.loginPopup(true));
-                  } else {
-                    navigate('/accountSeller');
-                  }
-                }}
-              ></ShopIcon>
+              {loginSelect.loginRole === 'Seller' ?
+                <ShopIcon
+                  className={styles.shopIcon}
+                  onClick={() => {
+                    if (!loginStatus) {
+                      dispatch(loginActions.loginPopup(true));
+                    } else {
+                      navigate('/accountSeller');
+                    }
+                  }}
+                ></ShopIcon>
+                :
+                undefined
+              }
               {loginSelect.loginRole === 'Seller' ? undefined : (
                 <HeartIcon
                   className={styles.heartIcon}
