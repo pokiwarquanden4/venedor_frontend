@@ -14,9 +14,11 @@ import './App.css'
 import { productActions } from './redux/actions/product/ProductActions';
 import { messageActions } from './redux/actions/message/messageActions';
 import Chatbot from './components/Chatbot/chatbot';
+import { LoginSelector } from './redux/selectors/accountSelector/LoginSelector';
 
 function App() {
   const cookies = new Cookies();
+  const loginSelect = useSelector(LoginSelector);
   const dispatch = useDispatch();
   const loadingSelect = useSelector(loadingSelector);
   const notificationSelect = useSelector(notificationSelector);
@@ -55,7 +57,12 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <Chatbot></Chatbot>
+        {loginSelect.loginRole !== 'Seller'
+          ?
+          <Chatbot></Chatbot>
+          :
+          undefined
+        }
         <Routes>
           {publicRoutes.map((route, index) => {
             const Page = route.component;

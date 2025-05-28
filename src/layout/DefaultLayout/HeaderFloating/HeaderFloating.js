@@ -39,9 +39,9 @@ function HeaderFloating({ mainRef }) {
   const productSelect = useSelector(productSearchSelector);
   const [data, setData] = useState([]);
 
-  console.log(loginSelect);
   useEffect(() => {
     const showResults = (e) => {
+      if (!inputBar.current) return;
       if (inputBar.current.contains(e.target)) {
         setInputBarDropDown(true);
       } else {
@@ -135,28 +135,33 @@ function HeaderFloating({ mainRef }) {
                 className={styles.logo}
               ></img>
             </div>
-            <div className={styles.searchBar_wrapper}>
-              {inputBarDropDown ? (
-                <div className={styles.searchBar_dropdown}>
-                  <SearchPopup data={data}></SearchPopup>
-                </div>
-              ) : undefined}
-              <input
-                placeholder="Search our store"
-                className={styles.inputBar}
-                ref={inputBar}
-                value={searchValue}
-                onChange={(e) => {
-                  setSearchValue(e.target.value);
-                }}
-              ></input>
-              <SearchIcon
-                className={styles.searchIcon}
-                onClick={() => {
-                  navigate('/search');
-                }}
-              ></SearchIcon>
-            </div>
+            {loginSelect.loginRole !== 'Seller'
+              ?
+              <div className={styles.searchBar_wrapper}>
+                {inputBarDropDown ? (
+                  <div className={styles.searchBar_dropdown}>
+                    <SearchPopup data={data}></SearchPopup>
+                  </div>
+                ) : undefined}
+                <input
+                  placeholder="Search our store"
+                  className={styles.inputBar}
+                  ref={inputBar}
+                  value={searchValue}
+                  onChange={(e) => {
+                    setSearchValue(e.target.value);
+                  }}
+                ></input>
+                <SearchIcon
+                  className={styles.searchIcon}
+                  onClick={() => {
+                    navigate('/search');
+                  }}
+                ></SearchIcon>
+              </div>
+              :
+              undefined
+            }
             <div className={styles.info_wrapper}>
               <SearchIcon
                 className={`${styles.searchIcon} ${styles.responsive}`}
