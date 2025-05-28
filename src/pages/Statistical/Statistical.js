@@ -188,8 +188,8 @@ function Statistical() {
                         <div className={styles.rankingData}>
                             <h1 className={styles.chartTitle}>Overview</h1>
                             <ul className={styles.ranking_grid}>
-                                <li><strong>🛒 Product Count:</strong> {rankingData.salesHistory}</li>
-                                <li><strong>📈 Sales History:</strong> {rankingData.salesNumber}</li>
+                                <li><strong>🛒 Product Count:</strong> {rankingData.salesNumber}</li>
+                                <li><strong>📈 Sales History:</strong> {rankingData.salesHistory}</li>
                                 <li><strong>💰 Sales Number:</strong> 1471</li>
                                 <li><strong>👁️ Views:</strong> {rankingData.view}</li>
                                 <li><strong>🧮 View to Buy:</strong> {(rankingData.viewToBuy || 0).toFixed(2)}%</li>
