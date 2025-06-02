@@ -17,6 +17,7 @@ import purchaseReducers from './purchaseReducers/purchaseReducers';
 import historyReducers from './purchaseReducers/historyReducers';
 import homeReducers from './ProductReducers/homeReducers';
 import messageReducers from './messageReducers/messageReducers';
+import staffReducers from './accountReducers/StaffReducers';
 
 const rootReducer = combineReducers({
   loginReducers,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   historyReducers,
   homeReducers,
   messageReducers,
+  staffReducers,
 });
 
 const persistConfig = {
@@ -49,6 +51,7 @@ const persistConfig = {
     'purchaseReducers',
     'historyReducers',
     'homeReducers',
+    'staffReducers'
   ],
 };
 

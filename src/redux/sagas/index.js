@@ -10,6 +10,7 @@ import purchaseSagas from './purchaseSaga/purchaseSaga';
 import historySagas from './historySaga/historySaga';
 import homeSagas from './ProductSaga/HomeSaga';
 import messageSagas from './messageSaga/messageSaga';
+import staffSagas from './acccountSaga/StaffSaga';
 
 export default function* rootSaga() {
   yield all([
@@ -24,5 +25,6 @@ export default function* rootSaga() {
     historySagas(),
     homeSagas(),
     messageSagas(),
+    staffSagas()
   ]);
 }
