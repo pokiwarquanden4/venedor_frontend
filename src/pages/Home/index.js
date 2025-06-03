@@ -54,7 +54,7 @@ function Home() {
               fontSize: 18,
               cursor: 'pointer'
             }}
-            onClick={() => navigate('/shipper')}
+            onClick={() => navigate('/order')}
           >
             Go to delivery management
           </button>
@@ -80,7 +80,7 @@ function Home() {
               fontSize: 18,
               cursor: 'pointer'
             }}
-            onClick={() => navigate('/stocker')}
+            onClick={() => navigate('/accountSeller')}
           >
             Go to inventory management
           </button>

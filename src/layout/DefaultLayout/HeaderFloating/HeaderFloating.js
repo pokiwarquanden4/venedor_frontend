@@ -166,21 +166,24 @@ function HeaderFloating({ mainRef }) {
                   navigate('/search');
                 }}
               ></SearchIcon>
-              <HumanIcon
-                className={styles.humanIcon}
-                onClick={() => {
-                  if (!loginStatus) {
-                    dispatch(loginActions.loginPopup(true));
-                  } else {
-                    if (loginSelect.loginRole === 'User') {
-                      navigate('/account');
+              {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'User' || !loginSelect.loginRole) ?
+                <HumanIcon
+                  className={styles.humanIcon}
+                  onClick={() => {
+                    if (!loginStatus) {
+                      dispatch(loginActions.loginPopup(true));
+                    } else {
+                      if (loginSelect.loginRole === 'User') {
+                        navigate('/account');
+                      }
+                      if (loginSelect.loginRole === 'Seller') {
+                        navigate('/account/editAccount');
+                      }
                     }
-                    if (loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker' || loginSelect.loginRole === 'Shipper') {
-                      navigate('/account/editAccount');
-                    }
-                  }
-                }}
-              ></HumanIcon>
+                  }}
+                ></HumanIcon>
+                :
+                undefined}
               {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker') ?
                 <ShopIcon
                   className={styles.shopIcon}
