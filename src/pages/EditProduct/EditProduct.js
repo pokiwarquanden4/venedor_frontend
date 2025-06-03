@@ -73,7 +73,6 @@ function EditProduct() {
 
   const [preview, setPreview] = useState(false);
   const [combination, setCombination] = useState([])
-  console.log('specificPics', specificPics)
 
   useEffect(() => {
     dispatch(productSearchActions.searchProductByIdRequest({ id: params.id }));
@@ -389,6 +388,13 @@ function EditProduct() {
   const removeFile = (index) => {
     setListImg((prevImages) => prevImages.filter((_, idx) => idx !== index));
   };
+
+  const handleDelete = async () => {
+    await dispatch(productActions.deleteProductRequest({
+      id: data.id
+    }))
+    navigate(routes.accountSeller);
+  }
 
   return (
     <div className={styles.wrapper}>
@@ -710,12 +716,8 @@ function EditProduct() {
             onClick={handleSubmit}
           ></MainButton>
           <MainButton
-            title={'Preview'}
-            onClick={() => {
-              if (checkinput()) {
-                setPreview(true);
-              }
-            }}
+            title={'Delete'}
+            onClick={handleDelete}
             className={styles.button}
           ></MainButton>
           <MainButton

@@ -22,36 +22,36 @@ import Statistical from '../Statistical/Statistical';
 const publicRoutes = [
   { path: routes.home, component: Home, Layout: HeaderOnly },
   { path: routes.search, component: Search, Layout: HeaderOnlyWithLink },
-  { path: routes.wishList, component: WishList, Layout: HeaderOnlyWithLink, authorization: 'User' },
-  { path: routes.cart, component: Cart, Layout: HeaderOnlyWithLink, authorization: 'User' },
+  { path: routes.wishList, component: WishList, Layout: HeaderOnlyWithLink },
+  { path: routes.cart, component: Cart, Layout: HeaderOnlyWithLink },
   { path: routes.category, component: HomeCategory, Layout: HeaderOnlyWithLink },
   { path: routes.productDetails, component: ProductAllDetails, Layout: HeaderOnlyWithLink },
   { path: routes.createAccount, component: CreateAccount, Layout: HeaderOnlyWithLink },
-  { path: routes.account, component: Account, Layout: HeaderOnlyWithLink, authorization: 'User' },
-  { path: routes.address, component: Address, Layout: HeaderOnlyWithLink, authorization: 'User' },
+  { path: routes.account, component: Account, Layout: HeaderOnlyWithLink },
+  { path: routes.address, component: Address, Layout: HeaderOnlyWithLink },
   {
     path: routes.createProduct,
     component: CreateProduct,
     Layout: HeaderOnlyWithLink,
-    authorization: 'Seller',
+    // authorization: 'Seller',
   },
   {
     path: routes.static,
     component: Statistical,
     Layout: HeaderOnlyWithLink,
-    authorization: 'Seller',
+    // authorization: 'Seller',
   },
   {
     path: routes.accountSeller,
     component: AccountSeller,
     Layout: HeaderOnlyWithLink,
-    authorization: 'Seller',
+    // authorization: 'Seller',
   },
   {
     path: routes.editProduct,
     component: EditProduct,
     Layout: HeaderOnlyWithLink,
-    authorization: 'Seller',
+    // authorization: 'Seller',
   },
   {
     path: routes.allProduct,
@@ -72,7 +72,7 @@ const publicRoutes = [
     path: routes.oder,
     component: Order,
     Layout: HeaderOnlyWithLink,
-    authorization: 'Seller',
+    // authorization: 'Seller',
   },
 ];
 

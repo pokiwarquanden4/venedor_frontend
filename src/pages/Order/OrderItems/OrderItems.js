@@ -2,12 +2,14 @@ import { Fragment, useEffect, useState } from 'react';
 import styles from './OrderItems.module.scss';
 import MainButton from '../../../components/MainButton/MainButton';
 import Popup from '../../../components/Popup/Popup';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { historyActions } from '../../../redux/actions/purchase/historyActions';
 import { formatVND } from '../../../config/utils';
+import { LoginSelector } from '../../../redux/selectors/accountSelector/LoginSelector';
 
 function OrderItems({ data, upperData }) {
   const dispatch = useDispatch();
+  const loginSelect = useSelector(LoginSelector)
   const [addressPopup, setAddressPopup] = useState(false);
   const [status, setStatus] = useState(data.status);
 
@@ -68,10 +70,18 @@ function OrderItems({ data, upperData }) {
               }
             }}
           >
-            <option value="0">Pending</option>
-            <option value="1">Shipping</option>
-            <option value="2">Done</option>
-            <option value="3">Cancel</option>
+            <option value="0" disabled={
+              !(loginSelect.loginRole === "Seller" || (loginSelect.loginRole === "Stocker" && [0, 1, 3].includes(Number(status))))
+            }>Pending</option>
+            <option value="1" disabled={
+              !(loginSelect.loginRole === "Seller" || (loginSelect.loginRole === "Stocker" && [0, 1, 3].includes(Number(status))))
+            }>Shipping</option>
+            <option value="2" disabled={
+              !(loginSelect.loginRole === "Seller" || (loginSelect.loginRole === "Shipper" && [2, 3].includes(Number(status))))
+            }>Done</option>
+            <option value="3" disabled={
+              !(loginSelect.loginRole === "Seller" || (loginSelect.loginRole === "Stocker" && [0, 1, 3].includes(Number(status))) || (loginSelect.loginRole === "Shipper" && [2, 3].includes(Number(status))))
+            }>Cancel</option>
           </select>
         </td>
         <td className={styles.content_content}>

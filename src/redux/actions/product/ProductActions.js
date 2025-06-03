@@ -22,6 +22,10 @@ export const productActions = createActions({
   editProductSuccess: (payload) => payload,
   editProductFailure: (payload) => payload,
 
+  deleteProductRequest: (payload) => payload,
+  deleteProductSuccess: (payload) => payload,
+  deleteProductFailure: (payload) => payload,
+
   getCommentRequest: (payload) => payload,
   getCommentSuccess: (payload) => payload,
   getCommentFailure: (payload) => payload,

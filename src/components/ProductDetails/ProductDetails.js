@@ -175,7 +175,7 @@ function ProductDetails({ data, fullScreen, preview }) {
 
   const edit = useMemo(() => {
     if (!loginSelect.userData) return
-    return data.sellerId === loginSelect.userData.id
+    return data.sellerId === loginSelect.userData.id || data.sellerId === loginSelect.userData.sellerId
   }, [data.sellerId, loginSelect.userData])
 
   return (

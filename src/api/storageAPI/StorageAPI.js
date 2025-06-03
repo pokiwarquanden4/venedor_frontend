@@ -16,6 +16,12 @@ export const editProductAPI = (payload) => {
   });
 };
 
+export const deleteProductAPI = (payload) => {
+  return axios.post(`${URL}sellers/deleteProduct`, payload, {
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+
 export const getSellerProductAPI = (payload) => {
   return axios.get(`${URL}sellers/getSellerProducts`, {
     params: payload,

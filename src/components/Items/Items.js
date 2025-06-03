@@ -106,7 +106,7 @@ function Items({ data, vertical, wishList, edit }) {
           <Img vertical={vertical} className={styles.imgHover} imgUrl={data.listImgURL[0] || data.imgURL}></Img>
         </div>
         <div className={styles.item_content}>
-          <div className={styles.brand_name}>{data.brandName}</div>
+          {data.brandName ? <div className={styles.brand_name}>{data.brandName}</div> : undefined}
           <div className={styles.item_description}>{data.productName}</div>
           <div className={styles.prices}>
             {data.price !== data.price - data.price * (data.saleOff / 100) ? <div className={styles.old_price}>{formatVND(data.price)}</div> : undefined}

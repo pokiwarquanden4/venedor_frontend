@@ -18,6 +18,7 @@ import {
   getRankingDataAPI,
   getSalesToBuyAPI,
   askOverviewAIAPI,
+  deleteProductAPI,
 } from '../../../api/storageAPI/StorageAPI';
 import { productActions } from '../../actions/product/ProductActions';
 import { jwtCheck } from '../jwtCheck';
@@ -78,6 +79,23 @@ function* editProductSaga(action) {
     yield put(notificationActions.setNotificationContent('Edit Successfully'));
   } catch (err) {
     yield put(productActions.editProductFailure(err.response.data));
+
+    yield put(loadingActions.setLoadingLoading(false));
+  }
+}
+
+function* deleteProductSaga(action) {
+  try {
+    yield put(loadingActions.setLoadingLoading(true));
+
+    const product = yield call(deleteProductAPI, action.payload);
+    yield put(productActions.deleteProductSuccess(product.data));
+
+    jwtCheck(product);
+    yield put(loadingActions.setLoadingLoading(false));
+    yield put(notificationActions.setNotificationContent('Delete Successfully'));
+  } catch (err) {
+    yield put(productActions.deleteProductFailure(err.response.data));
 
     yield put(loadingActions.setLoadingLoading(false));
   }
@@ -324,6 +342,7 @@ function* productSagas() {
   yield takeLatest(productActions.createProductRequest, addProductSaga);
   yield takeLatest(productActions.getSellerProductRequest, getSellerProductSaga);
   yield takeLatest(productActions.editProductRequest, editProductSaga);
+  yield takeLatest(productActions.deleteProductRequest, deleteProductSaga);
   yield takeLatest(productSearchActions.quickSearchProductRequest, quickSearchProductSaga);
   yield takeLatest(productSearchActions.searchProductRequest, searchProductSaga);
   yield takeLatest(productSearchActions.searchProductByIdRequest, searchProductByIdSaga);

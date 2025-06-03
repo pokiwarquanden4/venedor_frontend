@@ -135,8 +135,7 @@ function HeaderFloating({ mainRef }) {
                 className={styles.logo}
               ></img>
             </div>
-            {loginSelect.loginRole !== 'Seller'
-              ?
+            {(!loginSelect.loginRole || loginSelect.loginRole === 'User') ? (
               <div className={styles.searchBar_wrapper}>
                 {inputBarDropDown ? (
                   <div className={styles.searchBar_dropdown}>
@@ -159,9 +158,7 @@ function HeaderFloating({ mainRef }) {
                   }}
                 ></SearchIcon>
               </div>
-              :
-              undefined
-            }
+            ) : undefined}
             <div className={styles.info_wrapper}>
               <SearchIcon
                 className={`${styles.searchIcon} ${styles.responsive}`}
@@ -178,13 +175,13 @@ function HeaderFloating({ mainRef }) {
                     if (loginSelect.loginRole === 'User') {
                       navigate('/account');
                     }
-                    if (loginSelect.loginRole === 'Seller') {
+                    if (loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker' || loginSelect.loginRole === 'Shipper') {
                       navigate('/account/editAccount');
                     }
                   }
                 }}
               ></HumanIcon>
-              {loginSelect.loginRole === 'Seller' ?
+              {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker') ?
                 <ShopIcon
                   className={styles.shopIcon}
                   onClick={() => {
@@ -198,7 +195,7 @@ function HeaderFloating({ mainRef }) {
                 :
                 undefined
               }
-              {loginSelect.loginRole === 'Seller' ? undefined : (
+              {(loginSelect.loginRole === 'User' || !loginSelect.loginRole) ?
                 <HeartIcon
                   className={styles.heartIcon}
                   onClick={() => {
@@ -208,12 +205,11 @@ function HeaderFloating({ mainRef }) {
                       navigate('/wishlist');
                     }
                   }}
-                ></HeartIcon>
-              )}
+                ></HeartIcon> : undefined}
               <BoxIcon
                 className={styles.boxIcon}
                 onClick={() => {
-                  if (loginSelect.loginRole === 'Seller') {
+                  if (loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker' || loginSelect.loginRole === 'Shipper') {
                     navigate(routes.oder);
                   } else {
                     if (!loginStatus) {

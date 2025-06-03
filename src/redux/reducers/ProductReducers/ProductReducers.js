@@ -266,6 +266,24 @@ export default function ProductReducers(state = productConstants, action) {
         success: false,
         loading: false,
       };
+    case getType(productActions.deleteProductRequest):
+      return {
+        ...state,
+        success: false,
+        loading: true,
+      };
+    case getType(productActions.deleteProductSuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+      };
+    case getType(productActions.deleteProductFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
 
     default:
       return state;
