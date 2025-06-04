@@ -57,4 +57,8 @@ export const productActions = createActions({
   askOverviewAIRequest: (payload) => payload,
   askOverviewAISuccess: (payload) => payload,
   askOverviewAIFailure: (payload) => payload,
+
+  getPaymentRequest: (payload) => payload,
+  getPaymentSuccess: (payload) => payload,
+  getPaymentFailure: (payload) => payload,
 });

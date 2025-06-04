@@ -168,6 +168,28 @@ export default function ProductReducers(state = productConstants, action) {
         success: false,
         loading: false,
       };
+    case getType(productActions.getPaymentRequest):
+      return {
+        ...state,
+        loading: true,
+        shopRanking: {
+          ...state.shopRanking,
+          overviewAI: undefined
+        }
+      };
+    case getType(productActions.getPaymentSuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        paymentList: action.payload.obj
+      };
+    case getType(productActions.getPaymentFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
     case getType(productActions.createCommentRequest):
       return {
         ...state,

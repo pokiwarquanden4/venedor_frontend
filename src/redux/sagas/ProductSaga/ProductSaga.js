@@ -19,6 +19,7 @@ import {
   getSalesToBuyAPI,
   askOverviewAIAPI,
   deleteProductAPI,
+  getPaymentAPI,
 } from '../../../api/storageAPI/StorageAPI';
 import { productActions } from '../../actions/product/ProductActions';
 import { jwtCheck } from '../jwtCheck';
@@ -338,6 +339,15 @@ function* askOverviewAISaga(action) {
   }
 }
 
+function* getPaymentSaga(action) {
+  try {
+    const payment = yield call(getPaymentAPI, action.payload);
+    yield put(productActions.getPaymentSuccess(payment.data));
+  } catch (err) {
+    yield put(productActions.getPaymentFailure(err.response.data));
+  }
+}
+
 function* productSagas() {
   yield takeLatest(productActions.createProductRequest, addProductSaga);
   yield takeLatest(productActions.getSellerProductRequest, getSellerProductSaga);
@@ -360,6 +370,7 @@ function* productSagas() {
   yield takeLatest(productActions.getProductSalesDataRequest, getProductSalesDataSaga);
   yield takeLatest(productActions.getSalesToBuyRequest, getSalesToBuyDataSaga);
   yield takeLatest(productActions.askOverviewAIRequest, askOverviewAISaga);
+  yield takeLatest(productActions.getPaymentRequest, getPaymentSaga);
 }
 
 export default productSagas;

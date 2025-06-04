@@ -134,4 +134,10 @@ export const askOverviewAIAPI = (payload) => {
   });
 };
 
+export const getPaymentAPI = (payload) => {
+  return axios.get(`${URL}users/getPayment`, {
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+
 

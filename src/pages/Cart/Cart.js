@@ -14,6 +14,7 @@ import Popup from '../../components/Popup/Popup';
 import { purchaseActions } from '../../redux/actions/purchase/purchaseActions';
 import { notificationActions } from '../../redux/actions/notification/notificationAction';
 import { formatVND } from '../../config/utils';
+import PaymentQR from '../../components/PaymentQR/paymentQR';
 
 function Cart() {
   const [data, setData] = useState([]);
@@ -24,6 +25,7 @@ function Cart() {
   const [addressPopup, setAddressPopup] = useState(false);
   const [originalPrice, setOriginalPrice] = useState(0);
   const [discount, setDiscount] = useState(0);
+  const [qrPopup, setQrPopup] = useState(false)
   const [total, setTotal] = useState(0);
   const [valid, setValid] = useState(false);
   const cartSelect = useSelector(cartSelector);
@@ -106,6 +108,19 @@ function Cart() {
 
   return (
     <Fragment>
+      {qrPopup ?
+        <Popup
+          width='400px'
+          height='420px'
+          onClick={() => {
+            setQrPopup(false);
+          }}
+        >
+          <PaymentQR amount={total} currentAddress={currentAddress}></PaymentQR>
+        </Popup>
+        :
+        undefined
+      }
       {addressPopup && (
         <Popup
           onClick={() => {
@@ -216,10 +231,7 @@ function Cart() {
                         disable={!valid}
                         onClick={() => {
                           if (currentAddress) {
-                            dispatch(
-                              purchaseActions.purchaseRequest({ addressId: currentAddress.id })
-                            );
-                            navigate('/thankyou');
+                            setQrPopup(true)
                           } else {
                             dispatch(notificationActions.setNotificationContent('Address Missing'));
                           }
