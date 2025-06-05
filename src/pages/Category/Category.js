@@ -42,45 +42,45 @@ function Category() {
     const filterTemp = filter;
     const tempData = data;
     switch (filterTemp) {
-      case 'Feature':
+      case 'Tính năng':
         break;
-      case 'Best Selling':
+      case 'Bán chạy nhất':
         tempData.sort((a, b) => {
           return a.sold > b.sold;
         });
         break;
-      case 'Alphabetically,A-Z':
+      case 'Theo bảng chữ cái, A-Z':
         tempData.sort((a, b) => {
           return a.description.localeCompare(b.description);
         });
         break;
-      case 'Alphabetically,Z-A':
+      case 'Theo bảng chữ cái, Z-A':
         tempData.sort((a, b) => {
           return b.description.localeCompare(a.description);
         });
         break;
-      case 'Price, low to high':
+      case 'Giá, thấp đến cao':
         tempData.sort((a, b) => {
           const truePriceA = a.price - a.price * (a.saleOff / 100); // Calculate true price for object a
           const truePriceB = b.price - b.price * (b.saleOff / 100); // Calculate true price for object b
           return truePriceA - truePriceB; // Compare the true prices
         });
         break;
-      case 'Price, high to low':
+      case 'Giá, cao đến thấp':
         tempData.sort((a, b) => {
           const truePriceA = a.price - a.price * (a.saleOff / 100); // Calculate true price for object a
           const truePriceB = b.price - b.price * (b.saleOff / 100); // Calculate true price for object b
           return truePriceB - truePriceA; // Compare the true prices
         });
         break;
-      case 'Date, old to new':
+      case 'Ngày, cũ đến mới':
         tempData.sort((a, b) => {
           const dateA = new Date(a.updatedAt); // Convert updatedAt string to a Date object for object a
           const dateB = new Date(b.updatedAt); // Convert updatedAt string to a Date object for object b
           return dateA - dateB; // Compare the dates
         });
         break;
-      case 'Date, new to old':
+      case 'Ngày, mới đến cũ':
         tempData.sort((a, b) => {
           const dateA = new Date(a.updatedAt); // Convert updatedAt string to a Date object for object a
           const dateB = new Date(b.updatedAt); // Convert updatedAt string to a Date object for object b
@@ -121,14 +121,14 @@ function Category() {
                 }}
                 title="Feature"
                 content={[
-                  'Feature',
-                  'Best Selling',
-                  'Alphabetically,A-Z',
-                  'Alphabetically,Z-A',
-                  'Price, low to high',
-                  'Price, high to low',
-                  'Date, old to new',
-                  'Date, new to old',
+                  'Tính năng',
+                  'Bán chạy nhất',
+                  'Theo bảng chữ cái, A-Z',
+                  'Theo bảng chữ cái, Z-A',
+                  'Giá, thấp đến cao',
+                  'Giá, cao đến thấp',
+                  'Ngày, cũ đến mới',
+                  'Ngày, mới đến cũ',
                 ]}
               ></Collapse>
             </div>

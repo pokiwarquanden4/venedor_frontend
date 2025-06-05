@@ -49,7 +49,7 @@ function ProductList() {
             setCurrentPage(1);
           }}
         >
-          Latest
+          Mới nhất
         </div>
         <div className={styles.header_separate}>/</div>
         <div
@@ -58,7 +58,7 @@ function ProductList() {
             setCurrentPage(2);
           }}
         >
-          BestSellers
+          Bán chạy nhất
         </div>
         <div className={styles.header_separate}>/</div>
         <div
@@ -67,7 +67,7 @@ function ProductList() {
             setCurrentPage(3);
           }}
         >
-          Featured
+          Dành cho bạn
         </div>
       </div>
       <div className={styles.content}>

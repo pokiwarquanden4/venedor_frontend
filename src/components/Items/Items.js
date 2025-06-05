@@ -114,7 +114,7 @@ function Items({ data, vertical, wishList, edit }) {
               {formatVND(data.price - data.price * (data.saleOff / 100))}
             </div>
           </div>
-          {data.saleOff ? <div className={styles.saving}>you save {data.saleOff}%</div> : null}
+          {data.saleOff ? <div className={styles.saving}>Bạn tiết kiệm {data.saleOff}%</div> : null}
         </div>
       </div>
     </Fragment>

@@ -13,7 +13,7 @@ function CategoryFilterPopUp({ setPopup }) {
   return (
     <div className={styles.filterPopUp_wrapper}>
       <div className={styles.category}>
-        <div className={styles.category_header}>Category</div>
+        <div className={styles.category_header}>Danh mục</div>
         <div className={styles.category_content}>
           {productSelect.category.category ? Object.keys(productSelect.category.category).map((id, index) => {
             const item = productSelect.category.category[id]

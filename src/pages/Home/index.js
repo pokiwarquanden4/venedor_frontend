@@ -15,8 +15,8 @@ function Home() {
     return (
       <div className={styles.wrapper}>
         <div className={styles.innerWrapper} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 40 }}>
-          <h1>Welcome Admin!</h1>
-          <p>This is your admin introduction page. Here you can manage the system, users, and view statistics.</p>
+          <h1>Chào mừng Admin!</h1>
+          <p>Đây là trang giới thiệu dành cho Admin. Tại đây bạn có thể quản lý hệ thống, người dùng và xem thống kê.</p>
           <button
             style={{
               marginTop: 24,
@@ -30,7 +30,7 @@ function Home() {
             }}
             onClick={() => navigate('/admin')}
           >
-            Go to admin dashboard
+            Đến trang quản trị
           </button>
         </div>
       </div>
@@ -41,8 +41,8 @@ function Home() {
     return (
       <div className={styles.wrapper}>
         <div className={styles.innerWrapper} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 40 }}>
-          <h1>Welcome Seller!</h1>
-          <p>This is your seller introduction page. Here you can manage your shop, view statistics, and more.</p>
+          <h1>Chào mừng Người bán!</h1>
+          <p>Đây là trang giới thiệu dành cho Người bán. Tại đây bạn có thể quản lý cửa hàng, xem thống kê và nhiều hơn nữa.</p>
           <button
             style={{
               marginTop: 24,
@@ -56,7 +56,7 @@ function Home() {
             }}
             onClick={() => navigate('/accountSeller')}
           >
-            Go to store
+            Đến cửa hàng
           </button>
         </div>
       </div>
@@ -67,8 +67,8 @@ function Home() {
     return (
       <div className={styles.wrapper}>
         <div className={styles.innerWrapper} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 40 }}>
-          <h1>Welcome Shipper!</h1>
-          <p>This is your shipper introduction page. Here you can view and manage your delivery orders.</p>
+          <h1>Chào mừng Nhân viên giao hàng!</h1>
+          <p>Đây là trang giới thiệu dành cho Nhân viên giao hàng. Tại đây bạn có thể xem và quản lý đơn hàng giao.</p>
           <button
             style={{
               marginTop: 24,
@@ -82,7 +82,7 @@ function Home() {
             }}
             onClick={() => navigate('/order')}
           >
-            Go to delivery management
+            Đến quản lý giao hàng
           </button>
         </div>
       </div>
@@ -93,8 +93,8 @@ function Home() {
     return (
       <div className={styles.wrapper}>
         <div className={styles.innerWrapper} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 40 }}>
-          <h1>Welcome Stocker!</h1>
-          <p>This is your stocker introduction page. Here you can manage inventory and stock updates.</p>
+          <h1>Chào mừng Nhân viên kho!</h1>
+          <p>Đây là trang giới thiệu dành cho Nhân viên kho. Tại đây bạn có thể quản lý tồn kho và cập nhật hàng hóa.</p>
           <button
             style={{
               marginTop: 24,
@@ -108,7 +108,7 @@ function Home() {
             }}
             onClick={() => navigate('/accountSeller')}
           >
-            Go to inventory management
+            Đến quản lý tồn kho
           </button>
         </div>
       </div>

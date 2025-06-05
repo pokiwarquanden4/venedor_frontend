@@ -55,15 +55,15 @@ function Address() {
 
   const handleSubmit = useCallback(() => {
     if (!name.trim()) {
-      dispatch(notificationActions.setNotificationContent('Please enter your name.'));
+      dispatch(notificationActions.setNotificationContent('Vui lòng nhập họ tên.'));
       return;
     }
     if (!address1.trim()) {
-      dispatch(notificationActions.setNotificationContent('Please enter Address1.'));
+      dispatch(notificationActions.setNotificationContent('Vui lòng nhập địa chỉ 1.'));
       return;
     }
     if (!phoneNumber.trim()) {
-      dispatch(notificationActions.setNotificationContent('Please enter your phone number.'));
+      dispatch(notificationActions.setNotificationContent('Vui lòng nhập số điện thoại.'));
       return;
     }
     dispatch(
@@ -85,15 +85,15 @@ function Address() {
 
   const handleEdit = useCallback((id) => {
     if (!name.trim()) {
-      dispatch(notificationActions.setNotificationContent('Please enter your name.'));
+      dispatch(notificationActions.setNotificationContent('Vui lòng nhập họ tên.'));
       return;
     }
     if (!address1.trim()) {
-      dispatch(notificationActions.setNotificationContent('Please enter Address1.'));
+      dispatch(notificationActions.setNotificationContent('Vui lòng nhập địa chỉ 1.'));
       return;
     }
     if (!phoneNumber.trim()) {
-      dispatch(notificationActions.setNotificationContent('Please enter your phone number.'));
+      dispatch(notificationActions.setNotificationContent('Vui lòng nhập số điện thoại.'));
       return;
     }
     dispatch(
@@ -114,11 +114,11 @@ function Address() {
     <div className={styles.wrapper}>
       <div className={styles.inner_wrapper}>
         <div className={styles.header}>
-          <div className={styles.main_header}>Your Address</div>
+          <div className={styles.main_header}>Địa chỉ của bạn</div>
         </div>
         <div className={styles.content}>
           <div className={styles.default}>
-            <div className={styles.default_header}>Default</div>
+            <div className={styles.default_header}>Danh sách địa chỉ</div>
             <div className={styles.default_content}>
               <div className={styles.addresses}>
                 {data.length !== 0 ? (
@@ -143,7 +143,7 @@ function Address() {
                         </div>
                         <div className={styles.address_button_wrapper}>
                           <MainButton
-                            title="EDIT"
+                            title="SỬA"
                             className={styles.address_button}
                             onClick={() => {
                               setName(item.name);
@@ -160,7 +160,7 @@ function Address() {
                             }}
                           ></MainButton>
                           <MainButton
-                            title="DELETE"
+                            title="XÓA"
                             className={styles.address_button}
                             onClick={() => {
                               handleStopFocus();
@@ -173,17 +173,17 @@ function Address() {
                   })
                 ) : (
                   <div className={styles.notification}>
-                    You don't have any address, please create one
+                    Bạn chưa có địa chỉ nào, vui lòng thêm mới.
                   </div>
                 )}
               </div>
             </div>
           </div>
           <div className={styles.add_new}>
-            <div className={styles.add_new_header}>Add a New Address</div>
+            <div className={styles.add_new_header}>Thêm địa chỉ mới</div>
             <div className={styles.add_new_content}>
               <div className={styles.input}>
-                <div className={styles.input_header}>Name</div>
+                <div className={styles.input_header}>Họ và tên</div>
                 <input
                   className={styles.input_bar}
                   value={name}
@@ -193,7 +193,7 @@ function Address() {
                 ></input>
               </div>
               <div className={styles.input}>
-                <div className={styles.input_header}>Company</div>
+                <div className={styles.input_header}>Công ty</div>
                 <input
                   className={styles.input_bar}
                   value={company}
@@ -203,7 +203,7 @@ function Address() {
                 ></input>
               </div>
               <div className={styles.input}>
-                <div className={styles.input_header}>Address1</div>
+                <div className={styles.input_header}>Địa chỉ 1</div>
                 <input
                   className={styles.input_bar}
                   value={address1}
@@ -213,7 +213,7 @@ function Address() {
                 ></input>
               </div>
               <div className={styles.input}>
-                <div className={styles.input_header}>Address2</div>
+                <div className={styles.input_header}>Địa chỉ 2</div>
                 <input
                   className={styles.input_bar}
                   value={address2}
@@ -223,7 +223,7 @@ function Address() {
                 ></input>
               </div>
               <div className={styles.input}>
-                <div className={styles.input_header}>City</div>
+                <div className={styles.input_header}>Thành phố</div>
                 <input
                   className={styles.input_bar}
                   value={city}
@@ -233,7 +233,7 @@ function Address() {
                 ></input>
               </div>
               <div className={styles.input}>
-                <div className={styles.input_header}>Country</div>
+                <div className={styles.input_header}>Quốc gia</div>
                 <input
                   className={styles.input_bar}
                   value={country}
@@ -243,7 +243,7 @@ function Address() {
                 ></input>
               </div>
               <div className={styles.input}>
-                <div className={styles.input_header}>Phone Number</div>
+                <div className={styles.input_header}>Số điện thoại</div>
                 <input
                   className={styles.input_bar}
                   value={phoneNumber}
@@ -257,7 +257,7 @@ function Address() {
               {currentAddress === undefined && (
                 <MainButton
                   className={styles.button}
-                  title="ADD ADDRESS"
+                  title="THÊM ĐỊA CHỈ"
                   onClick={handleSubmit}
                 ></MainButton>
               )}
@@ -265,7 +265,7 @@ function Address() {
                 <Fragment>
                   <MainButton
                     className={styles.button}
-                    title="SAVE"
+                    title="LƯU"
                     onClick={() => {
                       handleEdit(currentId);
                       handleStopFocus();
@@ -273,7 +273,7 @@ function Address() {
                   ></MainButton>
                   <MainButton
                     className={styles.button}
-                    title="CANCEL"
+                    title="HỦY"
                     onClick={handleStopFocus}
                   ></MainButton>
                 </Fragment>

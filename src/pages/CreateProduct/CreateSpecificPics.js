@@ -38,7 +38,7 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
 
     const handleSubmit = useCallback(() => {
         if (!quantity || !listImg.length || !price || !saleOff) {
-            dispatch(notificationActions.setNotificationContent('Please fill all the field'));
+            dispatch(notificationActions.setNotificationContent('Vui lòng điền đầy đủ các trường thông tin.'));
             return
         }
         onSubmit({
@@ -54,10 +54,10 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
     return (
         <div className={styles.container}>
             <div className={styles.price}>
-                <div className={styles.price_header}>Price</div>
+                <div className={styles.price_header}>Giá sản phẩm</div>
                 <div className={styles.price_wrapper}>
                     <input
-                        placeholder="Price"
+                        placeholder="Nhập giá"
                         value={price}
                         className={`${styles.price_input}`}
                         onChange={(e) => {
@@ -69,7 +69,7 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
                 </div>
             </div>
             <div className={styles.quantity}>
-                <div className={styles.quantity_header}>Quantity</div>
+                <div className={styles.quantity_header}>Số lượng</div>
                 <input
                     value={quantity}
                     className={`${styles.quantity_input}`}
@@ -95,10 +95,10 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
                 />
             </div>
             <div className={styles.saleOff}>
-                <div className={styles.saleOff_header}>Sale Off</div>
+                <div className={styles.saleOff_header}>Giảm giá</div>
                 <div className={styles.saleOff_wrapper}>
                     <input
-                        placeholder="Sale Off"
+                        placeholder="Nhập phần trăm giảm giá"
                         className={`${styles.saleOff_input}`}
                         value={saleOff}
                         onChange={(e) => {
@@ -111,7 +111,7 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
                     <span className={styles.saleOff_unit}>%</span>
                 </div>
             </div>
-            <div className={styles.listImg_header}>Images</div>
+            <div className={styles.listImg_header}>Hình ảnh</div>
             <div className={styles.listImg_input}>
                 {listImg &&
                     listImg.map((img, index) => {
@@ -137,14 +137,14 @@ function CreateSpecificPics({ value, setOpenPopup, onSubmit }) {
             <div className={styles.submit}>
                 <MainButton
                     className={styles.submitButton}
-                    title={'Submit'}
+                    title={'Xác nhận'}
                     onClick={() => {
                         handleSubmit()
                     }}
                 ></MainButton>
                 <MainButton
                     className={styles.submitButton}
-                    title={'Cancel'}
+                    title={'Huỷ'}
                     onClick={() => setOpenPopup(false)}
                 ></MainButton>
             </div>

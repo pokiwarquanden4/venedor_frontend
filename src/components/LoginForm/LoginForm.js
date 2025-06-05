@@ -16,14 +16,13 @@ function LoginForm({ onClick }) {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.header}>{forgetPassword ? 'Forgot Your Password' : 'Login'}</div>
+      <div className={styles.header}>{forgetPassword ? 'Quên mật khẩu' : 'Đăng nhập'}</div>
       <div className={styles.content}>
         <div className={styles.email}>
-          <div className={styles.email_header}>Account</div>
+          <div className={styles.email_header}>Tài khoản</div>
           <input
-            className={`${styles.email_input} ${
-              selectMessage.loginError ? styles.errorMessage : ''
-            }`}
+            className={`${styles.email_input} ${selectMessage.loginError ? styles.errorMessage : ''
+              }`}
             onFocus={() => {
               dispatch(loginActions.loginError(false));
             }}
@@ -34,7 +33,7 @@ function LoginForm({ onClick }) {
         </div>
         <div className={styles.password}>
           <div className={styles.password_header}>
-            {forgetPassword ? 'Enter Your Otp' : 'Password'}
+            {forgetPassword ? 'Nhập mã OTP' : 'Mật khẩu'}
             {forgetPassword ? (
               <div
                 className={styles.getOTP}
@@ -42,15 +41,14 @@ function LoginForm({ onClick }) {
                   dispatch(loginActions.createOtpRequest({ account: account }));
                 }}
               >
-                Send OTP to gmail
+                Gửi OTP tới email
               </div>
             ) : undefined}
           </div>
           <input
             type="password"
-            className={`${styles.password_input} ${
-              selectMessage.loginError ? styles.errorMessage : ''
-            }`}
+            className={`${styles.password_input} ${selectMessage.loginError ? styles.errorMessage : ''
+              }`}
             onChange={(e) => {
               setPassword(e.target.value);
             }}
@@ -58,7 +56,7 @@ function LoginForm({ onClick }) {
         </div>
         <MainButton
           className={styles.confirm_button}
-          title={forgetPassword ? 'GET YOUR PASSWORD' : 'SIGN IN'}
+          title={forgetPassword ? 'LẤY MẬT KHẨU' : 'ĐĂNG NHẬP'}
           onClick={() => {
             if (!forgetPassword) {
               dispatch(
@@ -80,7 +78,7 @@ function LoginForm({ onClick }) {
       </div>
       <div className={styles.footer}>
         <Link to={routes.createAccount} onClick={onClick} className={styles.link}>
-          <div className={styles.create_account}>Create Account</div>
+          <div className={styles.create_account}>Tạo tài khoản</div>
         </Link>
         <div
           className={styles.forgot_password}
@@ -88,7 +86,7 @@ function LoginForm({ onClick }) {
             setForgetPassword(!forgetPassword);
           }}
         >
-          {forgetPassword ? 'Sign in' : 'Forgot your password?'}{' '}
+          {forgetPassword ? 'Đăng nhập' : 'Quên mật khẩu?'}{' '}
         </div>
       </div>
     </div>

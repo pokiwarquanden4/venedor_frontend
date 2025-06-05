@@ -52,7 +52,7 @@ function Account() {
 
   const onFeedBack = useCallback(() => {
     if (!feedbackData.rate) {
-      dispatch(notificationActions.setNotificationContent('Please fill all the fields!'));
+      dispatch(notificationActions.setNotificationContent('Vui lòng điền đầy đủ thông tin!'));
       return
     }
 
@@ -64,7 +64,7 @@ function Account() {
       historyId: feedbackData.historyId,
     }))
 
-    dispatch(notificationActions.setNotificationContent('Thank you for your feedback!'));
+    dispatch(notificationActions.setNotificationContent('Cảm ơn bạn đã đánh giá!'));
     setOpenFeedback(false);
 
     navigate(`/category/${feedbackData.category}/${feedbackData.productId}`);
@@ -85,7 +85,7 @@ function Account() {
         </div>
         <div className={styles.content}>
           <div className={styles.order_history}>
-            <div className={styles.order_history_header}>Order History</div>
+            <div className={styles.order_history_header}>Lịch sử đơn hàng</div>
             <div className={styles.history_content}>
               {history.length !== 0 ? (
                 history.map((item, index) => {
@@ -110,21 +110,21 @@ function Account() {
                           <div className={styles.name} title={productName}>
                             {productName}
                           </div>
-                          <div className={styles.quantity}>Quantity: {item.number}</div>
-                          <div className={styles.id}>Id: {item.id}</div>
+                          <div className={styles.quantity}>Số lượng: {item.number}</div>
+                          <div className={styles.id}>Mã đơn: {item.id}</div>
                         </div>
                         <div className={styles.price}>{formatVND(item.paid)}</div>
                         <div className={styles.status}>
                           {item.status === 0
-                            ? 'Pending'
+                            ? 'Chờ xử lý'
                             : item.status === 1
-                              ? 'Shipping'
+                              ? 'Đang giao'
                               : item.status === 2
-                                ? 'Done'
-                                : 'Cancel'}
+                                ? 'Hoàn thành'
+                                : 'Đã hủy'}
                         </div>
                         <div className={styles.purchaseDate}>
-                          {new Date(item.updatedAt).toLocaleDateString('en-GB', {
+                          {new Date(item.updatedAt).toLocaleDateString('vi-VN', {
                             day: '2-digit',
                             month: '2-digit',
                             year: 'numeric',
@@ -144,7 +144,7 @@ function Account() {
                                 });
                               }}
                             >
-                              Give Feedback
+                              Đánh giá sản phẩm
                             </div>
                           )}
                           {item.status !== 2 ? (
@@ -156,13 +156,13 @@ function Account() {
                                 }
                               }}
                             >
-                              Cancel Order
+                              Hủy đơn hàng
                             </div>
                           ) : (
                             <div
                               className={styles.confirm}
                             >
-                              Done
+                              Đã hoàn thành
                             </div>
                           )}
                         </div>
@@ -171,12 +171,12 @@ function Account() {
                   );
                 })
               ) : (
-                <div className={styles.order_history_content}>You haven't placed any orders yet.</div>
+                <div className={styles.order_history_content}>Bạn chưa có đơn hàng nào.</div>
               )}
             </div>
           </div>
           <div className={styles.account_details}>
-            <div className={styles.account_details_header}>Account Details</div>
+            <div className={styles.account_details_header}>Thông tin tài khoản</div>
             <div className={styles.account_details_content}>
               <div className={styles.addresses}>
                 {dataAddress.length !== 0 &&
@@ -198,12 +198,12 @@ function Account() {
               <Link to={routes.address}>
                 <MainButton
                   className={styles.address_button}
-                  title={`VIEW ADDRESS ( ${dataAddress.length} )`}
+                  title={`XEM ĐỊA CHỈ ( ${dataAddress.length} )`}
                 ></MainButton>
               </Link>
               <MainButton
                 className={styles.editAccount_button}
-                title={`EDIT ACCOUNT`}
+                title={`CHỈNH SỬA TÀI KHOẢN`}
                 onClick={() => {
                   navigate('/account/editAccount');
                 }}
@@ -224,7 +224,7 @@ function Account() {
             highestZIndex={true}
           >
             <div className={styles.feedback_container}>
-              <div className={styles.feedback_header}>Give Your Feedback</div>
+              <div className={styles.feedback_header}>Đánh giá sản phẩm</div>
               <div className={styles.feedback_stars}>
                 {[1, 2, 3, 4, 5].map((star) => (
                   <span
@@ -238,16 +238,16 @@ function Account() {
               </div>
               <textarea
                 className={styles.feedback_comment}
-                placeholder="Write your comment here..."
+                placeholder="Nhập nhận xét của bạn..."
                 value={feedbackData.content || ''}
                 onChange={(e) => setFeedbackData((prev) => ({ ...prev, content: e.target.value }))}
               ></textarea>
               <div className={styles.feedback_actions}>
                 <button className={styles.submit_button} onClick={onFeedBack}>
-                  Submit
+                  Gửi đánh giá
                 </button>
                 <button className={styles.cancel_button} onClick={() => setOpenFeedback(false)}>
-                  Cancel
+                  Hủy
                 </button>
               </div>
             </div>

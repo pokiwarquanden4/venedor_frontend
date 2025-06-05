@@ -11,7 +11,7 @@ function BackGroundImg({ className, main, imgURL, deleteProduct }) {
     <div className={classes}>
       <img alt='' className={styles.img} ref={imgRef} src={imgURL}></img>
       <div className={styles.img_name} ref={imgNameRef}>
-        {main ? 'Main picture of your product' : 'Preview picture of your product'}
+        {main ? 'Ảnh chính của sản phẩm' : 'Ảnh xem trước của sản phẩm'}
       </div>
       <div className={styles.options} onClick={deleteProduct}>
         <TrashCanIcon className={styles.options_icon}></TrashCanIcon>

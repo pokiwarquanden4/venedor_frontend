@@ -52,8 +52,8 @@ function Search() {
         <div className={styles.search_bar_wrapper}>
           <div className={styles.search_bar_header}>
             {data.length !== 0
-              ? `${data.length} results for "${searchValue}"`
-              : 'Search for products on our site'}
+              ? `${data.length} kết quả cho "${searchValue}"`
+              : 'Tìm kiếm sản phẩm trên trang của chúng tôi'}
           </div>
           {data.length !== 0 ? (
             <div className={styles.items}>
@@ -68,7 +68,7 @@ function Search() {
           ) : (
             <div className={styles.search_bar}>
               <input
-                placeholder="Search our stores"
+                placeholder="Tìm kiếm trong cửa hàng"
                 className={styles.search_input}
                 onChange={(e) => {
                   setSearchValue(e.target.value);
@@ -101,6 +101,7 @@ function Search() {
       </div>
     </div>
   );
+
 }
 
 export default Search;

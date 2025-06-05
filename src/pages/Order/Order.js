@@ -49,13 +49,13 @@ function Order() {
       <div className={styles.inner_wrapper}>
         <div className={styles.header_wrapper}>
           <div className={styles.header}>
-            <div className={styles.main_header}>Your Order</div>
-            <div className={styles.sub_header}>Your customer is waiting for your response</div>
+            <div className={styles.main_header}>Đơn hàng của bạn</div>
+            <div className={styles.sub_header}>Khách hàng đang chờ phản hồi từ bạn</div>
           </div>
           <div className={styles.search_wrapper}>
             <input
               type="text"
-              placeholder="Search by ID"
+              placeholder="Tìm theo ID"
               className={styles.search_input}
               onChange={(e) => {
                 if (e.target.value === '') {
@@ -94,11 +94,11 @@ function Order() {
               setSelectedStatus(e.target.value)
             }}
           >
-            <option value='-1'>All</option>
-            <option value="0">Pending</option>
-            <option value="1">Shipping</option>
-            <option value="2">Done</option>
-            <option value="3">Cancel</option>
+            <option value='-1'>Tất cả</option>
+            <option value="0">Chờ xử lý</option>
+            <option value="1">Đang giao</option>
+            <option value="2">Hoàn thành</option>
+            <option value="3">Đã hủy</option>
           </select>
           <select
             className={styles.category_input}
@@ -106,7 +106,7 @@ function Order() {
               setSelectProductId(e.target.value);
             }}
           >
-            <option value={0}>All</option>
+            <option value={0}>Tất cả</option>
             {data.storages.map((item, index) => {
               return (
                 <option value={item.id} key={index}>
@@ -121,14 +121,14 @@ function Order() {
             <table className={styles.table}>
               <tbody>
                 <tr className={styles.content_table_header}>
-                  <th className={styles.content_header}>Id</th>
-                  <th className={styles.content_header}>Picture</th>
-                  <th className={styles.content_header}>Product Name</th>
-                  <th className={styles.content_header}>Price</th>
-                  <th className={styles.content_header}>Status</th>
-                  <th className={styles.content_header}>Purchase Date</th>
-                  <th className={styles.content_header}>Edit Date</th>
-                  <th className={styles.content_header}>Address</th>
+                  <th className={styles.content_header}>ID</th>
+                  <th className={styles.content_header}>Hình ảnh</th>
+                  <th className={styles.content_header}>Tên sản phẩm</th>
+                  <th className={styles.content_header}>Giá</th>
+                  <th className={styles.content_header}>Trạng thái</th>
+                  <th className={styles.content_header}>Ngày mua</th>
+                  <th className={styles.content_header}>Ngày chỉnh sửa</th>
+                  <th className={styles.content_header}>Địa chỉ</th>
                 </tr>
                 {data.histories.map((item, index) => {
                   const product = data.storages.find(i => i.id === item.productId)
@@ -137,7 +137,7 @@ function Order() {
               </tbody>
             </table>
           ) : (
-            <div className={styles.notification}>You don't have any order</div>
+            <div className={styles.notification}>Bạn chưa có đơn hàng nào</div>
           )}
           <div className={styles.pagination}>
             <Pagination pageData={pageData} setPageData={setPageData} totalPages={data.totalPages}></Pagination>
@@ -146,6 +146,7 @@ function Order() {
       </div>
     </div>
   );
+
 }
 
 export default Order;

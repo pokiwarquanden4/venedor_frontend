@@ -12,19 +12,19 @@ function Header() {
         <div className={styles.header_info}>
           <div className={styles.items}>
             <TruckIcon className={styles.truckIcon}></TruckIcon>
-            <div className={styles.content}>Free Delivery</div>
+            <div className={styles.content}>Miễn phí giao hàng</div>
           </div>
           <div className={styles.items}>
             <LockIcon className={styles.lockIcon}></LockIcon>
-            <div className={styles.content}>Payment Secured</div>
+            <div className={styles.content}>Thanh toán an toàn</div>
           </div>
           <div className={styles.items}>
             <ShareIcon className={styles.shareIcon}></ShareIcon>
-            <div className={styles.content}>30-Day Returns</div>
+            <div className={styles.content}>Đổi trả trong 30 ngày</div>
           </div>
           <div className={styles.items}>
             <ContactIcon className={styles.contactIcon}></ContactIcon>
-            <div className={styles.content}>24/H Customer support</div>
+            <div className={styles.content}>Hỗ trợ khách hàng 24/7</div>
           </div>
         </div>
       </div>

@@ -104,7 +104,7 @@ function OrderItems({ data, upperData }) {
               setAddressPopup(true);
             }}
             className={styles.button}
-            title="See Address"
+            title="Địa chỉ"
           ></MainButton>
         </td>
       </tr>

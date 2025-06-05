@@ -28,24 +28,33 @@ function WishList() {
   return (
     <div className={styles.wrapper}>
       <div className={styles.wrapper_content}>
+        {/* Header với tiêu đề và nút xóa tất cả */}
         <div className={styles.header}>
-          <div className={styles.header_content}>I Wish List</div>
+          <div className={styles.header_content}>Danh sách mong muốn</div>
           <div
             className={styles.remove_content}
             onClick={() => {
               dispatch(wishListActions.deleteAllWishListRequest());
             }}
           >
-            <TrashCanIcon className={styles.trashCan_icon}></TrashCanIcon>
-            <div className={styles.remove_title}>Remove All</div>
+            <TrashCanIcon className={styles.trashCan_icon} />
+            <div className={styles.remove_title}>Xoá tất cả</div>
           </div>
         </div>
+
+        {/* Nội dung danh sách các item */}
         <div className={styles.content}>
           <div className={styles.items}>
             {data.length !== 0 &&
-              data.map((item, index) => {
-                return <Items data={item} key={index} vertical={true} wishList={true}></Items>;
-              })}
+              data.map((item, index) => (
+                <Items
+                  data={item}
+                  key={index}
+                  vertical={true}
+                  wishList={true}
+                />
+              ))
+            }
           </div>
         </div>
       </div>

@@ -103,14 +103,15 @@ function Statistical() {
             return (
                 <div style={{ background: 'white', border: '1px solid #ccc', padding: 10 }}>
                     <p><strong>{data.productName}</strong></p>
-                    <p>Views: {data.viewNumber}</p>
-                    <p>Purchases: {data.salesNumber}</p>
-                    <p>Conversion Rate: {(data.rate || 0).toFixed(2)}%</p>
+                    <p>Lượt xem: {data.viewNumber}</p>
+                    <p>Lượt mua: {data.salesNumber}</p>
+                    <p>Tỷ lệ chuyển đổi: {(data.rate || 0).toFixed(2)}%</p>
                 </div>
             );
         }
         return null;
     };
+
 
     function calculateAverageRating(ratings) {
         let totalVotes = 0;
@@ -146,18 +147,22 @@ function Statistical() {
         <div className={styles.chartWrapper}>
             <div className={styles.innerWrapper}>
                 <div className={styles.header}>
-                    <div className={styles.main_header}>Overview Statistics</div>
-                    <MainButton onClick={() => {
-                        setISShowAI(true)
-                        if (!productSelect.shopRanking.overviewAI) {
-                            askAI()
-                        }
-                    }} className={styles.AIButton} title={'AI Overview'}></MainButton>
+                    <div className={styles.main_header}>Thống Kê Tổng Quan</div>
+                    <MainButton
+                        onClick={() => {
+                            setISShowAI(true);
+                            if (!productSelect.shopRanking.overviewAI) {
+                                askAI();
+                            }
+                        }}
+                        className={styles.AIButton}
+                        title={'Tổng Quan AI'}
+                    ></MainButton>
                 </div>
                 <div className={styles.content}>
                     <div className={styles.chartRow}>
                         <div className={styles.circleChart}>
-                            <h3 className={styles.chartTitle}>Rating Distribution (1-5 Stars)</h3>
+                            <h3 className={styles.chartTitle}>Phân Bố Đánh Giá (1-5 Sao)</h3>
                             <ResponsiveContainer width="100%" height={300}>
                                 <PieChart>
                                     <Pie
@@ -175,32 +180,30 @@ function Statistical() {
                                     </Pie>
                                     <Tooltip
                                         formatter={(value, name, props) => {
-                                            const percent = (props.payload.percent).toFixed(2); // Tính phần trăm từ props.payload.percent
+                                            const percent = (props.payload.percent).toFixed(2);
                                             return [`${name} (${value}) - ${percent}%`];
                                         }}
                                     />
-                                    <Legend
-                                        formatter={(value) => `${value.length} ⭐`}
-                                    />
+                                    <Legend formatter={(value) => `${value.length} ⭐`} />
                                 </PieChart>
                             </ResponsiveContainer>
                         </div>
                         <div className={styles.rankingData}>
-                            <h1 className={styles.chartTitle}>Overview</h1>
+                            <h1 className={styles.chartTitle}>Tổng Quan</h1>
                             <ul className={styles.ranking_grid}>
-                                <li><strong>🛒 Product Count:</strong> {rankingData.salesNumber}</li>
-                                <li><strong>📈 Sales History:</strong> {rankingData.salesHistory}</li>
-                                <li><strong>💰 Sales Number:</strong> 1471</li>
-                                <li><strong>👁️ Views:</strong> {rankingData.view}</li>
-                                <li><strong>🧮 View to Buy:</strong> {(rankingData.viewToBuy || 0).toFixed(2)}%</li>
-                                <li><strong>⭐ Average Rating:</strong> {calculateAverageRating(ratingData)}</li>
+                                <li><strong>🛒 Số Sản Phẩm:</strong> {rankingData.salesNumber}</li>
+                                <li><strong>📈 Lịch Sử Bán Hàng:</strong> {rankingData.salesHistory}</li>
+                                <li><strong>💰 Số Lượng Bán:</strong> 1471</li>
+                                <li><strong>👁️ Lượt Xem:</strong> {rankingData.view}</li>
+                                <li><strong>🧮 Tỷ Lệ Xem Để Mua:</strong> {(rankingData.viewToBuy || 0).toFixed(2)}%</li>
+                                <li><strong>⭐ Đánh Giá Trung Bình:</strong> {calculateAverageRating(ratingData)}</li>
                             </ul>
                         </div>
                     </div>
                     <div className={styles.chartRow}>
                         <div className={styles.barChart}>
                             <div className={styles.barChart_header}>
-                                <h3 className={styles.chartTitle}>Number of Sales by Product</h3>
+                                <h3 className={styles.chartTitle}>Số Lượng Bán Theo Sản Phẩm</h3>
                                 <select
                                     value={filter.productSalesFilter}
                                     className={styles.category_input}
@@ -227,8 +230,8 @@ function Statistical() {
                                         <YAxis />
                                         <Tooltip
                                             formatter={(value, name, props) => {
-                                                const saleQuantity = props.payload?.saleNumber || 0; // Lấy số lượng bán hoặc mặc định là 0
-                                                return [`Sold Number: ${saleQuantity}`];
+                                                const saleQuantity = props.payload?.saleNumber || 0;
+                                                return [`Số Lượng Đã Bán: ${saleQuantity}`];
                                             }}
                                         />
                                         <Legend />
@@ -236,14 +239,14 @@ function Statistical() {
                                     </BarChart>
                                 ) : (
                                     <div style={{ textAlign: 'center', padding: '50px', color: '#888' }}>
-                                        No data available
+                                        Không có dữ liệu
                                     </div>
                                 )}
                             </ResponsiveContainer>
                         </div>
                         <div className={styles.barChart}>
                             <div className={styles.barChart_header}>
-                                <h3 className={styles.chartTitle}>Comparison of Views and Purchases</h3>
+                                <h3 className={styles.chartTitle}>So Sánh Lượt Xem và Lượt Mua</h3>
                             </div>
                             <ResponsiveContainer width="100%" height={300}>
                                 <BarChart
@@ -254,15 +257,15 @@ function Statistical() {
                                     <YAxis />
                                     <Tooltip content={<CustomTooltip />} />
                                     <Legend />
-                                    <Bar dataKey="viewNumber" fill="#8884d8" name="Views"></Bar>
-                                    <Bar dataKey="salesNumber" fill="#82ca9d" name="Purchases" />
+                                    <Bar dataKey="viewNumber" fill="#8884d8" name="Lượt Xem"></Bar>
+                                    <Bar dataKey="salesNumber" fill="#82ca9d" name="Lượt Mua" />
                                 </BarChart>
                             </ResponsiveContainer>
                         </div>
                     </div>
                     <div className={styles.barChart}>
                         <div className={styles.barChart_header}>
-                            <h3 className={styles.chartTitle}>Sales Revenue</h3>
+                            <h3 className={styles.chartTitle}>Doanh Thu Bán Hàng</h3>
                             <select
                                 value={filter.salesFiler}
                                 className={styles.category_input}
@@ -293,7 +296,7 @@ function Statistical() {
                                 </BarChart>
                             ) : (
                                 <div style={{ textAlign: 'center', padding: '50px', color: '#888' }}>
-                                    No data available
+                                    Không có dữ liệu
                                 </div>
                             )}
                         </ResponsiveContainer>
@@ -312,7 +315,7 @@ function Statistical() {
                     {productSelect.shopRanking.overviewAI ? (
                         <div className={styles.AIResponse_wrapper}>
                             <div className={styles.AIResponse}>
-                                <h1 className={styles.AIResponse_header}>AI Overview</h1>
+                                <h1 className={styles.AIResponse_header}>Tổng Quan AI</h1>
                                 <ReactMarkdown
                                     remarkPlugins={[remarkGfm]}
                                     rehypePlugins={[rehypeHighlight]}
@@ -328,16 +331,16 @@ function Statistical() {
                                     }}
                                     onKeyUp={(e) => {
                                         if (e.key === 'Enter') {
-                                            askAI()
+                                            askAI();
                                         }
                                     }}
                                     className={styles.message_input}
-                                    placeholder="Send Message"
+                                    placeholder="Gửi tin nhắn"
                                 ></input>
                                 <div
                                     className={`${chatInput ? styles.sendMessage_active : styles.sendMessage_inActive}`}
                                     onClick={() => {
-                                        askAI()
+                                        askAI();
                                     }}
                                 >
                                     <MessageIcon className={styles.sendIcon}></MessageIcon>
@@ -346,13 +349,14 @@ function Statistical() {
                         </div>
                     ) : (
                         <div style={{ textAlign: 'center', padding: '20px' }}>
-                            <p>Generating AI response ...</p>
+                            <p>Đang tạo phản hồi AI ...</p>
                         </div>
                     )}
                 </Popup>
             ) : null}
-        </div >
+        </div>
     );
+
 }
 
 export default Statistical;

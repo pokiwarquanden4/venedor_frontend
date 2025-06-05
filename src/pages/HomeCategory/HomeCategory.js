@@ -16,7 +16,7 @@ function HomeCategory() {
   const productSelect = useSelector(productSelector);
   const dispatch = useDispatch();
   const [data, setData] = useState([]);
-  const [filter, setFilter] = useState('Feature')
+  const [filter, setFilter] = useState('Tính năng')
   const [filterPopUp, setFilterPopUp] = useState(false);
   const [pageData, setPageData] = useState({
     page: 1,
@@ -54,30 +54,20 @@ function HomeCategory() {
 
   return (
     <Fragment>
-      {/* {filterPopUp ? (
-        <Popup
-          onClick={() => {
-            setFilterPopUp(false);
-          }}
-        >
-          <CategoryFilterPopUp setPopup={setFilterPopUp}></CategoryFilterPopUp>
-        </Popup>
-      ) : undefined} */}
       <div className={styles.wrapper}>
+        {/* Phần filter hiển thị danh mục sản phẩm */}
         <div className={styles.filter}>
           <div className={styles.filter_content}>
             {productSelect.category
               ? Object.keys(productSelect.category.category).map((key) => {
                 const item = productSelect.category.category[key];
-
                 return (
                   <div
                     key={key}
                     onClick={() => {
                       navigate(`/category/${key}`);
                     }}
-                    className={`${styles.filter_item} ${selectedCategory === key ? styles.active : ''
-                      }`}
+                    className={`${styles.filter_item} ${selectedCategory === key ? styles.active : ''}`}
                   >
                     {item.name}
                   </div>
@@ -86,54 +76,66 @@ function HomeCategory() {
               : undefined}
           </div>
         </div>
+
+        {/* Nội dung chính của trang */}
         <div className={styles.wrapper_content}>
           <div className={styles.header}>
+            {/* Bộ lọc Feature */}
             <div className={styles.feature}>
               <Collapse
                 onClick={(input) => {
                   setFilter(input);
                 }}
-                title="Feature"
+                title="Tính năng"
                 content={[
-                  'Feature',
-                  'Best Selling',
-                  'Alphabetically,A-Z',
-                  'Alphabetically,Z-A',
-                  'Price, low to high',
-                  'Price, high to low',
-                  'Date, old to new',
-                  'Date, new to old',
+                  'Tính năng',
+                  'Bán chạy nhất',
+                  'Theo bảng chữ cái, A-Z',
+                  'Theo bảng chữ cái, Z-A',
+                  'Giá, thấp đến cao',
+                  'Giá, cao đến thấp',
+                  'Ngày, cũ đến mới',
+                  'Ngày, mới đến cũ',
                 ]}
-              ></Collapse>
+              />
             </div>
+
+            {/* Bộ lọc Show số lượng sản phẩm hiển thị */}
             <div className={styles.show}>
               <Collapse
                 title="Show: 16"
                 content={['Show: 16', 'Show: 24', 'Show: 32']}
                 onClick={(input) => {
-                  const pageNum = Number(input.replace('Show: ', ''))
-                  setPageData((preData) => {
-                    return {
-                      ...preData,
-                      limit: pageNum,
-                      page: 1
-                    }
-                  })
+                  const pageNum = Number(input.replace('Show: ', ''));
+                  setPageData((prevData) => ({
+                    ...prevData,
+                    limit: pageNum,
+                    page: 1,
+                  }));
                 }}
-              ></Collapse>
+              />
             </div>
-            <div className={styles.price}></div>
-            <Pagination pageData={pageData} setPageData={setPageData} totalPages={data.totalPages}></Pagination>
+
+            <div className={styles.price}>
+              {/* Có thể để chỗ này làm bộ lọc giá sau */}
+            </div>
+
+            {/* Phân trang */}
+            <Pagination pageData={pageData} setPageData={setPageData} totalPages={data.totalPages} />
           </div>
+
+          {/* Hiển thị danh sách sản phẩm */}
           <div className={styles.content}>
-            {data.products && data.products.map((item, index) => {
-              return <Items data={item} vertical={true} key={index}></Items>;
-            })}
+            {data.products &&
+              data.products.map((item, index) => (
+                <Items data={item} vertical={true} key={index} />
+              ))}
           </div>
         </div>
       </div>
     </Fragment>
   );
+
 }
 
 export default HomeCategory;

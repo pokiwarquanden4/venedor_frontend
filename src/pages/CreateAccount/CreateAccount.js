@@ -56,14 +56,14 @@ function CreateAccount() {
     <div className={styles.wrapper}>
       <div className={styles.inner_wrapper}>
         <div className={styles.header}>
-          <div className={styles.main_header}>Create Account</div>
-          <div className={styles.sub_header}>Get in touch and let us know how we can help.</div>
+          <div className={styles.main_header}>Tạo tài khoản</div>
+          <div className={styles.sub_header}>Hãy liên hệ với chúng tôi để biết thêm chi tiết.</div>
         </div>
         <div className={styles.content}>
           <div className={styles.name}>
-            <div className={styles.name_header}>Name</div>
+            <div className={styles.name_header}>Họ và tên</div>
             <input
-              placeholder="Your Name"
+              placeholder="Tên của bạn"
               className={styles.name_input}
               value={name}
               onChange={(e) => {
@@ -75,7 +75,7 @@ function CreateAccount() {
             <div className={styles.email_header}>Email</div>
             <input
               disabled={otpEnable}
-              placeholder="Your Email"
+              placeholder="Email của bạn"
               value={email}
               className={`${styles.email_input} ${emailNotification ? styles.error : ''}`}
               onChange={(e) => {
@@ -90,17 +90,17 @@ function CreateAccount() {
               }}
             ></input>
             {emailNotification && (
-              <div className={styles.notification}>Email must end with @gmail.com</div>
+              <div className={styles.notification}>Email phải kết thúc bằng @gmail.com</div>
             )}
             {createAccount.gmailExist && (
-              <div className={styles.notification}>Email doesn't exist</div>
+              <div className={styles.notification}>Email không tồn tại</div>
             )}
           </div>
           <div className={styles.accountName}>
-            <div className={styles.accountName_header}>Account</div>
+            <div className={styles.accountName_header}>Tên tài khoản</div>
             <input
               disabled={otpEnable}
-              placeholder="Your Account Name"
+              placeholder="Tên tài khoản của bạn"
               className={styles.accountName_input}
               value={accountName}
               onChange={(e) => {
@@ -111,15 +111,15 @@ function CreateAccount() {
               }}
             ></input>
             {createAccount.accountExist && (
-              <div className={styles.notification}>Account Exist Please Use Another Name</div>
+              <div className={styles.notification}>Tài khoản đã tồn tại, vui lòng dùng tên khác</div>
             )}
           </div>
           <div className={styles.password}>
-            <div className={styles.password_header}>Password</div>
+            <div className={styles.password_header}>Mật khẩu</div>
             <input
               type="password"
               value={password}
-              placeholder="Your Password*"
+              placeholder="Mật khẩu của bạn*"
               className={`${styles.password_input} ${passwordNotification ? styles.error : ''}`}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -132,11 +132,11 @@ function CreateAccount() {
               }}
             ></input>
             {passwordNotification && (
-              <div className={styles.notification}>Password need at least 10 character</div>
+              <div className={styles.notification}>Mật khẩu cần ít nhất 10 ký tự</div>
             )}
           </div>
           <div className={styles.youAre}>
-            <div className={styles.youAre_header}>You Are</div>
+            <div className={styles.youAre_header}>Bạn là</div>
             <select
               className={styles.youAre_input}
               value={youAre}
@@ -144,12 +144,12 @@ function CreateAccount() {
                 setYouAre(e.target.value);
               }}
             >
-              <option value="User">User</option>
-              <option value="Seller">Seller</option>
+              <option value="User">Người dùng</option>
+              <option value="Seller">Người bán</option>
             </select>
           </div>
           <div className={styles.gender}>
-            <div className={styles.gender_header}>Gender</div>
+            <div className={styles.gender_header}>Giới tính</div>
             <select
               className={styles.gender_input}
               value={gender}
@@ -157,8 +157,8 @@ function CreateAccount() {
                 setGender(e.target.value);
               }}
             >
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
+              <option value="Male">Nam</option>
+              <option value="Female">Nữ</option>
             </select>
           </div>
           {otpEnable ? (
@@ -166,7 +166,7 @@ function CreateAccount() {
               <div className={styles.otp_header}>OTP</div>
               <input
                 value={otp}
-                placeholder="Your Otp*"
+                placeholder="Nhập mã OTP của bạn*"
                 className={`${styles.otp_input} ${otpNotification ? styles.error : ''}`}
                 onChange={(e) => {
                   setOtp(e.target.value);
@@ -176,7 +176,7 @@ function CreateAccount() {
                 }}
               ></input>
               {otpNotification && (
-                <div className={styles.notification}>Otp is not valid or expired</div>
+                <div className={styles.notification}>Mã OTP không hợp lệ hoặc đã hết hạn</div>
               )}
               <div
                 className={styles.xButton}
@@ -224,7 +224,7 @@ function CreateAccount() {
               }
             }}
             className={styles.create_button}
-            title={otpEnable ? 'CREATE ACCOUNT' : 'CONFIRM'}
+            title={otpEnable ? 'TẠO TÀI KHOẢN' : 'XÁC NHẬN'}
           ></MainButton>
         </div>
       </div>

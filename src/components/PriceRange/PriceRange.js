@@ -31,7 +31,7 @@ function PriceRange({ min, max, value, step, onChange }) {
   const maxPos = ((maxValue - min) / (max - min)) * 100;
   return (
     <div className={styles.price_wrapper}>
-      <div className={styles.price_header}>I Price</div>
+      <div className={styles.price_header}>Vùng giá</div>
       <div className={styles.price}>
         <div className={styles.input_wrapper}>
           <input

@@ -75,7 +75,7 @@ function EditAccount() {
       !newStaff.account ||
       !newStaff.password
     ) {
-      dispatch(notificationActions.setNotificationContent('Pls Fill All'));
+      dispatch(notificationActions.setNotificationContent('Vui lòng điền đầy đủ thông tin'));
       return;
     }
 
@@ -94,7 +94,7 @@ function EditAccount() {
       !newStaff.account ||
       !newStaff.password
     ) {
-      dispatch(notificationActions.setNotificationContent('Pls Fill All'));
+      dispatch(notificationActions.setNotificationContent('Vui lòng điền đầy đủ thông tin'));
       return;
     }
 
@@ -104,7 +104,7 @@ function EditAccount() {
   }, [dispatch, newStaff])
 
   const handleDelete = useCallback((id) => {
-    if (window.confirm('Are you sure you want to delete this staff account?')) {
+    if (window.confirm('Bạn có chắc chắn muốn xóa nhân viên này?')) {
       dispatch(staffActions.deleteStaffRequest({
         id: id
       }));
@@ -118,20 +118,20 @@ function EditAccount() {
       <div className={styles.inner_wrapper}>
         <div className={styles.header}>
           <div className={styles.accountInfo_header}>
-            <div className={styles.main_header}>Your Account Info</div>
-            <div className={styles.sub_header}>Get in touch and let us know how we can help.</div>
+            <div className={styles.main_header}>Thông tin tài khoản</div>
+            <div className={styles.sub_header}>Liên hệ với chúng tôi nếu bạn cần hỗ trợ.</div>
           </div>
           <div className={styles.staff_header}>
             <div className={styles.staff_header_title}>
-              <div className={styles.main_header}>Staff Account List</div>
-              <div className={styles.sub_header}>This is where you manage your staff</div>
+              <div className={styles.main_header}>Danh sách nhân viên</div>
+              <div className={styles.sub_header}>Quản lý các tài khoản nhân viên tại đây</div>
             </div>
             <MainButton
               onClick={() => {
                 setAddStaffPopup(true)
               }}
               className={styles.add_staff_button}
-              title="ADD STAFF +"
+              title="THÊM NHÂN VIÊN +"
             ></MainButton>
           </div>
         </div>
@@ -146,13 +146,13 @@ function EditAccount() {
               highestZIndex={true}
             >
               <div className={styles.password_wrapper}>
-                <h1 className={styles.passwordPopup_header}>Password</h1>
+                <h1 className={styles.passwordPopup_header}>Đổi mật khẩu</h1>
                 <div className={styles.password}>
-                  <div className={styles.password_header}>Password</div>
+                  <div className={styles.password_header}>Mật khẩu hiện tại</div>
                   <input
                     type=""
                     value={password}
-                    placeholder="Your Password*"
+                    placeholder="Mật khẩu hiện tại*"
                     className={`${styles.password_input} ${passwordNotification ? styles.error : ''}`}
                     onChange={(e) => {
                       setPassword(e.target.value);
@@ -166,18 +166,18 @@ function EditAccount() {
                     }}
                   ></input>
                   {passwordNotification && (
-                    <div className={styles.notification}>Password need at least 10 character</div>
+                    <div className={styles.notification}>Mật khẩu phải có ít nhất 10 ký tự</div>
                   )}
                   {accountSelect.wrongPassword && (
-                    <div className={styles.notification}>Wrong password</div>
+                    <div className={styles.notification}>Mật khẩu không đúng</div>
                   )}
                 </div>
                 <div className={styles.password}>
-                  <div className={styles.password_header}>New Password</div>
+                  <div className={styles.password_header}>Mật khẩu mới</div>
                   <input
                     type="password"
                     value={newPassword}
-                    placeholder="New Password*"
+                    placeholder="Mật khẩu mới*"
                     className={`${styles.password_input} ${newPasswordNotification ? styles.error : ''}`}
                     onChange={(e) => {
                       setNewPassword(e.target.value);
@@ -190,7 +190,7 @@ function EditAccount() {
                     }}
                   ></input>
                   {newPasswordNotification && (
-                    <div className={styles.notification}>Password need at least 10 character</div>
+                    <div className={styles.notification}>Mật khẩu phải có ít nhất 10 ký tự</div>
                   )}
                 </div>
                 <MainButton
@@ -203,7 +203,7 @@ function EditAccount() {
                     );
                   }}
                   className={styles.update_password}
-                  title="CONFIRM"
+                  title="XÁC NHẬN"
                 ></MainButton>
               </div>
             </Popup>
@@ -219,21 +219,21 @@ function EditAccount() {
               highestZIndex={true}
             >
               <div className={styles.password_wrapper}>
-                <h1 className={styles.passwordPopup_header}>Add Staff</h1>
+                <h1 className={styles.passwordPopup_header}>Thêm nhân viên</h1>
                 <div className={styles.password}>
-                  <div className={styles.password_header}>Name</div>
+                  <div className={styles.password_header}>Tên</div>
                   <input
                     value={newStaff.name}
-                    placeholder="Staff Name*"
+                    placeholder="Tên nhân viên*"
                     className={styles.password_input}
                     onChange={e => setNewStaff({ ...newStaff, name: e.target.value })}
                   />
                 </div>
                 <div className={styles.password}>
-                  <div className={styles.password_header}>Phone</div>
+                  <div className={styles.password_header}>Số điện thoại</div>
                   <input
                     value={newStaff.phone}
-                    placeholder="Phone Number*"
+                    placeholder="Số điện thoại*"
                     className={styles.password_input}
                     onChange={(e) => {
                       const value = e.target.value.replace(/\D/g, '');
@@ -242,22 +242,22 @@ function EditAccount() {
                   />
                 </div>
                 <div className={styles.password}>
-                  <div className={styles.password_header}>Role</div>
+                  <div className={styles.password_header}>Chức vụ</div>
                   <select
                     className={styles.password_input}
                     value={newStaff.roleName}
                     onChange={e => setNewStaff({ ...newStaff, roleName: e.target.value })}
                   >
-                    <option value={0}>Select....</option>
-                    <option value="Stocker">Stocker</option>
-                    <option value="Shipper">Shipper</option>
+                    <option value={0}>Chọn...</option>
+                    <option value="Stocker">Nhân viên kho</option>
+                    <option value="Shipper">Người giao hàng</option>
                   </select>
                 </div>
                 <div className={styles.password}>
-                  <div className={styles.password_header}>Salary</div>
+                  <div className={styles.password_header}>Lương</div>
                   <input
                     value={newStaff.salary}
-                    placeholder="Monthly Salary*"
+                    placeholder="Lương hàng tháng*"
                     className={styles.password_input}
                     onChange={(e) => {
                       const value = e.target.value.replace(/\D/g, '');
@@ -267,20 +267,20 @@ function EditAccount() {
                   <span className={styles.price_unit}>VND</span>
                 </div>
                 <div className={styles.password}>
-                  <div className={styles.password_header}>Username</div>
+                  <div className={styles.password_header}>Tên đăng nhập</div>
                   <input
                     value={newStaff.account}
-                    placeholder="Username*"
+                    placeholder="Tên đăng nhập*"
                     className={styles.password_input}
                     onChange={e => setNewStaff({ ...newStaff, account: e.target.value })}
                   />
                 </div>
                 <div className={styles.password}>
-                  <div className={styles.password_header}>Password</div>
+                  <div className={styles.password_header}>Mật khẩu</div>
                   <input
                     type="password"
                     value={newStaff.password}
-                    placeholder="Password*"
+                    placeholder="Mật khẩu*"
                     className={styles.password_input}
                     onChange={e => setNewStaff({ ...newStaff, password: e.target.value })}
                   />
@@ -294,7 +294,7 @@ function EditAccount() {
                     }
                   }}
                   className={styles.update_password}
-                  title="COFIRM"
+                  title="XÁC NHẬN"
                 />
               </div>
             </Popup>
@@ -302,18 +302,18 @@ function EditAccount() {
           <div className={styles.contentStyle}>
             <div className={styles.userInfo}>
               <div className={styles.name}>
-                <div className={styles.name_header}>Name</div>
+                <div className={styles.name_header}>Tên</div>
                 <input
-                  placeholder="Your Name"
+                  placeholder="Tên của bạn"
                   className={styles.name_input}
                   value={name}
                   onChange={(e) => {
                     setName(e.target.value);
                   }}
-                ></input>
+                />
               </div>
               <div className={styles.gender}>
-                <div className={styles.gender_header}>Gender</div>
+                <div className={styles.gender_header}>Giới tính</div>
                 <select
                   className={styles.gender_input}
                   value={gender}
@@ -321,8 +321,8 @@ function EditAccount() {
                     setGender(e.target.value);
                   }}
                 >
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
+                  <option value="Male">Nam</option>
+                  <option value="Female">Nữ</option>
                 </select>
               </div>
               <div className={styles.footer}>
@@ -348,7 +348,7 @@ function EditAccount() {
                     setEditPasswordPopup(true);
                   }}
                   className={styles.editPassword_button}
-                  title="EDIT PASSWORD"
+                  title="ĐỔI MẬT KHẨU"
                 ></MainButton>
               </div>
             </div>
@@ -356,9 +356,9 @@ function EditAccount() {
               <table className={styles.staffTable}>
                 <thead>
                   <tr>
-                    <th>Name</th>
-                    <th>Phone</th>
-                    <th>Position</th>
+                    <th>Tên</th>
+                    <th>Số điện thoại</th>
+                    <th>Chức vụ</th>
                     <th></th>
                   </tr>
                 </thead>
@@ -385,7 +385,7 @@ function EditAccount() {
                           }}
                           style={{ marginRight: 8 }}
                         >
-                          Update
+                          Cập nhật
                         </button>
                         <button
                           className={styles.staffActionBtn}
@@ -394,7 +394,7 @@ function EditAccount() {
                           }}
                           style={{ color: 'red' }}
                         >
-                          Delete
+                          Xóa
                         </button>
                       </td>
                     </tr>

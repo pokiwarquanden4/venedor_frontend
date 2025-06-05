@@ -155,18 +155,18 @@ function Cart() {
       <div className={styles.wrapper}>
         <div className={styles.wrapper_content}>
           <div className={styles.header}>
-            <div className={styles.header_content}>Shopping Cart</div>
+            <div className={styles.header_content}>Giỏ hàng</div>
             <div className={styles.header_sub_content}>
-              Sign up and get 10% off your first order.
+              Đăng ký tài khoản để nhận giảm giá 10% cho đơn hàng đầu tiên.
             </div>
           </div>
           <div className={styles.content}>
             <div className={styles.lists}>
               <div className={styles.lists_header}>
                 <div className={styles.img_header}></div>
-                <div className={styles.productName_header}>PRODUCT NAME</div>
-                <div className={styles.price_header}>PRICE</div>
-                <div className={styles.quantity_header}>QUANTITY</div>
+                <div className={styles.productName_header}>TÊN SẢN PHẨM</div>
+                <div className={styles.price_header}>GIÁ</div>
+                <div className={styles.quantity_header}>SỐ LƯỢNG</div>
               </div>
               <div className={styles.lists_content}>
                 {data.length !== 0 &&
@@ -177,7 +177,7 @@ function Cart() {
               <div className={styles.lists_footer}>
                 <MainButton
                   className={styles.lists_footer_button_continue}
-                  title="CONTINUE SHOPPING"
+                  title="TIẾP TỤC MUA SẮM"
                   onClick={() => {
                     navigate('/category/0');
                   }}
@@ -187,7 +187,7 @@ function Cart() {
             <div className={styles.money_wrapper}>
               <div className={styles.money}>
                 <div className={styles.money_header}>
-                  CART TOTAL
+                  TỔNG GIỎ HÀNG
                   {money ? (
                     <div
                       className={styles.arrowUpButton_wrapper}
@@ -213,27 +213,27 @@ function Cart() {
                 >
                   <div className={styles.money_tag}>
                     <div className={styles.total}>
-                      <div className={styles.total_header}>Original</div>
+                      <div className={styles.total_header}>Tạm tính</div>
                       <div className={styles.total_price}>{formatVND(originalPrice)}</div>
                     </div>
                     <div className={`${styles.total} ${styles.saleOff}`}>
-                      <div className={styles.total_header}>Discounted</div>
+                      <div className={styles.total_header}>Giảm giá</div>
                       <div className={styles.total_price}>{formatVND(discount)}</div>
                     </div>
                     <div className={styles.grand_total}>
-                      <div className={styles.grand_total_header}>Grand Total</div>
+                      <div className={styles.grand_total_header}>Tổng cộng</div>
                       <div className={styles.grand_total_price}>{formatVND(total)}</div>
                     </div>
                     <div className={styles.checkout_button_wrapper}>
                       <MainButton
                         className={styles.checkout_button}
-                        title="CHECK OUT"
+                        title="THANH TOÁN"
                         disable={!valid}
                         onClick={() => {
                           if (currentAddress) {
                             setQrPopup(true)
                           } else {
-                            dispatch(notificationActions.setNotificationContent('Address Missing'));
+                            dispatch(notificationActions.setNotificationContent('Vui lòng chọn địa chỉ nhận hàng'));
                           }
                         }}
                       ></MainButton>
@@ -243,7 +243,7 @@ function Cart() {
               </div>
               <div className={styles.address}>
                 <div className={styles.address_header}>
-                  ADDRESS
+                  ĐỊA CHỈ NHẬN HÀNG
                   {dropDownAddress ? (
                     <div
                       className={styles.arrowUpButton_wrapper}
@@ -270,43 +270,43 @@ function Cart() {
                 >
                   <div className={styles.address_tag}>
                     <div className={styles.name}>
-                      <div className={styles.name_header}>Name</div>
+                      <div className={styles.name_header}>Họ và tên</div>
                       <div className={styles.name_value}>
                         {currentAddress ? currentAddress.name : 'null'}
                       </div>
                     </div>
                     <div className={styles.company}>
-                      <div className={styles.company_header}>Company</div>
+                      <div className={styles.company_header}>Công ty</div>
                       <div className={styles.company_value}>
                         {currentAddress ? currentAddress.company : 'null'}
                       </div>
                     </div>
                     <div className={styles.address1}>
-                      <div className={styles.address1_header}>Address1</div>
+                      <div className={styles.address1_header}>Địa chỉ 1</div>
                       <div className={styles.address1_value}>
                         {currentAddress ? currentAddress.address1 : 'null'}
                       </div>
                     </div>
                     <div className={styles.address2}>
-                      <div className={styles.address2_header}>Address2</div>
+                      <div className={styles.address2_header}>Địa chỉ 2</div>
                       <div className={styles.address2_value}>
                         {currentAddress ? currentAddress.address2 : 'null'}
                       </div>
                     </div>
                     <div className={styles.city}>
-                      <div className={styles.city_header}>City</div>
+                      <div className={styles.city_header}>Thành Phố</div>
                       <div className={styles.city_value}>
                         {currentAddress ? currentAddress.city : 'null'}
                       </div>
                     </div>
                     <div className={styles.country}>
-                      <div className={styles.country_header}>Country</div>
+                      <div className={styles.country_header}>Quốc gia</div>
                       <div className={styles.country_value}>
                         {currentAddress ? currentAddress.country : 'null'}
                       </div>
                     </div>
                     <div className={styles.phoneNumber}>
-                      <div className={styles.phoneNumber_header}>Phone Number</div>
+                      <div className={styles.phoneNumber_header}>Số điện thoại</div>
                       <div className={styles.phoneNumber_value}>
                         {currentAddress ? currentAddress.phoneNumber : 'null'}
                       </div>
@@ -314,14 +314,14 @@ function Cart() {
                     <div className={styles.checkout_button_wrapper}>
                       <MainButton
                         className={styles.checkout_button}
-                        title="CHANGE ADDRESS"
+                        title="THAY ĐỔI ĐỊA CHỈ"
                         onClick={() => {
                           setAddressPopup(true);
                         }}
                       ></MainButton>
                       <MainButton
                         className={styles.checkout_button}
-                        title="ADD ADDRESS"
+                        title="THÊM ĐỊA CHỈ"
                         onClick={() => {
                           navigate(routes.address);
                         }}

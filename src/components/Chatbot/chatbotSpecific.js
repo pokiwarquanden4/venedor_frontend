@@ -26,12 +26,12 @@ const ChatbotSpecific = (props) => {
                     <Fragment>
                         <MainButton
                             className={styles.specificButton}
-                            title={"Buy"}
+                            title={"Mua"}
                             onClick={() => onSelectSpecific('buy')}
                         ></MainButton>
                         <MainButton
                             className={styles.specificButton}
-                            title={"Cancel"}
+                            title={"Hủy"}
                             onClick={() => onSelectSpecific('cancel')}
                         ></MainButton>
                     </Fragment>

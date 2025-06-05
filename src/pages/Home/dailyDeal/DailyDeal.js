@@ -70,7 +70,7 @@ function DailyDeal() {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles.header}>Daily Deals</div>
+      <div className={styles.header}>Khuyến mãi mỗi ngày</div>
       <div className={styles.contents}>
         <div
           onClick={() => {

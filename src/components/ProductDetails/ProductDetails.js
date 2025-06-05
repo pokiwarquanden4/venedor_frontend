@@ -276,7 +276,9 @@ function ProductDetails({ data, fullScreen, preview }) {
           <div>
             <p className={styles.header}>{productData.productName}</p>
           </div>
-          <div className={styles.stock}>Availability: {selectedSpecificDataPics ? selectedSpecificDataPics.number : productData.number}</div>
+          <div className={styles.stock}>
+            Tồn kho: {selectedSpecificDataPics ? selectedSpecificDataPics.number : productData.number}
+          </div>
           <div className={styles.price}>
             <div className={styles.olePrice} style={
               selectedSpecificDataPics
@@ -314,7 +316,7 @@ function ProductDetails({ data, fullScreen, preview }) {
               </div>
             </div>
             <MainButton
-              title={edit ? 'EDIT ITEM' : 'ADD TO CART'}
+              title={edit ? 'CHỈNH SỬA SẢN PHẨM' : 'THÊM VÀO GIỎ HÀNG'}
               className={styles.cart}
               disable={edit ? false : preview || !role}
               onClick={() => {
@@ -325,11 +327,11 @@ function ProductDetails({ data, fullScreen, preview }) {
                   navigate(`/accountSeller/${productData.id}`);
                 } else {
                   if (number === 0) {
-                    dispatch(notificationActions.setNotificationContent('Please choose the quantity'));
+                    dispatch(notificationActions.setNotificationContent('Vui lòng chọn số lượng'));
                   }
 
                   if (number > (selectedSpecificDataPics ? selectedSpecificDataPics.number : productData.number)) {
-                    dispatch(notificationActions.setNotificationContent('Run out of stock'));
+                    dispatch(notificationActions.setNotificationContent('Sản phẩm đã hết hàng'));
                     return
                   }
                   dispatch(

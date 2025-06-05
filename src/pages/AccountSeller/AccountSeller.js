@@ -39,10 +39,10 @@ function AccountSeller() {
     <div className={styles.wrapper}>
       <div className={styles.inner_wrapper}>
         <div className={styles.header}>
-          <div className={styles.main_header}>My Account</div>
+          <div className={styles.main_header}>Tài khoản của tôi</div>
           <MainButton
             className={styles.createProduct}
-            title="Create Your Own Products"
+            title="Tạo sản phẩm của bạn"
             onClick={() => {
               navigate(routes.createProduct);
             }}
@@ -50,18 +50,18 @@ function AccountSeller() {
         </div>
         <div className={styles.content}>
           <div className={styles.order_history}>
-            <div className={styles.order_history_header}>Your Store</div>
+            <div className={styles.order_history_header}>Cửa hàng của bạn</div>
 
             {data.storages && data.storages.length ? (
               <div className={styles.order_history_list}>
                 {
                   data.storages.map((item, index) => {
-                    return <Items data={item} vertical={true} edit={true} key={index}></Items>;;
+                    return <Items data={item} vertical={true} edit={true} key={index}></Items>;
                   })
                 }
               </div>
             ) : (
-              <div className={styles.order_history_content}>You haven't sold any things yet.</div>
+              <div className={styles.order_history_content}>Bạn chưa bán sản phẩm nào.</div>
             )}
           </div>
         </div>

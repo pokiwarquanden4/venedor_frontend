@@ -12,7 +12,7 @@ function SearchPopup({ data }) {
     <div className={styles.wrapper}>
       <div className={styles.content}>
         {productSelect.quickSearchLoading ? (
-          <div className={styles.loading}>Searching...</div> // Hiển thị loading
+          <div className={styles.loading}>Đang tìm kiếm...</div> // Hiển thị loading
         ) : data.length !== 0 ? (
           data.map((item, index) => {
             return (
@@ -38,7 +38,7 @@ function SearchPopup({ data }) {
             );
           })
         ) : (
-          <div className={styles.noData}>No products found</div> // Hiển thị khi không có dữ liệu
+          <div className={styles.noData}>Không tìm thấy sản phẩm nào</div> // Hiển thị khi không có dữ liệu
         )}
       </div>
     </div>

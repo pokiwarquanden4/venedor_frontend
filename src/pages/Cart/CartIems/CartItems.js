@@ -45,7 +45,7 @@ function CartItems({ data }) {
                   if ((data.specific ? data.specific.number : data.number) > data.cartQuantity) {
                     dispatch(cartActions.editCartProductRequest({ quantity: data.cartQuantity + 1, id: data.id, specificId: data.specific && data.specific.id }));
                   } else {
-                    dispatch(notificationActions.setNotificationContent('We only have ' + (data.specific ? data.specific.number : data.number) + ' left'));
+                    dispatch(notificationActions.setNotificationContent('Chỉ còn ' + (data.specific ? data.specific.number : data.number) + ' sản phẩm trong kho'));
                   }
                 }}
               >
@@ -53,7 +53,7 @@ function CartItems({ data }) {
               </div>
             </div>
             {(data.specific ? data.specific.number : data.number) - data.cartQuantity < 0 ? (
-              <div className={styles.notification}>We only have {(data.specific ? data.specific.number : data.number)} left</div>
+              <div className={styles.notification}>Chỉ còn {(data.specific ? data.specific.number : data.number)} sản phẩm trong kho</div>
             ) : undefined}
           </div>
         </div>

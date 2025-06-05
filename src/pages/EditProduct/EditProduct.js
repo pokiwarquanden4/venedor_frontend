@@ -153,7 +153,7 @@ function EditProduct() {
     // Check if specific combinations are valid
     const isSpecificValid = combination.length === specificPics.filter(data => data.valid).length;
     if (!isSpecificValid) {
-      dispatch(notificationActions.setNotificationContent('Please check specific'));
+      dispatch(notificationActions.setNotificationContent('Hãy kiểm tra lại thông tin chi tiết'));
       return false;
     }
 
@@ -400,15 +400,15 @@ function EditProduct() {
     <div className={styles.wrapper}>
       <div className={styles.inner_wrapper}>
         <div className={styles.header}>
-          <div className={styles.main_header}>Update Product</div>
-          <div className={styles.sub_header}>Make your product more recognizable</div>
+          <div className={styles.main_header}>Cập nhật sản phẩm</div>
+          <div className={styles.sub_header}>Giúp sản phẩm của bạn dễ nhận diện hơn</div>
         </div>
         <div className={styles.content}>
           <div className={styles.left_content}>
             <div className={styles.name}>
-              <div className={styles.name_header}>Name</div>
+              <div className={styles.name_header}>Tên sản phẩm</div>
               <input
-                placeholder="Product Name"
+                placeholder="Nhập tên sản phẩm"
                 value={name}
                 className={`${styles.name_input} ${nameFill ? styles.noInput : ''}`}
                 onChange={(e) => {
@@ -419,11 +419,11 @@ function EditProduct() {
                 }}
               ></input>
               {nameFill ? (
-                <div className={styles.notification}>You need to fill in this blank</div>
+                <div className={styles.notification}>Bạn cần điền vào mục này</div>
               ) : undefined}
             </div>
             <div className={styles.price}>
-              <div className={styles.price_header}>Price</div>
+              <div className={styles.price_header}>Giá</div>
               <div className={styles.price_wrapper}>
                 <input
                   disabled={specificPics.length ? true : false}
@@ -442,15 +442,15 @@ function EditProduct() {
               </div>
               {priceFill ? (
                 <div className={styles.notification}>
-                  You need to fill in this blank (Ex: 1.000 VND, 10.000.000 VND)
+                  Bạn cần điền vào mục này (VD: 1.000 VND, 10.000.000 VND)
                 </div>
               ) : undefined}
             </div>
             <div className={styles.quantity}>
-              <div className={styles.quantity_header}>Quantity</div>
+              <div className={styles.quantity_header}>Số lượng</div>
               <input
                 disabled={specificPics.length ? true : false}
-                placeholder="Quantity"
+                placeholder="Số lượng"
                 value={quantity}
                 className={`${styles.quantity_input} ${quantityFill ? styles.noInput : ''}`}
                 onChange={(e) => {
@@ -466,11 +466,11 @@ function EditProduct() {
                 }}
               ></input>
               {quantityFill ? (
-                <div className={styles.notification}>You need to fill in this with a number</div>
+                <div className={styles.notification}>Bạn cần nhập số hợp lệ</div>
               ) : undefined}
             </div>
             <div className={styles.description}>
-              <div className={styles.description_header}>Description</div>
+              <div className={styles.description_header}>Mô tả</div>
               <ReactQuill
                 theme="snow"
                 value={description}
@@ -478,14 +478,14 @@ function EditProduct() {
                 onFocus={() => setDescriptionFill(false)}
                 style={{ width: "400px", maxHeight: "500px", overflowY: "auto" }}
               />
-              {descriptionFill ? <div className={styles.notification}>You need to fill in this blank</div> : undefined}
+              {descriptionFill ? <div className={styles.notification}>Bạn cần điền vào mục này</div> : undefined}
             </div>
             <div className={styles.saleOff}>
-              <div className={styles.saleOff_header}>Sale Off</div>
+              <div className={styles.saleOff_header}>Giảm giá</div>
               <div className={styles.saleOff_wrapper}>
                 <input
                   disabled={specificPics.length ? true : false}
-                  placeholder="Sale Off"
+                  placeholder="Giảm giá"
                   value={saleOff}
                   className={`${styles.saleOff_input} ${saleOffFill ? styles.noInput : ''}`}
                   onChange={(e) => {
@@ -501,12 +501,12 @@ function EditProduct() {
               </div>
               {saleOffFill ? (
                 <div className={styles.notification}>
-                  You need to fill in this blank (0% to 100%)
+                  Bạn cần nhập giá trị từ 0% đến 100%
                 </div>
               ) : undefined}
             </div>
             <div className={styles.category}>
-              <div className={styles.category_header}>Category</div>
+              <div className={styles.category_header}>Danh mục</div>
               <select
                 className={styles.category_input}
                 value={categoryId}
@@ -527,12 +527,12 @@ function EditProduct() {
               </select>
               {categoryIdFill ? (
                 <div className={styles.notification}>
-                  You need to select a category
+                  Bạn cần chọn danh mục chi tiết
                 </div>
               ) : undefined}
             </div>
             <div className={styles.categoryList}>
-              <div className={styles.categoryList_header}>Category Details</div>
+              <div className={styles.categoryList_header}>Danh mục chi tiết</div>
               <select
                 value={categoryDetailId}
                 className={styles.category_input}
@@ -552,14 +552,14 @@ function EditProduct() {
               </select>
               {categoryDetailIdFill ? (
                 <div className={styles.notification}>
-                  You need to select categories
+                  Bạn cần chọn danh mục chi tiết
                 </div>
               ) : undefined}
             </div>
             <div className={styles.brand}>
-              <div className={styles.brand_header}>Brand</div>
+              <div className={styles.brand_header}>Thương hiệu</div>
               <input
-                placeholder="Brand name"
+                placeholder="Tên thương hiệu"
                 value={brand}
                 className={`${styles.brand_input}`}
                 onChange={(e) => {
@@ -572,7 +572,7 @@ function EditProduct() {
             </div>
             <div className={styles.specific_wrapper}>
               <div className={styles.specific}>
-                <div className={styles.specific_header}>Specific</div>
+                <div className={styles.specific_header}>Phân loại</div>
                 <MainButton
                   onClick={() => {
                     if (specific.length === 2) {
@@ -588,7 +588,7 @@ function EditProduct() {
                   }
                   }
                   className={styles.specific_button}
-                  title={'Add Specific'}
+                  title="Thêm phân loại"
                 ></MainButton>
               </div>
               <div className={styles.specific_content}>
@@ -618,7 +618,7 @@ function EditProduct() {
               <div className={styles.specific_groups}>
                 {combination.map((item, index) => {
                   return <div key={index} className={styles.specific_values}>
-                    <div className={styles.specific_content_header}>Details {index + 1}</div>
+                    <div className={styles.specific_content_header}>Chi tiết {index + 1}</div>
                     <EditButton
                       width='16px'
                       className={styles.editButton}
@@ -643,7 +643,7 @@ function EditProduct() {
           </div>
           <div className={styles.right_content}>
             <div className={styles.img}>
-              <div className={styles.img_header}>Main Image</div>
+              <div className={styles.img_header}>Ảnh chính</div>
               <div className={styles.img_input}>
                 <input
                   type="file"
@@ -672,7 +672,7 @@ function EditProduct() {
               </div>
             </div>
             <div className={styles.listImg}>
-              <div className={styles.listImg_header}>Images</div>
+              <div className={styles.listImg_header}>Danh sách ảnh</div>
               <div className={styles.listImg_input}>
                 {listImg &&
                   listImg.map((img, index) => {
@@ -711,22 +711,22 @@ function EditProduct() {
             </Popup>
           )}
           <MainButton
-            title={'Submit'}
+            title={'Xác nhận'}
             className={styles.button}
             onClick={handleSubmit}
           ></MainButton>
           <MainButton
-            title={'Delete'}
+            title={'Xoá'}
             onClick={handleDelete}
             className={styles.button}
           ></MainButton>
           <MainButton
-            title={'Reset'}
+            title={'Cài lại'}
             onClick={addDefaultData}
             className={styles.button}
           ></MainButton>
           {(nameFill || priceFill || descriptionFill || quantityFill) && (
-            <div className={styles.errorMessage}>Please correct all the input</div>
+            <div className={styles.errorMessage}>Vui lòng điền đầy đủ và chính xác các trường bắt buộc</div>
           )}
         </div>
       </div>

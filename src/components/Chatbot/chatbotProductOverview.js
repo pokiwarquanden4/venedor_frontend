@@ -44,14 +44,14 @@ const ProductOverView = (props) => {
             <div className={styles.button}>
                 <MainButton
                     className={styles.viewButton}
-                    title={"View"}
+                    title={"Xem"}
                     onClick={() => {
                         navigate(`/category/${product.categoryId}/${product.id}`);
                     }}
                 ></MainButton>
                 <MainButton
                     className={styles.buyButton}
-                    title={"Buy"}
+                    title={"Mua"}
                     onClick={() => onBuy(product.StorageSpecifics)}
                 ></MainButton>
             </div>

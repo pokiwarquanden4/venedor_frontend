@@ -20,18 +20,18 @@ function CreateProductSpecific({ data, onSubmit, setOpenPopup, onDelete }) {
             });
             setOpenPopup(false);
         } else {
-            dispatch(notificationActions.setNotificationContent('Please fill all the fields and ensure no empty details.'));
+            dispatch(notificationActions.setNotificationContent('Vui lòng điền đầy đủ và không để trống thông tin chi tiết.'));
         }
     };
 
     return (
         <div className={styles.container}>
             <div className={styles.header}>
-                <div className={styles.header_title}>Specific</div>
+                <div className={styles.header_title}>Thuộc tính</div>
                 <input value={specificHeader} type='text' className={styles.header_input} onChange={(e) => setSpecificHeader(e.target.value)}></input>
             </div>
             <div className={styles.details}>
-                <div className={styles.details_title}>Details</div>
+                <div className={styles.details_title}>Chi tiết</div>
                 {specific.map((value, i) => {
                     return <div key={i} className={styles.inputWrapper}>
                         <input
@@ -68,17 +68,17 @@ function CreateProductSpecific({ data, onSubmit, setOpenPopup, onDelete }) {
                         return newSpecific
                     })
                 }}>
-                Add +
+                Thêm +
             </button>
             <div className={styles.submit}>
                 <MainButton
                     className={styles.submitButton}
-                    title={'Submit'}
-                    onClick={() => submitSpecific()}
+                    title={'Xác nhận'}
+                    onClick={submitSpecific}
                 ></MainButton>
                 <MainButton
                     className={styles.submitButton}
-                    title={data.index !== undefined ? 'Delete' : 'Cancel'}
+                    title={data.index !== undefined ? 'Xóa' : 'Hủy'}
                     onClick={() => {
                         if (data.index !== undefined) {
                             onDelete(data.index)

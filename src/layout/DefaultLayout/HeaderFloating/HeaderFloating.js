@@ -143,7 +143,7 @@ function HeaderFloating({ mainRef }) {
                   </div>
                 ) : undefined}
                 <input
-                  placeholder="Search our store"
+                  placeholder="Tìm trong cửa hàng"
                   className={styles.inputBar}
                   ref={inputBar}
                   value={searchValue}
