@@ -26,6 +26,25 @@ function App() {
     cookies.get('jwt_token') || cookies.get('jwt_refresh_token')
   );
 
+  // const googleTranslateElementInit = () => {
+  //   new window.google.translate.TranslateElement(
+  //     {
+  //       pageLanguage: "vi",
+  //       autoDisplay: false
+  //     },
+  //     "google_translate_element"
+  //   );
+  // };
+  // useEffect(() => {
+  //   var addScript = document.createElement("script");
+  //   addScript.setAttribute(
+  //     "src",
+  //     "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+  //   );
+  //   document.body.appendChild(addScript);
+  //   window.googleTranslateElementInit = googleTranslateElementInit;
+  // }, []);
+
   useEffect(() => {
     dispatch(loginActions.getUserDataRequest())
   }, [dispatch, jwtToken])
@@ -76,6 +95,7 @@ function App() {
                   route.authorization === undefined ||
                     (jwtToken && route.authorization.includes(jwt_decode(jwtToken).roleName)) ? (
                     <Layout>
+                      {/* <div id="google_translate_element"></div> */}
                       {loadingSelect.loading && <Loading></Loading>}
                       {notificationSelect.showing && (
                         <Notification content={notificationSelect.content}></Notification>

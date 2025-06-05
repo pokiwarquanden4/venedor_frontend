@@ -22,7 +22,7 @@ function Order() {
     selectedId: selectedId
   })
   const [selectProductId, setSelectProductId] = useState(0)
-  const [selectedStatus, setSelectedStatus] = useState('-1')
+  const [selectedStatus, setSelectedStatus] = useState('0')
   const selectedIdRef = useRef(undefined);
 
   useEffect(() => {

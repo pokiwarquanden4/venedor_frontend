@@ -65,15 +65,15 @@ function PaymentQR({ amount, currentAddress }) {
 
     return (
         <div style={{ textAlign: "center", padding: 24 }}>
-            <h2>Quét mã QR để thanh toán</h2>
+            <h2>Scan QR code to make payment</h2>
             {qrCode ? (
                 <img
                     src={qrCode}
-                    alt="QR Code thanh toán"
+                    alt="QR Code"
                     style={{ width: 260, height: 260, margin: "16px 0", border: "1px solid #eee", borderRadius: 8 }}
                 />
             ) : (
-                <div style={{ margin: "24px 0", color: "#888" }}>Đang tạo mã</div>
+                <div style={{ margin: "24px 0", color: "#888" }}>Createi</div>
             )}
         </div>
     );

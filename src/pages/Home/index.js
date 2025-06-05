@@ -11,6 +11,32 @@ function Home() {
   const loginSelect = useSelector(LoginSelector);
   const navigate = useNavigate();
 
+  if (loginSelect.loginRole === 'Admin') {
+    return (
+      <div className={styles.wrapper}>
+        <div className={styles.innerWrapper} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 40 }}>
+          <h1>Welcome Admin!</h1>
+          <p>This is your admin introduction page. Here you can manage the system, users, and view statistics.</p>
+          <button
+            style={{
+              marginTop: 24,
+              padding: '12px 32px',
+              background: 'rgb(13,60,85)',
+              color: '#fff',
+              border: 'none',
+              borderRadius: 6,
+              fontSize: 18,
+              cursor: 'pointer'
+            }}
+            onClick={() => navigate('/admin')}
+          >
+            Go to admin dashboard
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (loginSelect.loginRole === 'Seller') {
     return (
       <div className={styles.wrapper}>

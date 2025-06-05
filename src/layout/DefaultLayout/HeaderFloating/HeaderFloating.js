@@ -166,7 +166,7 @@ function HeaderFloating({ mainRef }) {
                   navigate('/search');
                 }}
               ></SearchIcon>
-              {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'User' || !loginSelect.loginRole) ?
+              {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'User' || !loginSelect.loginRole || loginSelect.loginRole === 'Admin') ?
                 <HumanIcon
                   className={styles.humanIcon}
                   onClick={() => {
@@ -184,14 +184,20 @@ function HeaderFloating({ mainRef }) {
                 ></HumanIcon>
                 :
                 undefined}
-              {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker') ?
+              {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker' || loginSelect.loginRole === 'Admin') ?
                 <ShopIcon
                   className={styles.shopIcon}
                   onClick={() => {
                     if (!loginStatus) {
                       dispatch(loginActions.loginPopup(true));
                     } else {
-                      navigate('/accountSeller');
+                      if ((loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker')) {
+                        navigate('/accountSeller');
+                      }
+
+                      if (loginSelect.loginRole === 'Admin') {
+
+                      }
                     }
                   }}
                 ></ShopIcon>
