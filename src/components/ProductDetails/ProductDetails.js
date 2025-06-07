@@ -22,6 +22,8 @@ import { productActions } from '../../redux/actions/product/ProductActions';
 import Pagination from '../Pagination/Pagination';
 import { formatVND } from '../../config/utils';
 import { notificationActions } from '../../redux/actions/notification/notificationAction';
+import { FlagIcon } from '../../asset/img/HeaderIcon';
+import { adminActions } from '../../redux/actions/account/AdminActions';
 
 function ProductDetails({ data, fullScreen, preview }) {
   const navigate = useNavigate();
@@ -49,6 +51,8 @@ function ProductDetails({ data, fullScreen, preview }) {
   const [specificDatapics, setSpecificDatapics] = useState([])
   const [selectedSpecificDataPics, setSelectedSpecificDataPics] = useState(null)
   const [commentData, setCommentData] = useState(productSelect.productComments)
+  const [reportPopup, setReportPopup] = useState(false)
+  const [reportData, setReportData] = useState('')
 
   useEffect(() => {
     const [option1, option2] = specificData.map((data) => {
@@ -368,6 +372,17 @@ function ProductDetails({ data, fullScreen, preview }) {
             >
               <HeartIcon className={styles.heart_icon}></HeartIcon>
             </div>
+            <div
+              className={`${loginSelect.loginRole === 'User'
+                ? styles.wishList
+                : styles.disable
+                }`}
+              onClick={() => setReportPopup(true)}
+            >
+              <FlagIcon className={styles.heart_icon}></FlagIcon>
+            </div>
+
+
           </div>
           {
             specificData.map((item, index) => {
@@ -426,6 +441,47 @@ function ProductDetails({ data, fullScreen, preview }) {
             height='80%'
           >
             <p style={{ padding: '20px' }} onClick={() => setIsShowDetails(true)} dangerouslySetInnerHTML={{ __html: productData.description }} />
+          </Popup>
+        ) : undefined}
+        {reportPopup ? (
+          <Popup
+            onClick={() => {
+              setReportPopup(false)
+            }}
+            highestZIndex={true}
+          >
+            <div style={{ padding: 24 }}>
+              <h2 style={{ marginBottom: 16 }}>Báo cáo sản phẩm</h2>
+              <textarea
+                style={{
+                  width: '100%',
+                  minHeight: 220,
+                  borderRadius: 8,
+                  border: '1px solid #ccc',
+                  padding: 12,
+                  fontSize: 16,
+                  resize: 'vertical'
+                }}
+                placeholder="Nhập lý do báo cáo sản phẩm này..."
+                value={reportData}
+                onChange={e => setReportData(e.target.value)}
+              />
+              <div style={{ marginTop: 16, textAlign: 'right' }}>
+                <MainButton
+                  className={styles.reportButton}
+                  title="Gửi báo cáo"
+                  onClick={() => {
+                    dispatch(adminActions.createReportRequest({
+                      productId: data.id,
+                      reason: reportData
+                    }))
+
+                    setReportPopup(false);
+                    dispatch(notificationActions.setNotificationContent('Đã gửi báo cáo!'));
+                  }}
+                />
+              </div>
+            </div>
           </Popup>
         ) : undefined}
       </div>

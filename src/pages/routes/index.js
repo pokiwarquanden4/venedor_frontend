@@ -18,11 +18,15 @@ import ThankYou from '../ThankYou/ThankYou';
 import EditAccount from '../EditAccount/EditAccount';
 import Order from '../Order/Order';
 import Statistical from '../Statistical/Statistical';
+import AdminHome from '../Admin/AdminHome';
+import AdminReported from '../Admin/AdminReported';
 
 const publicRoutes = [
   { path: routes.home, component: Home, Layout: HeaderOnly },
   { path: routes.search, component: Search, Layout: HeaderOnlyWithLink },
   { path: routes.wishList, component: WishList, Layout: HeaderOnlyWithLink },
+  { path: routes.admin, component: AdminHome, Layout: HeaderOnlyWithLink },
+  { path: routes.repoted, component: AdminReported, Layout: HeaderOnlyWithLink },
   { path: routes.cart, component: Cart, Layout: HeaderOnlyWithLink },
   { path: routes.category, component: HomeCategory, Layout: HeaderOnlyWithLink },
   { path: routes.productDetails, component: ProductAllDetails, Layout: HeaderOnlyWithLink },

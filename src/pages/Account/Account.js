@@ -12,6 +12,8 @@ import { formatVND } from '../../config/utils';
 import { productActions } from '../../redux/actions/product/ProductActions';
 import { notificationActions } from '../../redux/actions/notification/notificationAction';
 import Popup from '../../components/Popup/Popup';
+import { adminActions } from '../../redux/actions/account/AdminActions';
+import { uploadFirebaseImage } from '../../fireBase/imageUpload';
 
 function Account() {
   const navigate = useNavigate();
@@ -22,6 +24,13 @@ function Account() {
   const [history, setHistory] = useState([]);
   const [feedbackData, setFeedbackData] = useState({});
   const [openFeedback, setOpenFeedback] = useState(false);
+  const [refundPopup, setRefundPopup] = useState(false)
+  const [refundData, setRefundData] = useState({
+    productId: undefined,
+    reason: undefined,
+    evidenceURL: undefined,
+    refundBankURL: undefined,
+  })
 
   useEffect(() => {
     if (addressSelect.addressList) {
@@ -94,6 +103,7 @@ function Account() {
                     (item.StorageSpecificPic && item.StorageSpecificPic.option2 ? ` - ${item.StorageSpecificPic.option2}` : '');
 
                   const imgURL = item.StorageSpecificPic && item.StorageSpecificPic.imgURL ? item.StorageSpecificPic.imgURL : item.imgURL;
+                  const hasBeenRefund = item?.Storage?.Refunds?.length
 
                   return (
                     <div className={styles.history_list} key={index}>
@@ -144,7 +154,7 @@ function Account() {
                                 });
                               }}
                             >
-                              Đánh giá sản phẩm
+                              Đánh giá
                             </div>
                           )}
                           {item.status !== 2 ? (
@@ -160,9 +170,15 @@ function Account() {
                             </div>
                           ) : (
                             <div
-                              className={styles.confirm}
+                              className={`${hasBeenRefund ? styles.disable : styles.confir}`}
+                              onClick={() => {
+                                if (!hasBeenRefund) {
+                                  setRefundData(prev => ({ ...prev, productId: item.productId }));
+                                  setRefundPopup(true);
+                                }
+                              }}
                             >
-                              Đã hoàn thành
+                              Trả hàng
                             </div>
                           )}
                         </div>
@@ -212,6 +228,105 @@ function Account() {
           </div>
         </div>
       </div>
+      {refundPopup ? (
+        <Popup
+          onClick={() => setRefundPopup(false)}
+          highestZIndex={true}
+          width="400px"
+          height="auto"
+        >
+          <div style={{ padding: 24 }}>
+            <h2 style={{ marginBottom: 16 }}>Yêu cầu trả hàng</h2>
+            <textarea
+              style={{
+                width: '100%',
+                minHeight: 120,
+                borderRadius: 8,
+                border: '1px solid #ccc',
+                padding: 12,
+                fontSize: 16,
+                resize: 'vertical'
+              }}
+              placeholder="Nhập lý do trả hàng..."
+              value={refundData.reason || ''}
+              onChange={e => setRefundData(prev => ({ ...prev, reason: e.target.value }))}
+            />
+            <div style={{ marginTop: 16 }}>
+              <input
+                type="file"
+                accept="video/*"
+                style={{
+                  width: '100%',
+                  marginBottom: 12,
+                  borderRadius: 8,
+                  border: '1px solid #ccc',
+                  padding: 12,
+                  fontSize: 16,
+                }}
+                placeholder="Tải lên video bằng chứng (nếu có)..."
+                onChange={e => {
+                  const file = e.target.files[0];
+                  setRefundData(prev => ({ ...prev, evidenceURL: file }));
+                }}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                style={{
+                  width: '100%',
+                  marginBottom: 12,
+                  borderRadius: 8,
+                  border: '1px solid #ccc',
+                  padding: 12,
+                  fontSize: 16,
+                }}
+                placeholder="Tải lên ảnh mã QR nhận hoàn tiền (nếu có)..."
+                onChange={e => {
+                  const file = e.target.files[0];
+                  setRefundData(prev => ({ ...prev, refundBankURL: file }));
+                }}
+              />
+            </div>
+            <div style={{ marginTop: 16, textAlign: 'right' }}>
+              <MainButton
+                className={styles.reportButton}
+                title="Gửi yêu cầu"
+                onClick={async () => {
+                  // Kiểm tra các trường bắt buộc
+                  if (
+                    !refundData.reason ||
+                    (!refundData.evidenceURL && !refundData.refundBankURL)
+                  ) {
+                    dispatch(notificationActions.setNotificationContent('Vui lòng nhập lý do trả hàng và tải lên ít nhất 1 file bằng chứng hoặc mã QR!'));
+                    return;
+                  }
+
+                  // Upload file lên Firebase nếu là file object
+                  let evidenceURL = refundData.evidenceURL;
+                  let refundBankURL = refundData.refundBankURL;
+
+                  if (evidenceURL && typeof evidenceURL === 'object') {
+                    evidenceURL = await uploadFirebaseImage({ location: 'refundEvidence' }, evidenceURL);
+                  }
+                  if (refundBankURL && typeof refundBankURL === 'object') {
+                    refundBankURL = await uploadFirebaseImage({ location: 'refundQR' }, refundBankURL);
+                  }
+
+                  const submitData = {
+                    ...refundData,
+                    evidenceURL,
+                    refundBankURL,
+                  };
+
+                  dispatch(adminActions.createRefundRequest(submitData));
+                  setRefundPopup(false);
+                  dispatch(notificationActions.setNotificationContent('Đã gửi yêu cầu trả hàng!'));
+                }}
+              />
+            </div>
+          </div>
+        </Popup>
+      ) : undefined}
 
       {
         openFeedback ? (

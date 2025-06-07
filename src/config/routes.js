@@ -1,4 +1,6 @@
 const routes = {
+  admin: '/account/admin',
+  repoted: '/account/admin/repoted',
   home: '/',
   thankyou: '/thankyou',
   message: '/message',

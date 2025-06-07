@@ -6,6 +6,7 @@ import ProductList from './ProductList/ProductList';
 import { LoginSelector } from '../../redux/selectors/accountSelector/LoginSelector';
 import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
+import routes from '../../config/routes';
 
 function Home() {
   const loginSelect = useSelector(LoginSelector);
@@ -28,7 +29,7 @@ function Home() {
               fontSize: 18,
               cursor: 'pointer'
             }}
-            onClick={() => navigate('/admin')}
+            onClick={() => navigate(routes.admin)}
           >
             Đến trang quản trị
           </button>

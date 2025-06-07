@@ -179,6 +179,9 @@ function HeaderFloating({ mainRef }) {
                       if (loginSelect.loginRole === 'Seller') {
                         navigate('/account/editAccount');
                       }
+                      if (loginSelect.loginRole === 'Admin') {
+                        navigate('/account/admin');
+                      }
                     }
                   }}
                 ></HumanIcon>
@@ -196,7 +199,7 @@ function HeaderFloating({ mainRef }) {
                       }
 
                       if (loginSelect.loginRole === 'Admin') {
-
+                        navigate(routes.repoted)
                       }
                     }
                   }}
@@ -215,21 +218,27 @@ function HeaderFloating({ mainRef }) {
                     }
                   }}
                 ></HeartIcon> : undefined}
-              <BoxIcon
-                className={styles.boxIcon}
-                onClick={() => {
-                  if (loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker' || loginSelect.loginRole === 'Shipper') {
-                    navigate(routes.oder);
-                  } else {
-                    if (!loginStatus) {
-                      dispatch(loginActions.loginPopup(true));
+
+              {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker' || loginSelect.loginRole === 'Shipper' || loginSelect.loginRole === 'User' || !loginSelect.loginRole)
+                ?
+                <BoxIcon
+                  className={styles.boxIcon}
+                  onClick={() => {
+                    if (loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Stocker' || loginSelect.loginRole === 'Shipper') {
+                      navigate(routes.oder);
                     } else {
-                      setCart(true);
+                      if (!loginStatus) {
+                        dispatch(loginActions.loginPopup(true));
+                      } else {
+                        setCart(true);
+                      }
                     }
-                  }
-                }}
-              ></BoxIcon>
-              {loginSelect.loginRole === 'Seller' ? <GraphIcon
+                  }}
+                ></BoxIcon>
+                :
+                undefined
+              }
+              {(loginSelect.loginRole === 'Seller') ? <GraphIcon
                 onClick={() => {
                   if (!loginStatus) {
                     dispatch(loginActions.loginPopup(true));

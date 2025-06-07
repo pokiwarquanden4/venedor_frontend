@@ -1,0 +1,243 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+
+    .inner_wrapper {
+        width: var(--default_page_width);
+        padding-bottom: 200px;
+
+        .header {
+            // display: flex;
+
+            .accountInfo_header,
+            .staff_header {
+                flex: 0.5;
+            }
+
+            .staff_header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .main_header {
+                margin: 48px 0 15px;
+                padding-left: 10px;
+                border-left: 4px solid black;
+                font-size: 40px;
+                font-weight: bolder;
+            }
+
+            .sub_header {
+                margin-bottom: 70px;
+                font-size: 16px;
+            }
+        }
+
+        .content {
+            .notification {
+                position: absolute;
+                bottom: -16px;
+                left: 100px;
+                color: red;
+                font-size: 12px;
+            }
+
+            .error {
+                border-color: red !important;
+            }
+
+            .name,
+            .gender,
+            .password {
+                position: relative;
+                display: flex;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .name_header,
+            .gender_header,
+            .password_header {
+                width: 100px;
+                color: #444;
+                font-size: 18px;
+                font-weight: bolder;
+            }
+
+            .name_input,
+            .gender_input,
+            .password_input {
+                font-size: 16px;
+                padding: 15px 30px;
+                height: 50px;
+                width: 400px;
+            }
+        }
+
+        .footer {
+            margin-left: 100px;
+
+            .edit_button,
+            .editPassword_button {
+                width: 160px;
+                height: 40px;
+            }
+
+            .editPassword_button {
+                margin-left: 10px;
+            }
+        }
+    }
+
+    @media (max-width: 680px) {
+        .inner_wrapper {
+            .content {
+
+                .name,
+                .gender,
+                .password {
+                    display: block;
+                }
+
+                .name_input,
+                .gender_input,
+                .password_input {
+                    margin-top: 15px;
+                    width: 100%;
+                }
+            }
+
+            .footer {
+                margin-left: 0;
+            }
+        }
+
+    }
+}
+
+.password_wrapper {
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center
+}
+
+.update_password {
+    width: 160px;
+    height: 40px;
+}
+
+.add_staff_button {
+    width: 160px;
+    height: 40px;
+}
+
+.userInfo {
+    flex: 0.5;
+}
+
+.staffListWrapper {
+    flex: 0.5;
+
+    .table_wrapper {
+        height: 300px;
+        overflow: auto;
+        background: transparent; // Đảm bảo nền trong suốt
+        scrollbar-color: transparent transparent; // Firefox
+        scrollbar-width: thin; // Firefox
+    }
+
+    // Ẩn thanh cuộn trên Chrome, Edge, Safari
+    .table_wrapper::-webkit-scrollbar {
+        width: 8px;
+        background: transparent;
+    }
+
+    .table_wrapper::-webkit-scrollbar-thumb {
+        background: transparent;
+    }
+
+    table {
+        // width: 650px;
+    }
+
+    .pages {
+        margin-top: 30px;
+    }
+}
+
+.staffListTitle {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #1a355b;
+}
+
+.staffTable {
+    width: 100%;
+    border-collapse: collapse;
+
+    thead {
+        position: sticky;
+        position: -webkit-sticky;
+        top: 0;
+        z-index: 999;
+        background-color: #000;
+        color: #fff;
+    }
+
+    th,
+    td {
+        padding: 10px 8px;
+        border-bottom: 1px solid #e0e0e0;
+        font-size: 16px;
+        text-align: left;
+    }
+
+    th {
+        background: #f0f4f8;
+        color: #333;
+    }
+}
+
+.contentStyle {
+    display: flex;
+}
+
+.staffActionBtn {
+    padding: 4px 12px;
+    border: none;
+    border-radius: 4px;
+    background: #e0e6ed;
+    color: #1a355b;
+    cursor: pointer;
+    font-size: 14px;
+    margin-right: 4px;
+    transition: all 0.2s;
+}
+
+.staffActionBtn:hover {
+    background: #cfd8dc;
+}
+
+.price_unit {
+    position: absolute;
+    right: 10px;
+    /* Căn lề phải */
+    top: 50%;
+    transform: translateY(-50%);
+    color: #333;
+    /* Màu chữ */
+    pointer-events: none;
+    /* Không cho phép người dùng tương tác */
+}
+
+.closeButton {
+    height: 40px;
+    font-size: 18px;
+}
+
+.content+.content {
+    margin-top: 20px;
+}

@@ -12,6 +12,7 @@ export const productConstants = {
     salesToBuy: [],
     overviewAI: undefined
   },
+  stockNumber: undefined,
   paymentList: [],
   category: {}
 };

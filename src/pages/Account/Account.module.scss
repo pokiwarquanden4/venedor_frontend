@@ -229,7 +229,7 @@
 
         .confirm {
             cursor: pointer;
-            color: #b4d358;
+            color: yellowgreen;
             font-size: 14px;
             display: flex;
             justify-content: center;
@@ -349,4 +349,9 @@
 
 .cancel_button:hover {
     background-color: #bbb;
+}
+
+.reportButton {
+    height: 40px;
+    font-size: 18px;
 }

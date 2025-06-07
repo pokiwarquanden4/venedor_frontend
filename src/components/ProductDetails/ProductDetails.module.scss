@@ -1,4 +1,5 @@
 .wrapper {
+    position: relative;
     height: 100%;
     padding: 30px;
     display: flex;
@@ -711,4 +712,9 @@
     100% {
         transform: translate(0, 0);
     }
+}
+
+.reportButton {
+    height: 40px;
+    font-size: 18px;
 }

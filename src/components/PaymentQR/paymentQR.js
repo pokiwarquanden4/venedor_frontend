@@ -55,12 +55,16 @@ function PaymentQR({ amount, currentAddress }) {
     }, [currentAddress.id, dispatch]);
 
     useEffect(() => {
-        if (productSelect.paymentList.some(item => item.includes(content))) {
-            dispatch(
-                purchaseActions.purchaseRequest({ addressId: currentAddress.id })
-            );
-            navigate('/thankyou');
-        }
+        dispatch(
+            purchaseActions.purchaseRequest({ addressId: currentAddress.id })
+        );
+        navigate('/thankyou');
+        // if (productSelect.paymentList.some(item => item.includes(content))) {
+        //     dispatch(
+        //         purchaseActions.purchaseRequest({ addressId: currentAddress.id })
+        //     );
+        //     navigate('/thankyou');
+        // }
     }, [content, currentAddress.id, dispatch, navigate, productSelect.paymentList])
 
     return (

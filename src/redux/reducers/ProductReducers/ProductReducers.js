@@ -59,6 +59,24 @@ export default function ProductReducers(state = productConstants, action) {
         success: false,
         loading: false,
       };
+    case getType(productActions.getStockNumberRequest):
+      return {
+        ...state,
+        loading: true,
+      };
+    case getType(productActions.getStockNumberSuccess):
+      return {
+        ...state,
+        success: true,
+        loading: false,
+        stockNumber: action.payload.obj
+      };
+    case getType(productActions.getStockNumberFailure):
+      return {
+        ...state,
+        success: false,
+        loading: false,
+      };
     case getType(productActions.getShopRankingRatingRequest):
       return {
         ...state,

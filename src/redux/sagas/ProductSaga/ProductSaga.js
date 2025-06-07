@@ -20,6 +20,7 @@ import {
   askOverviewAIAPI,
   deleteProductAPI,
   getPaymentAPI,
+  getStockNumberAPI,
 } from '../../../api/storageAPI/StorageAPI';
 import { productActions } from '../../actions/product/ProductActions';
 import { jwtCheck } from '../jwtCheck';
@@ -236,6 +237,20 @@ function* getShopRankingSalesSaga(action) {
   }
 }
 
+function* getStockNumberSaga(action) {
+  try {
+    yield put(loadingActions.setLoadingLoading(true));
+    const stock = yield call(getStockNumberAPI, action.payload);
+    yield put(productActions.getStockNumberSuccess(stock.data));
+
+    yield jwtCheck(stock);
+    yield put(loadingActions.setLoadingLoading(false));
+  } catch (err) {
+    yield put(productActions.getStockNumberFailure(err.response));
+    yield put(loadingActions.setLoadingLoading(false));
+  }
+}
+
 function* getShopRankingRatingSaga(action) {
   try {
     yield put(loadingActions.setLoadingLoading(true));
@@ -365,6 +380,7 @@ function* productSagas() {
   yield takeLatest(productActions.createCommentRequest, createCommentSaga);
   yield takeLatest(productActions.getCategoryRequest, getCategory);
   yield takeLatest(productActions.getShopRankingSalesRequest, getShopRankingSalesSaga);
+  yield takeLatest(productActions.getStockNumberRequest, getStockNumberSaga);
   yield takeLatest(productActions.getShopRankingRatingRequest, getShopRankingRatingSaga);
   yield takeLatest(productActions.getRankingDataRequest, getRankingDataSaga);
   yield takeLatest(productActions.getProductSalesDataRequest, getProductSalesDataSaga);

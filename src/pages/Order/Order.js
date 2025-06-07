@@ -90,6 +90,7 @@ function Order() {
           </div>
           <select
             className={styles.status_input}
+            value={selectedStatus}
             onChange={(e) => {
               setSelectedStatus(e.target.value)
             }}

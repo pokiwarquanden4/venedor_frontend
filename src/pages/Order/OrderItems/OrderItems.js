@@ -72,16 +72,16 @@ function OrderItems({ data, upperData }) {
           >
             <option value="0" disabled={
               !(loginSelect.loginRole === "Seller" || (loginSelect.loginRole === "Stocker" && [0, 1, 3].includes(Number(status))))
-            }>Pending</option>
+            }>Chờ xử lý</option>
             <option value="1" disabled={
               !(loginSelect.loginRole === "Seller" || (loginSelect.loginRole === "Stocker" && [0, 1, 3].includes(Number(status))))
-            }>Shipping</option>
+            }>Đang giao</option>
             <option value="2" disabled={
               !(loginSelect.loginRole === "Seller" || (loginSelect.loginRole === "Shipper" && [2, 3].includes(Number(status))))
-            }>Done</option>
+            }>Hoàn thành</option>
             <option value="3" disabled={
               !(loginSelect.loginRole === "Seller" || (loginSelect.loginRole === "Stocker" && [0, 1, 3].includes(Number(status))) || (loginSelect.loginRole === "Shipper" && [2, 3].includes(Number(status))))
-            }>Cancel</option>
+            }>Đã hủy</option>
           </select>
         </td>
         <td className={styles.content_content}>

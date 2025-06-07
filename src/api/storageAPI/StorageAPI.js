@@ -101,6 +101,13 @@ export const getShopRankingSalesAPI = (payload) => {
   });
 };
 
+export const getStockNumberAPI = (payload) => {
+  return axios.get(`${URL}sellers/getStockNumber`, {
+    params: payload,
+    headers: createHeaders({ Authorization: getJWTToken() }),
+  });
+};
+
 export const getShopRankingRatingAPI = (payload) => {
   return axios.get(`${URL}sellers/getShopRankingRating`, {
     params: payload,

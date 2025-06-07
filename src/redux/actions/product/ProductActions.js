@@ -38,6 +38,10 @@ export const productActions = createActions({
   getShopRankingSalesSuccess: (payload) => payload,
   getShopRankingSalesFailure: (payload) => payload,
 
+  getStockNumberRequest: (payload) => payload,
+  getStockNumberSuccess: (payload) => payload,
+  getStockNumberFailure: (payload) => payload,
+
   getShopRankingRatingRequest: (payload) => payload,
   getShopRankingRatingSuccess: (payload) => payload,
   getShopRankingRatingFailure: (payload) => payload,

@@ -22,10 +22,10 @@ function Header() {
             <ShareIcon className={styles.shareIcon}></ShareIcon>
             <div className={styles.content}>Đổi trả trong 30 ngày</div>
           </div>
-          <div className={styles.items}>
+          {/* <div className={styles.items}>
             <ContactIcon className={styles.contactIcon}></ContactIcon>
             <div className={styles.content}>Hỗ trợ khách hàng 24/7</div>
-          </div>
+          </div> */}
         </div>
       </div>
       <HeaderFloating mainRef={mainRef}></HeaderFloating>
