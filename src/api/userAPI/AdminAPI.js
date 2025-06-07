@@ -47,6 +47,15 @@ export const getReportedAPI = (payload) => {
     });
 };
 
+export const getRefundAPI = (payload) => {
+    return axios.get(`${URL}admin/getAllRefund`, {
+        params: payload,
+        headers: createHeaders({
+            Authorization: getJWTToken(),
+        }),
+    });
+};
+
 export const getGraphAPI = (payload) => {
     return axios.get(`${URL}admin/getGraph`, {
         params: payload,
@@ -66,6 +75,14 @@ export const createRefundAPI = (payload) => {
 
 export const handleReportAPI = (payload) => {
     return axios.post(`${URL}admin/handleReport`, payload, {
+        headers: createHeaders({
+            Authorization: getJWTToken(),
+        }),
+    });
+};
+
+export const handleRefundAPI = (payload) => {
+    return axios.post(`${URL}admin/handleRefund`, payload, {
         headers: createHeaders({
             Authorization: getJWTToken(),
         }),

@@ -7,11 +7,11 @@
         padding-bottom: 200px;
 
         .header {
-            // display: flex;
+            display: flex;
 
             .accountInfo_header,
             .staff_header {
-                flex: 0.5;
+                // flex: 0.5;
             }
 
             .staff_header {
@@ -134,11 +134,11 @@
 }
 
 .userInfo {
-    flex: 0.5;
+    // flex: 0.5;
 }
 
 .staffListWrapper {
-    flex: 0.5;
+    // flex: 0.5;
 
     .table_wrapper {
         height: 300px;
@@ -202,7 +202,7 @@
 }
 
 .contentStyle {
-    display: flex;
+    width: 100%;
 }
 
 .staffActionBtn {
@@ -236,14 +236,4 @@
 .closeButton {
     height: 40px;
     font-size: 18px;
-}
-
-.content+.content {
-    margin-top: 20px;
-}
-
-.profitButton {
-    height: 40px;
-    width: 160px;
-    font-size: 17px;
 }

@@ -25,7 +25,10 @@ function Account() {
   const [feedbackData, setFeedbackData] = useState({});
   const [openFeedback, setOpenFeedback] = useState(false);
   const [refundPopup, setRefundPopup] = useState(false)
+  const [refundPolicy, setRefundPolicy] = useState()
+  const [refundPolicyPopup, setRefundPolicyPopup] = useState(false)
   const [refundData, setRefundData] = useState({
+    historyId: undefined,
     productId: undefined,
     reason: undefined,
     evidenceURL: undefined,
@@ -104,6 +107,7 @@ function Account() {
 
                   const imgURL = item.StorageSpecificPic && item.StorageSpecificPic.imgURL ? item.StorageSpecificPic.imgURL : item.imgURL;
                   const hasBeenRefund = item?.Storage?.Refunds?.length
+                  const refundStatus = item?.Storage?.Refunds?.[0]?.status
 
                   return (
                     <div className={styles.history_list} key={index}>
@@ -141,7 +145,7 @@ function Account() {
                           })}
                         </div>
                         <div className={styles.status_content}>
-                          {item.status === 2 && !item.feedbackId && (
+                          {item.status === 2 && !item.feedbackId && !hasBeenRefund ? (
                             <div
                               className={styles.addComment}
                               onClick={() => {
@@ -156,7 +160,7 @@ function Account() {
                             >
                               Đánh giá
                             </div>
-                          )}
+                          ) : undefined}
                           {item.status !== 2 ? (
                             <div
                               className={`${item.status === 1 ? styles.disable : styles.delete}`}
@@ -169,17 +173,42 @@ function Account() {
                               Hủy đơn hàng
                             </div>
                           ) : (
-                            <div
-                              className={`${hasBeenRefund ? styles.disable : styles.confir}`}
-                              onClick={() => {
-                                if (!hasBeenRefund) {
-                                  setRefundData(prev => ({ ...prev, productId: item.productId }));
-                                  setRefundPopup(true);
-                                }
-                              }}
-                            >
-                              Trả hàng
-                            </div>
+                            (refundStatus === 1 || refundStatus === 3)
+                              ? (
+                                <div
+                                  className={`${refundStatus !== 1 ? styles.disable : styles.confirm_out}`}
+                                  onClick={() => {
+                                    if (refundStatus === 1) {
+                                      setRefundPolicy({
+                                        refundId: item.Storage.Refunds[0].id,
+                                        status: 3
+                                      })
+                                      setRefundPolicyPopup(true)
+                                    }
+                                  }}
+                                >
+                                  Gửi hàng về
+                                </div>
+                              )
+                              : refundStatus === 4
+                                ? (
+                                  <div className={styles.confirm_success}>
+                                    Trả hàng thành công
+                                  </div>
+                                )
+                                : (
+                                  <div
+                                    className={`${hasBeenRefund ? styles.disable : styles.confirm_out}`}
+                                    onClick={() => {
+                                      if (!hasBeenRefund) {
+                                        setRefundData(prev => ({ ...prev, productId: item.productId, historyId: item.id }));
+                                        setRefundPopup(true);
+                                      }
+                                    }}
+                                  >
+                                    Trả hàng
+                                  </div>
+                                )
                           )}
                         </div>
                       </div>
@@ -364,6 +393,55 @@ function Account() {
                 <button className={styles.cancel_button} onClick={() => setOpenFeedback(false)}>
                   Hủy
                 </button>
+              </div>
+            </div>
+          </Popup>
+        ) : undefined
+      }
+
+      {
+        refundPolicyPopup ? (
+          <Popup
+            onClick={() => {
+              setRefundPolicyPopup(false)
+            }}
+            highestZIndex={true}
+          >
+            <div style={{ padding: 24, minWidth: 350 }}>
+              <h2 style={{ marginBottom: 20, fontSize: 26, fontWeight: 700 }}>Hướng dẫn trả hàng</h2>
+              <ol style={{ marginBottom: 24, paddingLeft: 24, fontSize: 18 }}>
+                <li style={{ marginBottom: 10 }}>
+                  <strong>Đóng gói sản phẩm</strong> cần trả lại một cách cẩn thận.
+                </li>
+                <li style={{ marginBottom: 10 }}>
+                  <strong>Gửi hàng về địa chỉ:</strong><br />
+                  <span style={{ color: '#3498db', fontWeight: 500 }}>
+                    123 Đường Trả Hàng, Phường X, Quận Y, TP. Z (hoặc địa chỉ shop cung cấp)
+                  </span>
+                </li>
+                <li style={{ marginBottom: 10 }}>
+                  Sau khi gửi hàng, <strong>quay lại trang này</strong> và nhấn nút <b>Xác nhận đã gửi hàng</b> bên dưới.
+                </li>
+                <li style={{ marginBottom: 10 }}>
+                  Đợi cửa hàng xác nhận đã nhận được hàng. Tiền sẽ được hoàn vào mã QR bạn đã cung cấp trước đó.
+                </li>
+              </ol>
+              <div style={{ marginTop: 24, textAlign: 'right' }}>
+                <MainButton
+                  className={styles.reportButton}
+                  title="Xác nhận đã gửi hàng"
+                  onClick={() => {
+                    dispatch(adminActions.handleRefundRequest({
+                      refundId: refundPolicy.refundId,
+                      status: refundPolicy.status
+                    }));
+                    setRefundPolicyPopup(false);
+                    dispatch(notificationActions.setNotificationContent('Thành công'));
+                  }}
+                />
+              </div>
+              <div style={{ marginTop: 32, textAlign: 'center', fontSize: 20, color: '#2ecc40', fontWeight: 600 }}>
+                Cảm ơn bạn đã sử dụng dịch vụ của chúng tôi!
               </div>
             </div>
           </Popup>

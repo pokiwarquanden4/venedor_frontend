@@ -6,7 +6,7 @@ import { notificationActions } from '../../actions/notification/notificationActi
 import { loadingActions } from '../../actions/loading/LoadingActions';
 import { jwtCheck } from '../jwtCheck';
 import { adminActions } from '../../actions/account/AdminActions';
-import { createRefundAPI, createReportAPI, disableUserAPI, getGraphAPI, getReportedAPI, getSellerListAPI, getUserListAPI, handleReportAPI } from '../../../api/userAPI/AdminAPI';
+import { createRefundAPI, createReportAPI, disableUserAPI, getGraphAPI, getRefundAPI, getReportedAPI, getSellerListAPI, getUserListAPI, handleRefundAPI, handleReportAPI } from '../../../api/userAPI/AdminAPI';
 
 function* getUserListSaga(action) {
     try {
@@ -83,6 +83,21 @@ function* getReportSaga(action) {
     }
 }
 
+function* getRefundSaga(action) {
+    try {
+        yield put(loadingActions.setLoadingLoading(true));
+
+        const data = yield call(getRefundAPI, action.payload);
+        yield put(adminActions.getRefundSuccess(data.data));
+
+        yield jwtCheck(data);
+        yield put(loadingActions.setLoadingLoading(false));
+    } catch (err) {
+        yield put(adminActions.getRefundFailure(err.response.data));
+        yield put(loadingActions.setLoadingLoading(false));
+    }
+}
+
 function* getGraphSaga(action) {
     try {
         yield put(loadingActions.setLoadingLoading(true));
@@ -128,6 +143,18 @@ function* handleReportSaga(action) {
     }
 }
 
+function* handleRefundSaga(action) {
+    try {
+
+        const data = yield call(handleRefundAPI, action.payload);
+        yield put(adminActions.handleRefundSuccess(action.payload));
+
+        yield jwtCheck(data);
+    } catch (err) {
+        yield put(adminActions.handleRefundFailure(err.response.data));
+    }
+}
+
 function* adminSagas() {
     yield takeLatest(adminActions.getUserListRequest, getUserListSaga);
     yield takeLatest(adminActions.getSellerListRequest, getSellerListSaga);
@@ -135,7 +162,9 @@ function* adminSagas() {
     yield takeLatest(adminActions.disableUserRequest, disableUserSaga);
     yield takeLatest(adminActions.createReportRequest, createReportSaga);
     yield takeLatest(adminActions.getReportRequest, getReportSaga);
+    yield takeLatest(adminActions.getRefundRequest, getRefundSaga);
     yield takeLatest(adminActions.handleReportRequest, handleReportSaga);
+    yield takeLatest(adminActions.handleRefundRequest, handleRefundSaga);
     yield takeLatest(adminActions.createRefundRequest, createRefundSaga);
 }
 

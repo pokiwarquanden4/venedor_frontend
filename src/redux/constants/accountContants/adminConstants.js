@@ -4,5 +4,6 @@ export const adminConstants = {
     userList: undefined,
     sellerList: undefined,
     reported: undefined,
-    graph: undefined
+    graph: undefined,
+    refund: undefined
 };

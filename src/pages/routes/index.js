@@ -20,6 +20,8 @@ import Order from '../Order/Order';
 import Statistical from '../Statistical/Statistical';
 import AdminHome from '../Admin/AdminHome';
 import AdminReported from '../Admin/AdminReported';
+import Profit from '../Admin/Profit';
+import Refund from '../Refund/Refund';
 
 const publicRoutes = [
   { path: routes.home, component: Home, Layout: HeaderOnly },
@@ -33,6 +35,8 @@ const publicRoutes = [
   { path: routes.createAccount, component: CreateAccount, Layout: HeaderOnlyWithLink },
   { path: routes.account, component: Account, Layout: HeaderOnlyWithLink },
   { path: routes.address, component: Address, Layout: HeaderOnlyWithLink },
+  { path: routes.profit, component: Profit, Layout: HeaderOnlyWithLink },
+  { path: routes.refund, component: Refund, Layout: HeaderOnlyWithLink },
   {
     path: routes.createProduct,
     component: CreateProduct,

@@ -138,6 +138,25 @@ export default function adminReducers(state = adminConstants, action) {
                 success: false,
                 loading: false,
             };
+        case getType(adminActions.getRefundRequest):
+            return {
+                ...state,
+                success: false,
+                loading: true,
+            };
+        case getType(adminActions.getRefundSuccess):
+            return {
+                ...state,
+                success: true,
+                refund: action.payload.obj,
+                loading: false,
+            };
+        case getType(adminActions.getRefundFailure):
+            return {
+                ...state,
+                success: false,
+                loading: false,
+            };
         case getType(adminActions.handleReportRequest):
             return {
                 ...state,
@@ -163,6 +182,37 @@ export default function adminReducers(state = adminConstants, action) {
             };
         }
         case getType(adminActions.handleReportFailure):
+            return {
+                ...state,
+                success: false,
+                loading: false,
+            };
+
+        case getType(adminActions.handleRefundRequest):
+            return {
+                ...state,
+                success: false,
+                loading: true,
+            };
+        case getType(adminActions.handleRefundSuccess): {
+            const { refundId } = action.payload;
+
+            const updatedRefund = state.refund && state.refund.refunds
+                ? state.refund.refunds.filter(refund => refund.id !== refundId)
+                : [];
+
+            return {
+                ...state,
+                success: true,
+                refund: {
+                    ...state.refund,
+                    refunds: updatedRefund,
+                    totalPages: state.refund.totalPages // giữ nguyên số trang, hoặc cập nhật lại nếu cần
+                },
+                loading: false,
+            };
+        }
+        case getType(adminActions.handleRefundFailure):
             return {
                 ...state,
                 success: false,

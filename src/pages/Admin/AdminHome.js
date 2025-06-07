@@ -7,8 +7,11 @@ import { adminSelector } from '../../redux/selectors/accountSelector/AdminSelect
 import Pagination from '../../components/Pagination/Pagination';
 import Popup from '../../components/Popup/Popup';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import routes from '../../config/routes';
+import { useNavigate } from 'react-router-dom';
 
 function AdminHome() {
+    const navigate = useNavigate()
     const adminSelect = useSelector(adminSelector)
     const dispatch = useDispatch()
     const [userPopup, setUserPopup] = useState(false)
@@ -216,6 +219,7 @@ function AdminHome() {
                                     }}
                                 />
                             </div>
+                            <MainButton onClick={() => navigate(routes.profit)} className={styles.profitButton} title={'Xem doanh thu'}></MainButton>
                         </div>
                         <div className={styles.staffListWrapper}>
                             <div className={styles.table_wrapper}>
@@ -276,7 +280,7 @@ function AdminHome() {
                                                         onClick={() => {
                                                             if (window.confirm(`Bạn có chắc chắn muốn ${!seller.disable ? 'Vô hiệu' : 'Kích hoạt'} hóa tài khoản này?`)) {
                                                                 dispatch(adminActions.disableUserRequest({
-                                                                    userId: user.id,
+                                                                    userId: seller.id,
                                                                     disable: !seller.disable
                                                                 }))
                                                             }

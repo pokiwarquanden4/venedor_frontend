@@ -24,9 +24,17 @@ export const adminActions = createActions({
     getReportSuccess: (payload) => payload,
     getReportFailure: (payload) => payload,
 
+    getRefundRequest: (payload) => payload,
+    getRefundSuccess: (payload) => payload,
+    getRefundFailure: (payload) => payload,
+
     handleReportRequest: (payload) => payload,
     handleReportSuccess: (payload) => payload,
     handleReportFailure: (payload) => payload,
+
+    handleRefundRequest: (payload) => payload,
+    handleRefundSuccess: (payload) => payload,
+    handleRefundFailure: (payload) => payload,
 
     createReportRequest: (payload) => payload,
     createReportSuccess: (payload) => payload,

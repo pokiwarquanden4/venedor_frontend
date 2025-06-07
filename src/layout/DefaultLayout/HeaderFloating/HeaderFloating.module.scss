@@ -50,6 +50,7 @@
         .responsive,
         .graphIcon,
         .logoutIcon,
+        .refund_icon,
         .boxIcon {
             margin-right: 30px;
         }
@@ -122,4 +123,9 @@
     top: -1px;
     z-index: 10;
     background-color: rgb(255, 255, 255);
+}
+
+.refund_icon {
+    margin-top: 6px;
+    cursor: pointer;
 }

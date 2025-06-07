@@ -240,6 +240,29 @@
                 text-decoration: underline;
             }
         }
+
+        .confirm_out {
+            cursor: pointer;
+            color: gold;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 0.2;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+
+        .confirm_success {
+            color: green;
+            font-size: 14px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 0.2
+        }
     }
 
     @media (max-width: 650px) {

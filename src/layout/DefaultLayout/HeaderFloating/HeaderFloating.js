@@ -6,6 +6,7 @@ import {
   HumanIcon,
   LogoutIcon,
   MessageIcon,
+  RefundIcon,
   SearchIcon,
   ShopIcon,
 } from '../../../asset/img/HeaderIcon';
@@ -238,16 +239,37 @@ function HeaderFloating({ mainRef }) {
                 :
                 undefined
               }
-              {(loginSelect.loginRole === 'Seller') ? <GraphIcon
+
+              {(loginSelect.loginRole === 'Seller') ? <RefundIcon
                 onClick={() => {
                   if (!loginStatus) {
                     dispatch(loginActions.loginPopup(true));
                   } else {
-                    navigate('/static');
+                    if (loginSelect.loginRole === 'Seller') {
+                      navigate(routes.refund);
+                    }
+                  }
+                }}
+                className={styles.refund_icon}
+              ></RefundIcon> : undefined}
+
+              {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Admin') ? <GraphIcon
+                onClick={() => {
+                  if (!loginStatus) {
+                    dispatch(loginActions.loginPopup(true));
+                  } else {
+                    if (loginSelect.loginRole === 'Seller') {
+                      navigate('/static');
+                    }
+
+                    if (loginSelect.loginRole === 'Admin') {
+                      navigate(routes.profit);
+                    }
                   }
                 }}
                 className={styles.graphIcon}
               ></GraphIcon> : undefined}
+
               {loginStatus && (
                 <LogoutIcon
                   className={styles.logoutIcon}
