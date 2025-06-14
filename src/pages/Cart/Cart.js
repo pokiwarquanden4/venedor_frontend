@@ -157,7 +157,7 @@ function Cart() {
           <div className={styles.header}>
             <div className={styles.header_content}>Giỏ hàng</div>
             <div className={styles.header_sub_content}>
-              Đăng ký tài khoản để nhận giảm giá 10% cho đơn hàng đầu tiên.
+              Dưới đây là danh sách những sản phẩm trong giỏ hàng của bạn
             </div>
           </div>
           <div className={styles.content}>
