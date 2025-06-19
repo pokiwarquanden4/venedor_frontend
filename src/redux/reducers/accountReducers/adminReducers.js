@@ -236,6 +236,82 @@ export default function adminReducers(state = adminConstants, action) {
                 success: false,
                 loading: false,
             };
+        case getType(adminActions.getAllPolicyRequest):
+            return {
+                ...state,
+                success: false,
+                loading: true,
+            };
+        case getType(adminActions.getAllPolicySuccess):
+            return {
+                ...state,
+                success: true,
+                policy: action.payload.obj,
+                loading: false,
+            };
+        case getType(adminActions.getAllPolicyFailure):
+            return {
+                ...state,
+                success: false,
+                loading: false,
+            };
+        case getType(adminActions.addPolictyRequest):
+            return {
+                ...state,
+                success: false,
+                loading: true,
+            };
+        case getType(adminActions.addPolictySuccess):
+            return {
+                ...state,
+                success: true,
+                policy: action.payload.obj,
+                loading: false,
+            };
+        case getType(adminActions.addPolictyFailure):
+            return {
+                ...state,
+                success: false,
+                loading: false,
+            };
+        case getType(adminActions.editPolicyRequest):
+            return {
+                ...state,
+                success: false,
+                loading: true,
+            };
+        case getType(adminActions.editPolicySuccess):
+            return {
+                ...state,
+                success: true,
+                policy: action.payload.obj,
+                loading: false,
+            };
+        case getType(adminActions.editPolicyFailure):
+            return {
+                ...state,
+                success: false,
+                loading: false,
+            };
+        case getType(adminActions.deletePolicyRequest):
+            return {
+                ...state,
+                success: false,
+                loading: true,
+            };
+        case getType(adminActions.deletePolicySuccess):
+            return {
+                ...state,
+                success: true,
+                policy: action.payload.obj,
+                loading: false,
+            };
+        case getType(adminActions.deletePolicyFailure):
+            return {
+                ...state,
+                success: false,
+                loading: false,
+            };
         default:
             return state;
     }

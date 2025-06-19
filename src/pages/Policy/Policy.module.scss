@@ -1,0 +1,108 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.innerWrapper {
+    width: var(--default_page_width);
+}
+
+.title {
+    margin-bottom: 28px;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #3498db;
+    text-align: center;
+}
+
+.policyItem {
+    padding-bottom: 28px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 18px;
+    transition: box-shadow 0.2s;
+
+    &:hover {
+        box-shadow: 0 2px 12px 0 rgba(52, 152, 219, 0.08);
+        background: #f8fbff;
+    }
+}
+
+.policyTitle {
+    color: #2980b9;
+    margin-bottom: 6px;
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.policyTarget {
+    font-weight: 500;
+    color: #16a085;
+    margin-bottom: 4px;
+}
+
+.policyContent {
+    font-size: 1.05rem;
+    color: #333;
+}
+
+.addBox {
+    width: 500px;
+    padding: 20px 16px;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border: 1px solid #e1eaf4;
+}
+
+.addTitle {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.input,
+.textarea,
+.select {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #b2bec3;
+    font-size: 1rem;
+    background: #fff;
+    transition: border 0.2s;
+
+    &:focus {
+        border: 1.5px solid #3498db;
+        outline: none;
+    }
+}
+
+.button {
+    background: #3498db;
+    color: #fff;
+    padding: 10px 28px;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+
+    &:hover {
+        background: #217dbb;
+    }
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+}
+
+.policyList {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.button+.button {
+    margin-left: 10px;
+}

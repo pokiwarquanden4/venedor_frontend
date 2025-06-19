@@ -5,5 +5,6 @@ export const adminConstants = {
     sellerList: undefined,
     reported: undefined,
     graph: undefined,
-    refund: undefined
+    refund: undefined,
+    policy: []
 };

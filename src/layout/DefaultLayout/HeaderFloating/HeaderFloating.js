@@ -6,6 +6,7 @@ import {
   HumanIcon,
   LogoutIcon,
   MessageIcon,
+  PolicyIcon,
   RefundIcon,
   SearchIcon,
   ShopIcon,
@@ -252,6 +253,19 @@ function HeaderFloating({ mainRef }) {
                 }}
                 className={styles.refund_icon}
               ></RefundIcon> : undefined}
+
+              {(loginSelect.loginRole === 'Admin') ? <PolicyIcon
+                onClick={() => {
+                  if (!loginStatus) {
+                    dispatch(loginActions.loginPopup(true));
+                  } else {
+                    if (loginSelect.loginRole === 'Admin') {
+                      navigate(routes.policy);
+                    }
+                  }
+                }}
+                className={styles.policyIcon}
+              ></PolicyIcon> : undefined}
 
               {(loginSelect.loginRole === 'Seller' || loginSelect.loginRole === 'Admin') ? <GraphIcon
                 onClick={() => {

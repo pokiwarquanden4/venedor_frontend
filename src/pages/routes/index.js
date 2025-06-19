@@ -22,6 +22,7 @@ import AdminHome from '../Admin/AdminHome';
 import AdminReported from '../Admin/AdminReported';
 import Profit from '../Admin/Profit';
 import Refund from '../Refund/Refund';
+import Policy from '../Policy/Policy';
 
 const publicRoutes = [
   { path: routes.home, component: Home, Layout: HeaderOnly },
@@ -33,6 +34,7 @@ const publicRoutes = [
   { path: routes.category, component: HomeCategory, Layout: HeaderOnlyWithLink },
   { path: routes.productDetails, component: ProductAllDetails, Layout: HeaderOnlyWithLink },
   { path: routes.createAccount, component: CreateAccount, Layout: HeaderOnlyWithLink },
+  { path: routes.policy, component: Policy, Layout: HeaderOnlyWithLink },
   { path: routes.account, component: Account, Layout: HeaderOnlyWithLink },
   { path: routes.address, component: Address, Layout: HeaderOnlyWithLink },
   { path: routes.profit, component: Profit, Layout: HeaderOnlyWithLink },

@@ -43,4 +43,20 @@ export const adminActions = createActions({
     createRefundRequest: (payload) => payload,
     createRefundSuccess: (payload) => payload,
     createRefundFailure: (payload) => payload,
+
+    getAllPolicyRequest: (payload) => payload,
+    getAllPolicySuccess: (payload) => payload,
+    getAllPolicyFailure: (payload) => payload,
+
+    addPolictyRequest: (payload) => payload,
+    addPolictySuccess: (payload) => payload,
+    addPolictyFailure: (payload) => payload,
+
+    editPolicyRequest: (payload) => payload,
+    editPolicySuccess: (payload) => payload,
+    editPolicyFailure: (payload) => payload,
+
+    deletePolicyRequest: (payload) => payload,
+    deletePolicySuccess: (payload) => payload,
+    deletePolicyFailure: (payload) => payload,
 });

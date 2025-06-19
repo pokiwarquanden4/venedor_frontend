@@ -6,7 +6,7 @@ import { notificationActions } from '../../actions/notification/notificationActi
 import { loadingActions } from '../../actions/loading/LoadingActions';
 import { jwtCheck } from '../jwtCheck';
 import { adminActions } from '../../actions/account/AdminActions';
-import { createRefundAPI, createReportAPI, disableUserAPI, getGraphAPI, getRefundAPI, getReportedAPI, getSellerListAPI, getUserListAPI, handleRefundAPI, handleReportAPI } from '../../../api/userAPI/AdminAPI';
+import { addPolicyAPI, createRefundAPI, createReportAPI, deletePolicyAPI, disableUserAPI, editPolicyAPI, getAllPolicyAPI, getGraphAPI, getRefundAPI, getReportedAPI, getSellerListAPI, getUserListAPI, handleRefundAPI, handleReportAPI } from '../../../api/userAPI/AdminAPI';
 
 function* getUserListSaga(action) {
     try {
@@ -155,6 +155,65 @@ function* handleRefundSaga(action) {
     }
 }
 
+function* getAllPolicySaga(action) {
+    try {
+        yield put(loadingActions.setLoadingLoading(true));
+
+        const data = yield call(getAllPolicyAPI, action.payload);
+        yield put(adminActions.getAllPolicySuccess(data.data));
+
+        yield put(loadingActions.setLoadingLoading(false));
+    } catch (err) {
+        yield put(adminActions.getAllPolicyFailure(err.response.data));
+        yield put(loadingActions.setLoadingLoading(false));
+    }
+}
+
+function* addPolicySaga(action) {
+    try {
+        yield put(loadingActions.setLoadingLoading(true));
+
+        const data = yield call(addPolicyAPI, action.payload);
+        yield put(adminActions.addPolictySuccess(data.data));
+
+        yield jwtCheck(data);
+        yield put(loadingActions.setLoadingLoading(false));
+    } catch (err) {
+        yield put(adminActions.addPolictyFailure(err.response.data));
+        yield put(loadingActions.setLoadingLoading(false));
+    }
+}
+
+function* editPolicySaga(action) {
+    try {
+        yield put(loadingActions.setLoadingLoading(true));
+
+        const data = yield call(editPolicyAPI, action.payload);
+        yield put(adminActions.editPolicySuccess(data.data));
+
+        yield jwtCheck(data);
+        yield put(loadingActions.setLoadingLoading(false));
+    } catch (err) {
+        yield put(adminActions.editPolicyFailure(err.response.data));
+        yield put(loadingActions.setLoadingLoading(false));
+    }
+}
+
+function* deletePolicySaga(action) {
+    try {
+        yield put(loadingActions.setLoadingLoading(true));
+
+        const data = yield call(deletePolicyAPI, action.payload);
+        yield put(adminActions.deletePolicySuccess(data.data));
+
+        yield jwtCheck(data);
+        yield put(loadingActions.setLoadingLoading(false));
+    } catch (err) {
+        yield put(adminActions.deletePolicyFailure(err.response.data));
+        yield put(loadingActions.setLoadingLoading(false));
+    }
+}
+
 function* adminSagas() {
     yield takeLatest(adminActions.getUserListRequest, getUserListSaga);
     yield takeLatest(adminActions.getSellerListRequest, getSellerListSaga);
@@ -166,6 +225,10 @@ function* adminSagas() {
     yield takeLatest(adminActions.handleReportRequest, handleReportSaga);
     yield takeLatest(adminActions.handleRefundRequest, handleRefundSaga);
     yield takeLatest(adminActions.createRefundRequest, createRefundSaga);
+    yield takeLatest(adminActions.getAllPolicyRequest, getAllPolicySaga);
+    yield takeLatest(adminActions.addPolictyRequest, addPolicySaga);
+    yield takeLatest(adminActions.editPolicyRequest, editPolicySaga);
+    yield takeLatest(adminActions.deletePolicyRequest, deletePolicySaga);
 }
 
 export default adminSagas;

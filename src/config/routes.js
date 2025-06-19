@@ -1,5 +1,6 @@
 const routes = {
   admin: '/account/admin',
+  policy: '/account/admin/policy',
   repoted: '/account/admin/repoted',
   refund: '/seller/refund',
   profit: '/account/admin/profit',

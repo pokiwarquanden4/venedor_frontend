@@ -88,3 +88,38 @@ export const handleRefundAPI = (payload) => {
         }),
     });
 };
+
+export const getAllPolicyAPI = (payload) => {
+    return axios.get(`${URL}admin/getPolicy`, {
+        params: payload,
+        headers: createHeaders({
+            Authorization: getJWTToken(),
+        }),
+    });
+};
+
+export const addPolicyAPI = (payload) => {
+    return axios.post(`${URL}admin/addPolicy`, payload, {
+        headers: createHeaders({
+            Authorization: getJWTToken(),
+        }),
+    });
+};
+
+export const editPolicyAPI = (payload) => {
+    return axios.post(`${URL}admin/editPolicy`, payload, {
+        headers: createHeaders({
+            Authorization: getJWTToken(),
+        }),
+    });
+};
+
+export const deletePolicyAPI = (payload) => {
+    return axios.post(`${URL}admin/deletePolicy`, payload, {
+        headers: createHeaders({
+            Authorization: getJWTToken(),
+        }),
+    });
+};
+
+

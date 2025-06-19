@@ -51,6 +51,7 @@
         .graphIcon,
         .logoutIcon,
         .refund_icon,
+        .policyIcon,
         .boxIcon {
             margin-right: 30px;
         }
@@ -127,5 +128,10 @@
 
 .refund_icon {
     margin-top: 6px;
+    cursor: pointer;
+}
+
+.policyIcon {
+    margin-top: 2px;
     cursor: pointer;
 }
